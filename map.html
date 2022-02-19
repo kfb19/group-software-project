@@ -23,7 +23,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_bb21cd16000248bdaaff560af3d160cd {
+                #map_1facf8eff1e84cdfbbd42058422e449c {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -35,16 +35,17 @@
 </head>
 <body>    
     
-            <div class="folium-map" id="map_bb21cd16000248bdaaff560af3d160cd" ></div>
+            <div class="folium-map" id="map_1facf8eff1e84cdfbbd42058422e449c" ></div>
         
 </body>
 <script>    
     
-            var map_bb21cd16000248bdaaff560af3d160cd = L.map(
-                "map_bb21cd16000248bdaaff560af3d160cd",
+            var map_1facf8eff1e84cdfbbd42058422e449c = L.map(
+                "map_1facf8eff1e84cdfbbd42058422e449c",
                 {
-                    center: [50.721802, -3.53362],
+                    center: [50.735805, -3.533051],
                     crs: L.CRS.EPSG3857,
+                    maxBounds: [[50.729422, -3.522554], [50.743057, -3.543709]],
                     zoom: 15,
                     zoomControl: true,
                     preferCanvas: false,
@@ -55,32 +56,32 @@
 
         
     
-            var tile_layer_a2df9c9340a748f0aad201ab187e25f1 = L.tileLayer(
+            var tile_layer_eed4515d1dce45d89b13850dba787293 = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
-            ).addTo(map_bb21cd16000248bdaaff560af3d160cd);
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 15, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_1facf8eff1e84cdfbbd42058422e449c);
         
     
-            var marker_1211ac6919a043528dc4419d6495868c = L.marker(
-                [50.721802, -3.53362],
-                {}
-            ).addTo(map_bb21cd16000248bdaaff560af3d160cd);
+            var marker_c9a8e4f4659448d0954dc77be67f018f = L.marker(
+                [50.735805, -3.533051],
+                {"maxBounds": true}
+            ).addTo(map_1facf8eff1e84cdfbbd42058422e449c);
         
     
-        var popup_0c9627255c6842b48fa6db42169dfd5e = L.popup({"maxWidth": "100%"});
+        var popup_87f3ba8e33cc447c9520f827113430bb = L.popup({"maxWidth": "100%"});
 
         
-            var html_92a6a24129074c0c92a9f1b2abcd217a = $(`<div id="html_92a6a24129074c0c92a9f1b2abcd217a" style="width: 100.0%; height: 100.0%;"><strong>Location One</strong></div>`)[0];
-            popup_0c9627255c6842b48fa6db42169dfd5e.setContent(html_92a6a24129074c0c92a9f1b2abcd217a);
+            var html_0503e4a9d3bc4dd4bfac1aaa74d7fe84 = $(`<div id="html_0503e4a9d3bc4dd4bfac1aaa74d7fe84" style="width: 100.0%; height: 100.0%;"><strong>Exeter Uni</strong></div>`)[0];
+            popup_87f3ba8e33cc447c9520f827113430bb.setContent(html_0503e4a9d3bc4dd4bfac1aaa74d7fe84);
         
 
-        marker_1211ac6919a043528dc4419d6495868c.bindPopup(popup_0c9627255c6842b48fa6db42169dfd5e)
+        marker_c9a8e4f4659448d0954dc77be67f018f.bindPopup(popup_87f3ba8e33cc447c9520f827113430bb)
         ;
 
         
     
     
-            marker_1211ac6919a043528dc4419d6495868c.bindTooltip(
+            marker_c9a8e4f4659448d0954dc77be67f018f.bindTooltip(
                 `<div>
                      Click for more info
                  </div>`,
