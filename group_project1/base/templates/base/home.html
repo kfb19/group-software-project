@@ -1,0 +1,61 @@
+<Style>
+    .wrapper{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+</Style>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>Home Template</h1>
+
+
+
+    
+{% if request.user.is_authenticated %}
+
+<p>Hello {{request.user}}</p>
+<a href="{% url 'logout' %}">Logout</a>
+<hr>
+
+
+{%else %}
+<a href="{% url 'login' %}">Login</a>
+<hr>
+
+
+{% endif %}
+
+<div class="wrapper">
+
+    <div class="filter">
+
+        <div>
+            <a href = "{% url 'home' %}">All</a>
+        </div>
+        {% for category in categories %}
+        <div>
+            <a href = "{% url 'home' %}?q={{category.name}} ">{{category}}</a>
+        </div>
+        {% endfor %}
+
+    </div class="challenges">
+        {% for challenge in challenges %}
+            <div>
+                <p>{{challenge.name}}</p>
+            </div>
+        {% endfor %}
+
+
+    <div>
+
+    </div>
+
+
+</div>
+{% endblock %}
+
+
