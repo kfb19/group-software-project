@@ -8,10 +8,10 @@ location = [lat, long]
 
 #map that is bounded to Exeter Uni
 map = folium.Map(location = location,
-                 min_lon=-3.522554,
-                 max_lon=-3.543709,
-                 min_lat=50.729422,
-                 max_lat=50.743057,
+                 min_lon=-3.520532,
+                 max_lon=-3.548116,
+                 min_lat=50.729748,
+                 max_lat=50.741780,
                  max_bounds=True,
                  zoom_start = 15,
                  min_zoom = 15)
