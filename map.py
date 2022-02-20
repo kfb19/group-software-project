@@ -13,7 +13,7 @@ map = folium.Map(location = location,
                  min_lat=50.729748,
                  max_lat=50.741780,
                  max_bounds=True,
-                 zoom_start = 15,
+                 zoom_start = 16,
                  min_zoom = 15)
 
 #tooltip
