@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from matplotlib.style import context
 from .forms import UserRegisterForm
 from .models import Category, Challenges
 
@@ -66,6 +67,9 @@ def registerPage(request):
 
     context = {'form': form}
     return render(request, 'base/login_register.html',context)
+
+def location_get_test(request):
+    return render(request, 'base/location_get_test.html',)
 
 @login_required(login_url='/login')
 def userProfile(request):
