@@ -63,7 +63,7 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Logout user
+# Logout usef
 def logoutUser(request):
 
     logout(request)
