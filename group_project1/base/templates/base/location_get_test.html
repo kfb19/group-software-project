@@ -13,25 +13,23 @@
 
 <div class="wrapper">
     <div>
-        {% csrf_token %}
 
         <div id="displaybox">
-            
+
         </div>
 
     </div>
 </div>
 
 <script>
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const displaybox = document.getElementById("displaybox");
+    var displaybox = document.getElementById("displaybox");
 
     // this function starts the location watcher
     function startLocator() {
         if (navigator.geolocation) {
             // watchposition ties a method to every time the user's location changes;
             // here it'll run showposition, using the getposition return values as the args
-            navigator.geolocation.watchPosition(postPosition);
+            navigator.geolocation.watchPosition(showPosition);
 
             // should note that watchposition has an option for a function to run in case of error
             // and also options: maximumAge, timeout, enableHighAccuracy. should use these.
@@ -53,41 +51,6 @@
         // applying these to the displaybox 
         pelem.appendChild(newloc);
         displaybox.appendChild(pelem);
-    }
-
-    function postPosition(position) {
-        var req = new XMLHttpRequest();
-        var url = "/location_get_test/";
-
-        req.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                alert("200");
-            } else if (this.readyState == 4 && this.status != 200) {
-                alert("!200");
-            }
-        };
-        
-        req.open("POST", url);
-        req.setRequestHeader('X-CSRFToken', csrftoken)
-        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-        req.send(JSON.stringify(posToObject(position)));
-    }
-
-    // This is required to be able to properly strigify the result from geolocation fetching
-    function posToObject (position) {
-        return {
-          timestamp: position.timestamp,
-          coords: {
-            accuracy: position.coords.accuracy,
-            altitude: position.coords.altitude,
-            altitudeAccuracy: position.coords.altitudeAccuracy,
-            heading: position.coords.heading,
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            speed: position.coords.speed
-          }
-        }
     }
 
     window.onload = startLocator();
