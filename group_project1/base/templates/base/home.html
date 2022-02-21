@@ -3,16 +3,19 @@
         display: grid;
         grid-template-columns: 1fr 3fr;
     }
+
+    .challenge{
+        width:70%
+    }
 </Style>
 
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
 
 <h1>Home Template</h1>
-
-
 
     
 {% if request.user.is_authenticated %}
@@ -42,14 +45,21 @@
         </div>
         {% endfor %}
 
-    </div class="challenges">
+    </div >
+    <div class="challenges">
+        <img src="{% static 'images/exeter.jpg' %}">
+        <br>
+        <a href="{% url 'createChallenge' %}">Add Challenge</a>
         {% for challenge in challenges %}
-            <div>
-                <p>{{challenge.name}}</p>
+            <div class="challenge">
+                <p>{{challenge.name}} <small>{{challenge.created | timesince}} ago</small></p>
+                <small>Points: {{challenge.points}}</small><br>
+                <small>{{challenge.description}}</small><br>
+
+
+                <hr>
             </div>
         {% endfor %}
-
-
     <div>
 
     </div>
