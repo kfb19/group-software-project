@@ -22,7 +22,6 @@ def open_json_file(file_name):
     return json.load(file)
 
 def home(request):
-    figure = folium.Figure()
     # Map is centred at this location
     center = [50.735805, -3.533051]
 
@@ -35,10 +34,16 @@ def home(request):
                  max_bounds=True,
                  zoom_start = 16,
                  min_zoom = 15)
-    map.add_to(figure)
+
+    # 
+    locations = open_json_file('base/resources/latLong.json')
+    # Adds markers to the map for each location
+    for location in locations:
+        coords = [location['lat'], location['long']]
+        popup = location['locationName']
+        map = add_location(map, coords, popup)
 
     map = map._repr_html_()
-    figure.render()
     categories = Category.objects.all()
     challenges = Challenges.objects.all()
 
