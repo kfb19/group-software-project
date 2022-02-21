@@ -3,6 +3,10 @@
         display: grid;
         grid-template-columns: 1fr 3fr;
     }
+
+    .challenge{
+        width:70%
+    }
 </Style>
 
 {% extends 'base.html' %}
@@ -12,9 +16,6 @@
 
 <h1>Home Template</h1>
 
-
-
-    
 {% if request.user.is_authenticated %}
 
 <p>Hello {{request.user}}</p>
@@ -43,6 +44,7 @@
         {% endfor %}
 
     </div class="challenges">
+        {{my_map|safe}}
         {% for challenge in challenges %}
             <div>
                 <p>{{challenge.name}}</p>
@@ -54,9 +56,6 @@
     </div>
 </div>
 
-<div>
-    {{my_map|safe}}
-</div>
 {% endblock %}
 
 
