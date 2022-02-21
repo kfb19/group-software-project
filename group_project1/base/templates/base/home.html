@@ -47,7 +47,7 @@
 
     </div >
     <div class="challenges">
-        <img src="{% static 'images/exeter.jpg' %}">
+        {{map|safe}}
         <br>
         <a href="{% url 'createChallenge' %}">Add Challenge</a>
         {% for challenge in challenges %}
