@@ -10,11 +10,45 @@ from .models import Category, Challenges
 from django.db.models import Q
 from django.urls import reverse_lazy,reverse
 from django.http import HttpResponseRedirect
+import folium, json
+
+def add_location(map, location, popup):
+    #tooltip
+    tooltip = 'Click for more info'
+    folium.Marker(location, popup, tooltip=tooltip).add_to(map)
+    return map
+
+# Function to open and return a json file 
+def open_json_file(file_name):
+    file = open(file_name)
+    return json.load(file)
 
 
 # View for the main homepage
 def home(request):
+
+    # Map is centred at this location
+    center = [50.735805, -3.533051]
+
+    # Map that is bounded to Exeter Uni
+    map = folium.Map(location = center,
+                 min_lon=-3.520532,
+                 max_lon=-3.548116,
+                 min_lat=50.729748,
+                 max_lat=50.741780,
+                 max_bounds=True,
+                 zoom_start = 16,
+                 min_zoom = 15)
+
+    locations = open_json_file('base/resources/latLong.json')
+    # Adds markers to the map for each location
+    for location in locations:
+        coords = [location['lat'], location['long']]
+        popup = location['locationName']
+        map = add_location(map, coords, popup)
     
+    map = map._repr_html_()
+
     # Select all categories
     categories = Category.objects.all()
 
@@ -26,7 +60,7 @@ def home(request):
         Q(category__name__icontains=q))
 
     # Variables to pass to the database
-    context = {'categories':categories,'challenges':challenges}
+    context = {'categories':categories,'challenges':challenges, 'map':map}
 
     return render(request,'base/home.html',context)
 
