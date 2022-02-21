@@ -1,13 +1,17 @@
+from cgitb import reset
 from email import message
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from matplotlib.font_manager import json_load
 from matplotlib.style import context
 from .forms import UserRegisterForm
 from .models import Category, Challenges
+import json
 
 def home(request):
     
@@ -68,8 +72,16 @@ def registerPage(request):
     context = {'form': form}
     return render(request, 'base/login_register.html',context)
 
+# This successfully receives the post request from the XMLHTTP.
+# Need to handle properly, however this is a solid start
 def location_get_test(request):
-    return render(request, 'base/location_get_test.html',)
+    if request.method == 'POST':
+        print(request.body)
+        response = HttpResponse()
+        return response
+    else:
+        return render(request, 'base/location_get_test.html/')
+    
 
 @login_required(login_url='/login')
 def userProfile(request):
