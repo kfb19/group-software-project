@@ -35,7 +35,6 @@ def home(request):
                  zoom_start = 16,
                  min_zoom = 15)
 
-    # 
     locations = open_json_file('base/resources/latLong.json')
     # Adds markers to the map for each location
     for location in locations:
@@ -47,7 +46,7 @@ def home(request):
     categories = Category.objects.all()
     challenges = Challenges.objects.all()
 
-    context = {'categories':categories,'challenges':challenges, 'my_map':map}
+    context = {'categories':categories,'challenges':challenges, 'map':map}
 
     return render(request,'base/home.html',context)
 

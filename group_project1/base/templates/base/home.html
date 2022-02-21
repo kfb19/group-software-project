@@ -44,16 +44,13 @@
         {% endfor %}
 
     </div class="challenges">
-        {{my_map|safe}}
+        {{map|safe}}
         {% for challenge in challenges %}
             <div>
                 <p>{{challenge.name}}</p>
             </div>
         {% endfor %}
 
-    <div>
-         
-    </div>
 </div>
 
 {% endblock %}
