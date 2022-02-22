@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -25,7 +26,17 @@ class Challenges(models.Model):
     points = models.IntegerField()
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    long = models.FloatField(default=0)
+    lat = models.FloatField(default=0)
     
 
     def __str__(self):
         return str(self.name)
+
+class Responses(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField()
+    challenge = models.ForeignKey(Challenges, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return str(self.id)

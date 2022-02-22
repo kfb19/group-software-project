@@ -47,12 +47,14 @@
 
     </div >
     <div class="challenges">
-        <img src="{% static 'images/exeter.jpg' %}">
+        {{map|safe}}
         <br>
         <a href="{% url 'createChallenge' %}">Add Challenge</a>
+        <hr>
         {% for challenge in challenges %}
             <div class="challenge">
                 <p>{{challenge.name}} <small>{{challenge.created | timesince}} ago</small></p>
+                <small><a href="{% url 'createResponse' challenge.id %}">Create Response</a></small><br>
                 <small>Points: {{challenge.points}}</small><br>
                 <small>{{challenge.description}}</small><br>
 
