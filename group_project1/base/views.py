@@ -1,11 +1,12 @@
 from email import message
+import re
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .forms import ChallengeForm, UserRegisterForm
+from .forms import ChallengeForm, UserRegisterForm, ResponseForm
 from .models import Category, Challenges
 from django.db.models import Q
 from django.urls import reverse_lazy,reverse
@@ -40,13 +41,19 @@ def home(request):
                  zoom_start = 16,
                  min_zoom = 15)
 
-    locations = open_json_file('base/resources/latLong.json')
+    
+    challenge_locations = {}
+    challenges = Challenges.objects.all()
+    
+    #locations = open_json_file('base/resources/latLong.json')
+    #print(locations)
     # Adds markers to the map for each location
-    for location in locations:
-        coords = [location['lat'], location['long']]
-        popup = location['locationName']
+    for challenge in challenges:
+        coords = [challenge.lat, challenge.long]
+        popup = challenge.name
         map = add_location(map, coords, popup)
     
+
     map = map._repr_html_()
 
     # Select all categories
@@ -145,4 +152,22 @@ def createChallenge(request):
             return redirect('home')
     context = {'form':form}
     return render(request,'base/createChallenge.html',context)
+
+@login_required(login_url='/login')
+def createResponse(request,pk):
+    challenge = Challenges.objects.get(id=pk)
+    form = ResponseForm()
+    if request.method == 'POST':
+        form = ResponseForm(request.POST)
+
+        #If valid response, add to database
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.challenge = challenge
+
+            obj.save()
+            return redirect('home')
+    context = {'form':form}
+    return render(request,'base/createResponse.html',context)
 
