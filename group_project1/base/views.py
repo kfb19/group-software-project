@@ -13,7 +13,6 @@ from django.urls import reverse_lazy,reverse
 from django.http import HttpResponseRedirect
 import folium, json
 
-
 def add_location(map, location, popup):
     #tooltip
     tooltip = 'Click for more info'
@@ -54,6 +53,7 @@ def home(request):
         popup = challenge.name
         map = add_location(map, coords, popup)
     
+
     map = map._repr_html_()
 
     # Select all categories
