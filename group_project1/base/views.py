@@ -10,7 +10,8 @@ from .forms import ChallengeForm, UserRegisterForm, ResponseForm
 from .models import Category, Challenges
 from django.db.models import Q
 from django.urls import reverse_lazy,reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.contrib import messages
 import folium, json
 
 def add_location(map, location, popup):

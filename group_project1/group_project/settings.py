@@ -142,5 +142,5 @@ AXES_COOLOFF_TIME = dt.timedelta(minutes=5) # Lock user out for 5 minutes
 AXES_RESET_ON_SUCCESS = True # If True, a successful login will reset the number of failed logins.
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True # If True, only lock based on username, and never lock based on IP if attempts exceed the limit.
 
-# Uncomment and replace with url to redirect user when locked out
-# AXES_LOCKOUT_URL = 'enter url to redirect to'
+# Redirect user to home page when locked out
+AXES_LOCKOUT_URL = '../'
