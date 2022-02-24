@@ -21,3 +21,7 @@ then:
 To run app:
    
     python manage.py runserver
+
+If you lock yourself out, do:
+    
+    python manage.py axes_reset
