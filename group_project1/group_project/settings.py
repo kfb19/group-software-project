@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import datetime as dt
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -137,7 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #AXES settings:
 AXES_FAILURE_LIMIT = 5 # Set the limit to 5 failed attempts
-AXES_COOLOFF_TIME = 1 # Lock user out for 1 hour
+AXES_COOLOFF_TIME = dt.timedelta(minutes=5) # Lock user out for 5 minutes
 AXES_RESET_ON_SUCCESS = True # If True, a successful login will reset the number of failed logins.
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True # If True, only lock based on username, and never lock based on IP if attempts exceed the limit.
 
