@@ -5,6 +5,8 @@ Prerequisites:
 
   pip install folium
 
+  pip install django-axes
+
 In group_project1 folder 
 
 run:
