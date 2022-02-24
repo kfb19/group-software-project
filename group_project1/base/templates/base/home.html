@@ -14,7 +14,13 @@
 
 {% block content %}
 
-
+<div>
+    {% if messages%}
+        {% for message in messages %}
+            {{messgae}}
+        {% endfor %}
+    {% endif %}
+</div>
 <h1>Home Template</h1>
 
     

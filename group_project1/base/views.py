@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from email import message
 import re
 from django.shortcuts import render,redirect,get_object_or_404
@@ -172,3 +173,7 @@ def createResponse(request,pk):
     context = {'form':form}
     return render(request,'base/createResponse.html',context)
 
+# When user is locked out add message and redirect to home page
+def lockout(request, credentials, *args, **kwargs):
+     messages.warning(request, ("Locked out for 5 minutes due to too many login failures"))
+     return redirect('home')
