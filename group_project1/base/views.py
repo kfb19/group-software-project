@@ -179,6 +179,34 @@ def createResponse(request,pk):
     context = {'form':form}
     return render(request,'base/createResponse.html',context)
 
+def strfdelta_round(tdelta, round_period='second'):
+  """timedelta to string,  use for measure running time
+  attend period from days downto smaller period, round to minimum period
+  omit zero value period  
+  """
+  period_names = ('day', 'hour', 'minute', 'second', 'millisecond')
+  if round_period not in period_names:
+    raise Exception(f'round_period "{round_period}" invalid, should be one of {",".join(period_names)}')
+  period_seconds = (86400, 3600, 60, 1, 1/pow(10,3))
+  period_desc = ('days', 'hours', 'minutes', 'seconds', 'msecs')
+  round_i = period_names.index(round_period)
+  
+  s = ''
+  remainder = tdelta.total_seconds()
+  for i in range(len(period_names)):
+    q, remainder = divmod(remainder, period_seconds[i])
+    if int(q)>0:
+      if not len(s)==0:
+        s += ' '
+      s += f'{q:.0f} {period_desc[i]}'
+    if i==round_i:
+      break
+    if i==round_i+1:
+      s += f'{remainder} {period_desc[round_i]}'
+      break
+    
+  return s
+
 # When user is locked out add message and redirect to home page
 def lockout(request, credentials, *args, **kwargs):
     try:
@@ -186,7 +214,7 @@ def lockout(request, credentials, *args, **kwargs):
         ip_address = request.axes_ip_address
         account = AccessAttempt.objects.filter(username=username).filter(ip_address=ip_address)
         current_time = datetime.datetime.now()
-        timeout = 1 # In minutes
+        timeout = 5 # In minutes
         result = AccessAttempt.objects.raw(
                 '''
                 SELECT axes_accessattempt.id, base_accessattemptaddons.expiration_date
@@ -199,7 +227,9 @@ def lockout(request, credentials, *args, **kwargs):
 
 
         if (current_time < result.expiration_date):
-            messages.warning(request, (f"Locked out for {str(result.expiration_date - current_time)} minutes due to too many login failures"))
+            time = result.expiration_date - current_time
+            time_s = strfdelta_round(time)
+            messages.warning(request, (f"Locked out for {time_s} due to too many login failures"))
         else:
             account.delete()
             return loginPage(request)
