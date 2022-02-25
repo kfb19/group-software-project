@@ -76,8 +76,8 @@ WSGI_APPLICATION = 'group_project.wsgi.application'
 # Adds an email backend
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_BACKEND = 'django_ses.SESBackend'
-# AWS_ACCESS_KEY_ID = 'AKIA5UH3B724DQHKVLL3'
-# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_ACCESS_KEY_ID = ''
+# AWS_SECRET_ACCESS_KEY = ''
 # AWS_SES_REGION_NAME = 'us-east-1' #(ex: us-east-2)
 # AWS_SES_REGION_ENDPOINT ='email.us-east-1.amazonaws.com' #(ex: email.us-east-2.amazonaws.com)
 

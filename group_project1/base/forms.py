@@ -14,8 +14,6 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username','email','password1','password2']
 
 
-
-
 # Form for challenges to be added
 class ChallengeForm(ModelForm):
     class Meta:
