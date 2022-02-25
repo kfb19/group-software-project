@@ -254,4 +254,34 @@ def lockout(request, credentials, *args, **kwargs):
         addons.save()
 
     return redirect('login')
+    
+from django.core.mail import EmailMessage
 
+def password_reset_request(request):
+    if request.method == "POST":
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Required"
+                    email_template = "password/password_reset_email.txt"
+                    body = {
+                        "email":user.email,
+                        "domain":"127.0.0.1:8000",
+                        "site_name":"exeter",
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "user": user,
+                        "token":default_token_generator.make_token(user),
+                        "protocol": "http",
+                    }
+                    email = render_to_string(email_template, body)
+                    try:
+                        email_send = EmailMessage(subject, email, to=[user.email])
+                        email_send.send()
+                    except BadHeaderError:
+                        return HttpResponse("invalid header found")
+                    return redirect("/reset_password/done/")
+    password_reset_form = PasswordResetForm()
+    return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
