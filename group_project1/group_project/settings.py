@@ -145,5 +145,5 @@ AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True # If True, only lock based on us
 # Redirect user to home page when locked out
 AXES_LOCKOUT_URL = '../'
 
-# Run lock out function in 
+# Run lock out function in base/views
 AXES_LOCKOUT_CALLABLE = 'base.views.lockout'

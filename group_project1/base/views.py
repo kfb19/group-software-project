@@ -176,4 +176,4 @@ def createResponse(request,pk):
 # When user is locked out add message and redirect to home page
 def lockout(request, credentials, *args, **kwargs):
      messages.warning(request, ("Locked out for 5 minutes due to too many login failures"))
-     return redirect('home')
+     return redirect('login')
