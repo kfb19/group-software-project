@@ -82,12 +82,12 @@ WSGI_APPLICATION = 'group_project.wsgi.application'
 # AWS_SES_REGION_ENDPOINT ='email.us-east-1.amazonaws.com' #(ex: email.us-east-2.amazonaws.com)
 
 #SMTP Settings:
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'exeterteam25@gmail.com'
-EMAIL_HOST_PASSWORD = 'aqe@EBR8crg_enb3mft'
+EMAIL_HOST_PASSWORD = 'dxocxerftbaqtjzo'
 
 
 # Database
