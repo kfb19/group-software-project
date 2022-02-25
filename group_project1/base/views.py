@@ -1,6 +1,10 @@
 from asyncio.windows_events import NULL
 from email import message
+
 from ipaddress import ip_address
+
+from http.client import responses
+
 import re
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
@@ -8,8 +12,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .forms import ChallengeForm, UserRegisterForm, ResponseForm
-from .models import Category, Challenges
+from .forms import ChallengeForm, UserRegisterForm, ResponseForm,ProfileForm
+from .models import Category, Challenges, Responses, Profile
 from django.db.models import Q
 from django.urls import reverse_lazy,reverse
 from django.http import HttpResponseRedirect, JsonResponse
@@ -47,30 +51,38 @@ def home(request):
                  zoom_start = 16,
                  min_zoom = 15)
 
-    
-    challenge_locations = {}
-    challenges = Challenges.objects.all()
-    
-    #locations = open_json_file('base/resources/latLong.json')
-    #print(locations)
-    # Adds markers to the map for each location
-    for challenge in challenges:
-        coords = [challenge.lat, challenge.long]
-        popup = challenge.name
-        map = add_location(map, coords, popup)
-    
-
-    map = map._repr_html_()
-
     # Select all categories
     categories = Category.objects.all()
 
     # Get the filter from the ?q= in the URL
     q = request.GET.get('q') if request.GET.get('q') != None else ''
 
-    # Filter the challenges by q
-    challenges = Challenges.objects.filter(
-        Q(category__name__icontains=q))
+    # Get all challenges, not done by the current user
+
+    if request.user.is_authenticated:
+        responses = Responses.objects.filter(user = request.user).values_list('challenge_id')
+
+        challenges = Challenges.objects.exclude(id__in=responses).filter(Q(
+            category__name__icontains=q)).order_by('-created')
+   
+        
+        #locations = open_json_file('base/resources/latLong.json')
+        #print(locations)
+        # Adds markers to the map for each location
+        for challenge in challenges:
+            coords = [challenge.lat, challenge.long]
+            popup = challenge.name
+            map = add_location(map, coords, popup)
+
+    else:
+         challenges = Challenges.objects.all().order_by('-created')
+         for challenge in challenges:
+            coords = [challenge.lat, challenge.long]
+            popup = challenge.name
+            map = add_location(map, coords, popup)
+        
+
+    map = map._repr_html_()
 
     # Variables to pass to the database
     context = {'categories':categories,'challenges':challenges, 'map':map}
@@ -124,6 +136,7 @@ def registerPage(request):
     # Getting form from forms.py
     form = UserRegisterForm()
 
+
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
 
@@ -131,7 +144,14 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
+
             user.backend = 'django.contrib.auth.backends.ModelBackend' # Sets the backend authenticaion model
+
+            Profile.objects.create(
+                user = user,
+                name = user.username
+            )
+
             login(request,user)
             messages.success(request, f'Account created for {username}!')
             return redirect('home')
@@ -175,9 +195,13 @@ def createResponse(request,pk):
             obj.challenge = challenge
 
             obj.save()
+            profile = request.user.profile
+            profile.points += challenge.points
+            profile.save()
             return redirect('home')
     context = {'form':form}
     return render(request,'base/createResponse.html',context)
+
 
 # Converts timedelta object into a readable string
 def strfdelta_round(tdelta, round_period='second'):
@@ -244,3 +268,10 @@ def lockout(request, credentials, *args, **kwargs):
         addons.save()
 
     return redirect('login')
+
+
+@login_required(login_url='/login')
+def myResponses(request):
+    responses = Responses.objects.filter(user=request.user).order_by('-created')
+    context = {'responses':responses}
+    return render(request,'base/myResponses.html',context)

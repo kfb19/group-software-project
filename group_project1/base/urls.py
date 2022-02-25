@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('profile/',views.userProfile,name='profile'),
     path('create-challenge/', views.createChallenge,name='createChallenge'),
-    path('create-response/<int:pk>/',views.createResponse,name='createResponse')
+    path('create-response/<int:pk>/',views.createResponse,name='createResponse'),
+    path('my-responses/',views.myResponses,name='myResponses')
 ]
