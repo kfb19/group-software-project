@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True,on_delete=models.CASCADE)
     name = models.CharField(max_length=200,null=True)
+    points = models.IntegerField(default=0,null=True)
 
 
     def __str__(self) -> str:
@@ -36,7 +37,8 @@ class Challenges(models.Model):
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
-    challenge = models.ForeignKey(Challenges, on_delete=models.SET_NULL, null=True)
+    challenge = models.ForeignKey(Challenges, related_name='challenge_response', on_delete=models.SET_NULL, null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.id)
