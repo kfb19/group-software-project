@@ -5,6 +5,8 @@ Prerequisites:
 
   pip install folium
 
+  pip install django-axes
+
 In group_project1 folder 
 
 run:
@@ -19,3 +21,7 @@ then:
 To run app:
    
     python manage.py runserver
+
+If you lock yourself out, do:
+    
+    python manage.py axes_reset
