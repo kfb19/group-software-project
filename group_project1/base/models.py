@@ -2,6 +2,10 @@ from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import User
 
+from axes.models import AccessAttempt
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True,on_delete=models.CASCADE)
@@ -40,3 +44,8 @@ class Responses(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class AccessAttemptAddons(models.Model):
+    accessattempt = models.OneToOneField(AccessAttempt, on_delete=models.CASCADE)
+    expiration_date = models.DateTimeField(_("Expiration Time"), auto_now_add=False)

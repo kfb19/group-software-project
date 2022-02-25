@@ -1,5 +1,6 @@
 from asyncio.windows_events import NULL
 from email import message
+from ipaddress import ip_address
 import re
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
@@ -14,6 +15,9 @@ from django.urls import reverse_lazy,reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 import folium, json
+from axes.models import AccessAttempt
+from .models import AccessAttemptAddons
+import datetime
 
 def add_location(map, location, popup):
     #tooltip
@@ -92,10 +96,11 @@ def loginPage(request):
             user = User.objects.get(username=username)
         except:
             messages.error(request, 'User does not exist')
-
+            
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
+            user.backend = 'django.contrib.auth.backends.ModelBackend' # Sets the backend authenticaion model
             login(request, user)
             return redirect('home')
         else:
@@ -126,6 +131,7 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
+            user.backend = 'django.contrib.auth.backends.ModelBackend' # Sets the backend authenticaion model
             login(request,user)
             messages.success(request, f'Account created for {username}!')
             return redirect('home')
@@ -175,5 +181,34 @@ def createResponse(request,pk):
 
 # When user is locked out add message and redirect to home page
 def lockout(request, credentials, *args, **kwargs):
-     messages.warning(request, ("Locked out for 5 minutes due to too many login failures"))
-     return redirect('login')
+    try:
+        username = request.POST.get("username")
+        ip_address = request.axes_ip_address
+        account = AccessAttempt.objects.filter(username=username).filter(ip_address=ip_address)
+        current_time = datetime.datetime.now()
+        timeout = 1 # In minutes
+        result = AccessAttempt.objects.raw(
+                '''
+                SELECT axes_accessattempt.id, base_accessattemptaddons.expiration_date
+                FROM axes_accessattempt
+                INNER JOIN base_accessattemptaddons
+                ON axes_accessattempt.id = base_accessattemptaddons.accessattempt_id
+                WHERE axes_accessattempt.username = %s and axes_accessattempt.ip_address = %s
+                ''', [username, ip_address]
+            )[0]
+
+
+        if (current_time < result.expiration_date):
+            messages.warning(request, (f"Locked out for {str(result.expiration_date - current_time)} minutes due to too many login failures"))
+        else:
+            account.delete()
+            return loginPage(request)
+
+    except IndexError:
+        expiration_date = current_time + datetime.timedelta(minutes=timeout)
+        id = AccessAttempt.objects.filter(username=username, ip_address=ip_address)[0].id
+        addons = AccessAttemptAddons(expiration_date=expiration_date, accessattempt_id=id)
+        messages.warning(request, (f"Locked out for {timeout} minutes due to too many login failures"))
+        addons.save()
+
+    return redirect('login')
