@@ -1,0 +1,16 @@
+<h1>Responses</h1>
+<p>Total Points: {{request.user.profile.points}}</p>
+
+<div>
+    {% for response in responses %}
+            <div class="challenge">
+                <p>{{response.challenge.name}} | <small>{{response.challenge.points}}</small></p>
+                <small>{{response.description}}</small> <br>
+
+
+                <hr>
+            </div>
+        {% endfor %}
+</div>
+
+

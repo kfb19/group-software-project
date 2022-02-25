@@ -44,6 +44,10 @@
         </div>
         {% endfor %}
 
+        <hr>
+        <br>
+        <a href= "{% url 'myResponses' %}">Completed Challenges</a>
+
     </div >
     <div class="challenges">
         {{map|safe}}
@@ -53,7 +57,7 @@
         {% for challenge in challenges %}
             <div class="challenge">
                 <p>{{challenge.name}} <small>{{challenge.created | timesince}} ago</small></p>
-                <small><a href="{% url 'createResponse' challenge.id %}">Create Response</a></small><br>
+                <small><a href="{% url 'createResponse' challenge.id %}">Complete Challenge</a></small><br>
                 <small>Points: {{challenge.points}}</small><br>
                 <small>{{challenge.description}}</small><br>
 
