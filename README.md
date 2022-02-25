@@ -7,8 +7,6 @@ Prerequisites:
 
   pip install django-axes
 
-  pip install django-ses
-
 In group_project1 folder 
 
 run:
