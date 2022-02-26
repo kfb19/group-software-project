@@ -36,17 +36,36 @@ crossorigin=""/>
     const displaybox = document.getElementById("displaybox");
 
     // this function starts the location watcher
-    function startLocator() {
+    function startLocator(map) {
         if (navigator.geolocation) {
             // watchposition ties a method to every time the user's location changes;
-            // here it'll run showposition, using the getposition return values as the args
-            navigator.geolocation.watchPosition(postPosition);
+            // here it'll run displayposition, using the getposition return values as the args
+            function success (position){
+                displayPosition( map, position );
+            }
+
+            function error(err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            }
+
+            options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+            
+            navigator.geolocation.watchPosition(success, error, options);
 
             // should note that watchposition has an option for a function to run in case of error
             // and also options: maximumAge, timeout, enableHighAccuracy. should use these.
         } else {
-            displaybox.innerHTML = "geolocation is not supported by this browser";
+            console.log("User has declined geolocation access");
         }
+    }
+
+    function displayPosition(map, position) {
+        L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+        showPosition(position);
     }
 
     function showPosition(position) {
@@ -55,13 +74,7 @@ crossorigin=""/>
             position.coords.longitude +
             " at " + position.timestamp;
 
-        // creating text and p elements
-        var newloc = document.createTextNode(addedLoc);
-        var pelem = document.createElement("p");
-
-        // applying these to the displaybox 
-        pelem.appendChild(newloc);
-        displaybox.appendChild(pelem);
+        console.log(addedLoc);
     }
 
     function postPosition(position) {
@@ -96,9 +109,10 @@ crossorigin=""/>
         }
     }
 
-    window.onload = function(){
-        //startLocator();
 
+    // Initializing everything
+    window.onload = function(){
+        // map border
         var swest = L.latLng(50.729748, -3.520532),
             neast = L.latLng(50.741780, -3.548116),
             bounds = L.latLngBounds(swest, neast);
@@ -115,6 +129,7 @@ crossorigin=""/>
             zoomOffset: -1,
         }).addTo(map);
 
+        // This draws a polygon around the playable area
         var areamarker = [
             [ // Exterior Ring
                 [90, -180],
@@ -127,14 +142,15 @@ crossorigin=""/>
                 [50.729748, -3.548116],
                 [50.741780, -3.548116],
                 [50.741780, -3.520532]
-                
             ]
         ];
 
+        // adding polygon to map
         L.polygon(areamarker, {color: "#ff2600", weight: 2, interactive: false}).addTo(map);
 
         map.setMaxBounds(map.getBounds());
 
+        startLocator(map);
     };
 </script>
 
