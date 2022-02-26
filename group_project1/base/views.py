@@ -351,7 +351,6 @@ def callback(request):
     result = get_token_from_code(request)
 
     # Get the user's profile from graph_helper.py script
-    print(result)
     user_details = get_user(result['access_token']) 
 
     # Store user from auth_helper.py script
