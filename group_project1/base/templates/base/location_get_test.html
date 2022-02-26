@@ -7,7 +7,6 @@
 
 {% extends 'base.html' %} {% block content %}
 
-
 <h1>location_get_test</h1>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -152,9 +151,17 @@ crossorigin=""/>
 
         map.setMaxBounds(map.getBounds());
 
+        // This works, but after a certain number of locations it stops with a "..." for loop restrictions?
+        {% for location in locations %}
+        L.marker([ {{location.lat}}, {{location.long}} ],
+        {title: {{'"'}}{{location.locationName|safe}}{{'"'}}, bubblingMouseEvents: true }).addTo(map);
+        {% endfor %}
+
         startLocator(map);
     };
 </script>
+
+<input type="hidden" id="hidden">
 
  <!-- Make sure you put this AFTER Leaflet's CSS -->
  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
