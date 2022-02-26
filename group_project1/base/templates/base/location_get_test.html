@@ -21,7 +21,7 @@ crossorigin=""/>
         <div id="displaybox">
             <div id="map"></div>
             <style>
-                #map { height: 180px; }
+                #map { height: 500px; width: 1000px }
             </style>
         </div>
 
@@ -98,15 +98,43 @@ crossorigin=""/>
 
     window.onload = function(){
         //startLocator();
-        var map = L.map('map').setView([51.505, -0.09], 13);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+
+        var swest = L.latLng(50.729748, -3.520532),
+            neast = L.latLng(50.741780, -3.548116),
+            bounds = L.latLngBounds(swest, neast);
+
+        var map = L.map('map').setView([50.735805, -3.533051], 15);
+
+        // mapbox is also a good tileset for this
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxBounds: bounds,
             maxZoom: 18,
-            id: 'mapbox/streets-v11',
+            minZoom: 14,
             tileSize: 512,
             zoomOffset: -1,
-            accessToken: 'your.mapbox.access.token'
         }).addTo(map);
+
+        var areamarker = [
+            [ // Exterior Ring
+                [90, -180],
+                [90, 180],
+                [-90, 180],
+                [-90, -180]
+            ], // Then holes (interior rings)
+            [ // First hole
+                [50.729748, -3.520532],
+                [50.729748, -3.548116],
+                [50.741780, -3.548116],
+                [50.741780, -3.520532]
+                
+            ]
+        ];
+
+        L.polygon(areamarker, {color: "#ff2600", weight: 2, interactive: false}).addTo(map);
+
+        map.setMaxBounds(map.getBounds());
+
     };
 </script>
 
