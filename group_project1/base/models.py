@@ -31,8 +31,8 @@ class Challenges(models.Model):
     points = models.IntegerField()
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    long = models.FloatField(default=0)
     lat = models.FloatField(default=0)
+    long = models.FloatField(default=0)
     
 
     def __str__(self):
