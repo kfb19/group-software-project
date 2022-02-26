@@ -4,6 +4,7 @@ from email import message
 from ipaddress import ip_address
 
 from http.client import responses
+from posixpath import split
 
 import re
 from django.shortcuts import render,redirect,get_object_or_404
@@ -31,6 +32,12 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
+from django.contrib.auth.models import User
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token, get_token
+from graph_helper import *
 
 def add_location(map, location, popup):
     #tooltip
@@ -67,7 +74,6 @@ def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
 
     # Get all challenges, not done by the current user
-
     if request.user.is_authenticated:
         responses = Responses.objects.filter(user = request.user).values_list('challenge_id')
 
@@ -320,3 +326,44 @@ def myResponses(request):
     context = {'responses':responses}
     return render(request,'base/myResponses.html',context)
 
+
+def email_exists(email):
+    return User.objects.filter(email=email).exists()
+
+def sign_in_sso(request):
+    # Get the sign-in flow
+    flow = get_sign_in_flow()
+    # Save the expected flow so we can use it in the callback
+    try:
+        request.session['auth_flow'] = flow
+    except Exception as e:
+        print(e)
+    # Redirect to the Azure sign-in page
+    return HttpResponseRedirect(flow['auth_uri'])
+
+def sign_out_sso(request):
+    # Clear out the user and token
+    remove_user_and_token(request)
+    return HttpResponseRedirect(reverse('home'))
+
+def callback(request):
+    # Make the token request
+    result = get_token_from_code(request)
+
+    # Get the user's profile from graph_helper.py script
+    user_details = get_user(result['access_token']) 
+
+    # Store user from auth_helper.py script
+    store_user(request, user_details)
+
+    try: 
+        user = User.objects.get(email=user_details['mail'])
+    except:
+        full_name = user_details['displayName'].split(", ")
+        first_name = full_name[1]
+        last_name = full_name[0]
+        Profile.objects.create(user=User.objects.create_user(username=first_name, first_name=first_name, last_name=last_name, email=user_details['mail']), name = user_details['displayName'])
+        user = User.objects.get(email=user_details['mail'])
+    user.backend = 'django.contrib.auth.backends.ModelBackend'
+    login(request, user)
+    return HttpResponseRedirect(reverse("home"))
