@@ -8,6 +8,8 @@ Prerequisites:
   pip install django-axes
 
   pip install python-decouple
+  
+  pip install pillow 
 
 In group_project1 folder 
 
