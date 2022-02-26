@@ -14,7 +14,8 @@ from .models import Category, Challenges
 # import folium
 import json
 
-# def add_location(map, location, popup):
+# def add_location(
+# context = j, location, popup):
 #     #tooltip
 #     tooltip = 'Click for more info'
 #     folium.Marker(location, popup, tooltip=tooltip).add_to(map)
@@ -113,7 +114,9 @@ def location_get_test(request):
         response = HttpResponse()
         return response
     else:
-        return render(request, 'base/location_get_test.html/')
+        data = json.load(open('base/resources/latLong.json', 'r'))
+        context = {'locations': data}
+        return render(request, 'base/location_get_test.html/', context)
     
 
 @login_required(login_url='/login')
