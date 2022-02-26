@@ -24,7 +24,7 @@ class ChallengeForm(ModelForm):
 class ResponseForm(ModelForm):
     class Meta:
         model = Responses
-        fields = ['description']
+        fields = ['description', 'photograph']
 
 class ProfileForm(ModelForm):
     class Meta:

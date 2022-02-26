@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 import datetime as dt
 from decouple import config
@@ -156,3 +157,9 @@ AXES_LOCKOUT_URL = '../'
 
 # Run lock out function in base/views
 AXES_LOCKOUT_CALLABLE = 'base.views.lockout'
+
+# Required for image upload 
+# https://www.geeksforgeeks.org/python-uploading-images-in-django/ 
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

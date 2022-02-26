@@ -196,7 +196,7 @@ def createResponse(request,pk):
     form = ResponseForm()
     if request.method == 'POST':
         form = ResponseForm(request.POST)
-
+        image = form.instance
         #If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
@@ -204,11 +204,12 @@ def createResponse(request,pk):
             obj.challenge = challenge
 
             obj.save()
+            
             profile = request.user.profile
             profile.points += challenge.points
             profile.save()
             return redirect('home')
-    context = {'form':form}
+    context = {'form':form, 'image': image}
     return render(request,'base/createResponse.html',context)
 
 

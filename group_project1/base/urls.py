@@ -1,6 +1,9 @@
 from django.urls import path
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
 
     path('',views.home, name="home"),
@@ -22,3 +25,9 @@ urlpatterns = [
     path('my-responses/',views.myResponses,name='myResponses')
 
 ]
+
+# For handling photos in DEBUG 
+# https://www.geeksforgeeks.org/python-uploading-images-in-django/ 
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
