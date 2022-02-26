@@ -11,6 +11,12 @@ Prerequisites:
   
   pip install pillow 
 
+  pip install msal
+  
+  pip install PyYAML
+
+  pip install python-dateutil
+
 In group_project1 folder 
 
 run:

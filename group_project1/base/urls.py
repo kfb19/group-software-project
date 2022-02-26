@@ -22,7 +22,13 @@ urlpatterns = [
     path('reset_password/complete/',PasswordResetCompleteView.as_view(template_name='password/password_reset_complete.html'),name='password_reset_complete'),
 
 
-    path('my-responses/',views.myResponses,name='myResponses')
+    path('my-responses/',views.myResponses,name='myResponses'),
+
+    # Urls for SSO
+    path('sign-in-sso', views.sign_in_sso, name='sign-in-sso'),
+    path('sign-out-sso', views.sign_out_sso, name='sign-out-sso'),
+    path('callback', views.callback, name='callback'),
+
 
 ]
 
