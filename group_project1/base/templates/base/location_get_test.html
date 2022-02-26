@@ -41,7 +41,7 @@ crossorigin=""/>
             // watchposition ties a method to every time the user's location changes;
             // here it'll run displayposition, using the getposition return values as the args
             function success (position){
-                displayPosition( map, position );
+                displayPosition( map, usermarker, position );
             }
 
             function error(err) {
@@ -51,20 +51,22 @@ crossorigin=""/>
             options = {
                 enableHighAccuracy: true,
                 timeout: 5000,
-                maximumAge: 0
+                maximumAge: 5000
             };
             
-            navigator.geolocation.watchPosition(success, error, options);
+            // Creating user marker to move it around with location
+            var usermarker = L.marker([0,0]);
+            usermarker.addTo(map);
 
-            // should note that watchposition has an option for a function to run in case of error
-            // and also options: maximumAge, timeout, enableHighAccuracy. should use these.
+            // it'll run success if loc gotten, error, if not.
+            navigator.geolocation.watchPosition(success, error, options);
         } else {
             console.log("User has declined geolocation access");
         }
     }
 
-    function displayPosition(map, position) {
-        L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+    function displayPosition(map, usermarker, position) {
+        usermarker.setLatLng([position.coords.latitude, position.coords.longitude]).addTo(map);
         showPosition(position);
     }
 
@@ -100,12 +102,12 @@ crossorigin=""/>
     function posToObject (position) {
         // there might be more data worth returning but this is probably what's useful to us
         return {
-          timestamp: position.timestamp,
-          coords: {
-            accuracy: position.coords.accuracy,
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          }
+            timestamp: position.timestamp,
+            coords: {
+                accuracy: position.coords.accuracy,
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            }
         }
     }
 
