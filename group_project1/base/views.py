@@ -11,14 +11,14 @@ from matplotlib.font_manager import json_load
 from matplotlib.style import context
 from .forms import UserRegisterForm
 from .models import Category, Challenges
-import folium
+# import folium
 import json
 
-def add_location(map, location, popup):
-    #tooltip
-    tooltip = 'Click for more info'
-    folium.Marker(location, popup, tooltip=tooltip).add_to(map)
-    return map
+# def add_location(map, location, popup):
+#     #tooltip
+#     tooltip = 'Click for more info'
+#     folium.Marker(location, popup, tooltip=tooltip).add_to(map)
+#     return map
 
 # Function to open and return a json file 
 def open_json_file(file_name):
