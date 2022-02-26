@@ -349,18 +349,22 @@ def sign_out_sso(request):
 def callback(request):
     # Make the token request
     result = get_token_from_code(request)
-    #Get the user's profile from graph_helper.py script
-    user_d = get_user(result['access_token']) 
+
+    # Get the user's profile from graph_helper.py script
+    print(result)
+    user_details = get_user(result['access_token']) 
+
     # Store user from auth_helper.py script
-    store_user(request, user_d)
+    store_user(request, user_details)
+
     try: 
-        user = User.objects.get(email=user_d['mail'])
+        user = User.objects.get(email=user_details['mail'])
     except:
-        full_name = user_d['displayName'].split(", ")
+        full_name = user_details['displayName'].split(", ")
         first_name = full_name[1]
         last_name = full_name[0]
-        Profile.objects.create(user=User.objects.create_user(username=first_name, first_name=first_name, last_name=last_name, email=user_d['mail']), name = user_d['displayName'])
-        user = User.objects.get(email=user_d['mail'])
+        Profile.objects.create(user=User.objects.create_user(username=first_name, first_name=first_name, last_name=last_name, email=user_details['mail']), name = user_details['displayName'])
+        user = User.objects.get(email=user_details['mail'])
     user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, user)
     return HttpResponseRedirect(reverse("home"))
