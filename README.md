@@ -5,6 +5,22 @@ Prerequisites:
 
   pip install folium
 
+  pip install django-axes
+
+  pip install python-decouple
+
+  pip install msal
+  
+  pip install PyYAML
+
+  pip install python-dateutil
+
+For testing:
+
+  pip install coverage
+
+  pip install flake8
+
 In group_project1 folder 
 
 run:
@@ -19,3 +35,8 @@ then:
 To run app:
    
     python manage.py runserver
+
+If you lock yourself out, do:
+    
+    python manage.py axes_reset
+
