@@ -90,9 +90,10 @@
                 iconUrl: "{% static 'images/userMarker.jpg' %}",
                 iconSize:     [50, 50], // size of the icon
                 iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-                popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                popupAnchor:  [0, -50] // point from which the popup should open relative to the iconAnchor
             });
             var usermarker = L.marker([0,0], {icon: userIcon});
+            usermarker.bindPopup("<b>You are here!</b>");
             usermarker.addTo(map);
 
             // it'll run success if loc gotten, error, if not.
@@ -154,10 +155,12 @@
 
         // This works, but after a certain number of locations it stops with a "..." for loop restrictions?
         // This can be extended to add GET requests after clicking on markers, and you can go to the challenge
-        // page
+        // page 
         {% for challenge in challenges %}
         L.marker([ {{challenge.lat}}, {{challenge.long}} ],
-        {title: {{'"'}}{{challenge.name|safe}}{{'"'}}, bubblingMouseEvents: true }).addTo(map);
+        {title: {{'"'}}{{challenge.name|safe}}{{'"'}}, bubblingMouseEvents: true })
+        .bindPopup("<b>" + {{'"'}}{{challenge.name|safe}}{{'"'}} + "</b>" +
+            "<br>" + {{'"'}}{{challenge.description|safe}}{{'"'}}).addTo(map);
         {% endfor %}
 
         startLocator(map);
@@ -165,7 +168,7 @@
         map.invalidateSize();
     };
 
-    // Probably separate this into other file
+    // Probably separate this into another file, with tweaks available for range etc
     function mapgen (divName){
         // map border
         var swest = L.latLng(50.729748, -3.520532),
@@ -196,7 +199,7 @@
                 [-90, 180],
                 [-90, -180]
             ], // Then holes (interior rings)
-            [ // First hole
+            [ // No red in this square
                 [50.729748, -3.520532],
                 [50.729748, -3.548116],
                 [50.741780, -3.548116],
