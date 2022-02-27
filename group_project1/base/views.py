@@ -40,12 +40,6 @@ import json
 
 
 
-def add_location(map, location, popup):
-    # tooltip
-    tooltip = 'Click for more info'
-    folium.Marker(location, popup, tooltip=tooltip).add_to(map)
-    return map
-
 # Function to open and return a json file
 def open_json_file(file_name):
     file = open(file_name)
@@ -54,62 +48,32 @@ def open_json_file(file_name):
 
 # View for the main homepage
 def home(request):
-
-    # Map is centred at this location
-    center = [50.735805, -3.533051]
-
-    # # Map that is bounded to Exeter Uni
-    # map = folium.Map(location = center,
-    #              min_lon=-3.520532,
-    #              max_lon=-3.548116,
-    #              min_lat=50.729748,
-    #              max_lat=50.741780,
-    #              max_bounds=True,
-    #              zoom_start = 16,
-    #              min_zoom = 15)
-
-    # locations = open_json_file('base/resources/latLong.json')
-    # # Adds markers to the map for each location
-    # for location in locations:
-    #     coords = [location['lat'], location['long']]
-    #     popup = location['locationName']
-    #     map = add_location(map, coords, popup)
-
-    # map = map._repr_html_()
-
-    categories = Category.objects.all()
-
-    # Get the filter from the ?q= in the URL
-    q = request.GET.get('q') if request.GET.get('q') is not None else ''
-
-    # Get all challenges, not done by the current user
-
-    if request.user.is_authenticated:
-        responses = Responses.objects.filter(user=request.user).values_list('challenge_id')
-
-        challenges = Challenges.objects.exclude(id__in=responses).filter(Q(
-            category__name__icontains=q)).order_by('-created')
-
-        """locations = open_json_file('base/resources/latLong.json')
-         Adds markers to the map for each location"""
-        for challenge in challenges:
-            coords = [challenge.lat, challenge.long]
-            popup = challenge.name
-            map = add_location(map, coords, popup)
-
+    if request.method == 'POST':
+        # user location data handling goes here
+        print(request.body)
+        response = HttpResponse()
+        return response
     else:
-        challenges = Challenges.objects.all().order_by('-created')
-        for challenge in challenges:
-            coords = [challenge.lat, challenge.long]
-            popup = challenge.name
-            map = add_location(map, coords, popup)
+        categories = Category.objects.all()
 
-    map = map._repr_html_()
+        # Get the filter from the ?q= in the URL
+        q = request.GET.get('q') if request.GET.get('q') is not None else ''
 
-    # Variables to pass to the database
-    context = {'categories': categories, 'challenges': challenges, 'map': map}
+        # Get all challenges, not done by the current user
+        if request.user.is_authenticated:
+            responses = Responses.objects.filter(user=request.user).values_list('challenge_id')
 
-    return render(request, 'base/home.html', context)
+            challenges = Challenges.objects.exclude(id__in=responses).filter(Q(
+                category__name__icontains=q)).order_by('-created')
+        else:
+            challenges = Challenges.objects.all().order_by('-created')
+            #add locations to map
+
+
+        # Variables to pass to the database
+        context = {'categories': categories, 'challenges': challenges}
+
+        return render(request, 'base/home.html', context)
 
 
 # View for logging in

@@ -3,8 +3,6 @@ Prerequisites:
   
   pip install django
 
-  pip install folium
-
   pip install django-axes
 
   pip install python-decouple
