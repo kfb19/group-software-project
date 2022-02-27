@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Category, Challenges,Responses
+from .models import Profile, Category, Challenges, Responses
 
 # Adding models admins can access
 admin.site.register(Profile)
