@@ -6,12 +6,12 @@
     <meta charset="UTF-8">  
     <title>Homepage</title>  
 </head>  
-<Style>
 
-</Style>
 
 <head>
     <title>Homepage</title>
+    
+
 </head>
     
 
@@ -20,25 +20,31 @@
 <h1>Home Template</h1>
 
 
-{% if request.user.is_authenticated %}
-
-<p>Hello {{request.user}}</p>
-<a href="{% url 'logout' %}">Logout</a>
-<hr>
-
-
-{%else %}
-<a href="{% url 'login' %}">Login</a>
-<hr>
-
 {% block filter %}
 
 {% include 'sidebar.html' %}
 
 {% endblock %}
 {% block content %}
+
+<!--Leafletjs css import-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
 <div class="challenges">
-    {{map|safe}}
+
+
+    {% csrf_token %}
+        
+        <div id="displaybox">
+            <div id="map"></div>
+            <style>
+                #map { height: 500px; width: 1000px }
+            </style>
+        </div>
+
+
     <br>
     <a href="{% url 'createChallenge' %}">Add Challenge</a>
     <hr>
@@ -52,15 +58,164 @@
 
                 <hr>
         </div>
-
     {% endfor %}
 </div>
-{% endblock %}
 
 
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // this function starts the location watcher
+    function startLocator(map) {
+        if (navigator.geolocation) {
+            // watchposition ties a method to every time the user's location changes;
+            // here it'll run displayposition, using the getposition return values as the args
+            function success (position){
+                displayPosition( map, usermarker, position );
+            }
+
+            function error(err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            }
+
+            options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 5000
+            };
+            
+            // Creating user marker to move it around with location
+            var usermarker = L.marker([0,0]);
+            usermarker.addTo(map);
+
+            // it'll run success if loc gotten, error, if not.
+            navigator.geolocation.watchPosition(success, error, options);
+        } else {
+            console.log("User has declined geolocation access");
+        }
+    }
+
+    function displayPosition(map, usermarker, position) {
+        usermarker.setLatLng([position.coords.latitude, position.coords.longitude]).addTo(map);
+        showPosition(position);
+    }
+
+    function showPosition(position) {
+        // formatting location data
+        var addedLoc = position.coords.latitude + ", " +
+            position.coords.longitude +
+            " at " + position.timestamp;
+
+        console.log(addedLoc);
+    }
+
+    function postPosition(position) {
+        var req = new XMLHttpRequest();
+        var url = "/location_get_test/";
+
+        req.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert("200");
+            } else if (this.readyState == 4 && this.status != 200) {
+                alert("!200");
+            }
+        };
+        
+        req.open("POST", url);
+        req.setRequestHeader('X-CSRFToken', csrftoken)
+        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        req.send(JSON.stringify(posToObject(position)));
+    }
+
+    // This is required to be able to properly strigify the result from geolocation fetching
+    function posToObject (position) {
+        // there might be more data worth returning but this is probably what's useful to us
+        return {
+            timestamp: position.timestamp,
+            coords: {
+                accuracy: position.coords.accuracy,
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            }
+        }
+    }
+
+
+    // Initializing everything
+    window.onload = function(){
+        map = mapgen('map');
+
+        // This works, but after a certain number of locations it stops with a "..." for loop restrictions?
+        // This can be extended to add GET requests after clicking on markers, and you can go to the challenge
+        // page
+        {% for challenge in challenges %}
+        L.marker([ {{challenge.lat}}, {{challenge.long}} ],
+        {title: {{'"'}}{{challenge.name|safe}}{{'"'}}, bubblingMouseEvents: true }).addTo(map);
+        {% endfor %}
+
+        startLocator(map);
+
+        map.invalidateSize();
+    };
+
+    // ideally separate this into other file
+    function mapgen (divName){
+        // map border
+        var swest = L.latLng(50.729748, -3.520532),
+            neast = L.latLng(50.741780, -3.548116),
+            bounds = L.latLngBounds(swest, neast);
+    
+        var map = L.map(divName)
+        
+        map.invalidateSize();
+        
+        map.setView([50.735805, -3.533051], 15);
+    
+        // mapbox is also a good tileset for this
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxBounds: bounds,
+            maxZoom: 18,
+            minZoom: 5,
+            tileSize: 512,
+            zoomOffset: -1,
+        }).addTo(map);
+    
+        // This draws a polygon around the playable area
+        var areamarker = [
+            [ // Exterior Ring
+                [90, -180],
+                [90, 180],
+                [-90, 180],
+                [-90, -180]
+            ], // Then holes (interior rings)
+            [ // First hole
+                [50.729748, -3.520532],
+                [50.729748, -3.548116],
+                [50.741780, -3.548116],
+                [50.741780, -3.520532]
+            ]
+        ];
+    
+        // adding polygon to map
+        L.polygon(areamarker, {color: "#ff2600", weight: 2, interactive: false}).addTo(map);
+    
+        map.setMaxBounds(map.getBounds());
+        
+        return map;
+    }
+    
+</script>
 
     
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
 
+   {% endblock %}
 
 </div>
 </html>
+
