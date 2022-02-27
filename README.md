@@ -15,6 +15,12 @@ Prerequisites:
 
   pip install python-dateutil
 
+For testing:
+
+  pip install coverage
+
+  pip install flake8
+
 In group_project1 folder 
 
 run:
