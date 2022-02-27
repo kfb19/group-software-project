@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import ChallengeForm, UserRegisterForm, ResponseForm
-from .models import Category, Challenges, Responses, Profile
+from .models import Category, Challenges, Likes, Responses, Profile
 from django.db.models import Q
 from axes.models import AccessAttempt
 from .models import AccessAttemptAddons
@@ -340,6 +340,45 @@ def userResponses(request,pk):
     categories = Category.objects.all()
     context = {'responses':responses,'user':user, 'categories':categories}
     return render(request, 'base/userResponses.html',context)
+
+
+@login_required(login_url='/login')
+def likeResponse(request):
+    if request.method == 'POST':
+        response_id = request.POST.get('response_id')
+        response = Responses.objects.get(id=response_id)
+
+        profile = response.user.profile
+      
+
+        if request.user in response.liked.all():
+            response.liked.remove(request.user)
+            profile.points -= 1
+            
+        else:
+            response.liked.add(request.user)
+            profile.points += 1
+
+        profile.save()
+            
+
+        like, created = Likes.objects.get_or_create(user = request.user, response_id = response_id)
+
+        if not created:
+            if like.value == 'like':
+                
+                like.value = 'Unlike'
+            else:
+                like.value = 'Like'
+                
+
+
+        
+
+        like.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
 
 def sign_in_sso(request):
     # Get the sign-in flow

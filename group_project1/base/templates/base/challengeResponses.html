@@ -22,6 +22,7 @@
             <div class="challenge">
                 <p> <a href = "{% url 'userResponses' response.user.id %}">{{response.user.username}}</a></p>
                 <small>{{response.description}}</small> <br>
+                {% include 'like.html' %}
 
 
                 <hr>

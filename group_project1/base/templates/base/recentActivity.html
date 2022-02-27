@@ -28,6 +28,7 @@
             <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
             
             <small>{{response.description}} </small> <br>
+            {% include 'like.html' %}
 
 
             <hr>
