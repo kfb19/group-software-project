@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+</head>  
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+    
+{% endblock %}
+
+{% block content %}
+
+<h1>{{challenge.name}}</h1>
+
+<div>
+    {% for response in responses %}
+            <div class="challenge">
+                <p> <a href = "{% url 'userResponses' response.user.id %}">{{response.user.username}}</a></p>
+                <small>{{response.description}}</small> <br>
+
+
+                <hr>
+            </div>
+        {% endfor %}
+</div>
+
+{% endblock %}
+
+
+</html>

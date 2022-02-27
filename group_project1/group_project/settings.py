@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import datetime as dt
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base.apps.BaseConfig'
+    'base.apps.BaseConfig',
+    'axes',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'group_project.urls'
@@ -69,6 +73,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'group_project.wsgi.application'
+
+# SMTP Settings:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'exeterteam25@gmail.com'
+EMAIL_HOST_PASSWORD = config('gmail_password')
 
 
 # Database
@@ -100,6 +112,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesBackend',
+
+    # Django ModelBackend is the default authentication backend.
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -118,7 +138,22 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AXES settings:
+AXES_FAILURE_LIMIT = 3  # Set the limit to 5 failed attempts
+AXES_COOLOFF_TIME = dt.timedelta(minutes=5)  # Lock user out for 5 minutes
+AXES_RESET_ON_SUCCESS = True  # If True, a successful login will reset the number of failed logins.
+# If True, only lock based on username, and never lock based on IP if attempts exceed the limit.
+AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
+
+# Redirect user to home page when locked out
+AXES_LOCKOUT_URL = '../'
+
+# Run lock out function in base/views
+AXES_LOCKOUT_CALLABLE = 'base.views.lockout'
