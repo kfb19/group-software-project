@@ -8,7 +8,6 @@ urlpatterns = [
     path('register/', views.registerPage, name='register'),
     path('logout/', views.logoutUser, name='logout'),
     path('profile/',views.userProfile,name='profile'),
-    path('location_get_test/',views.location_get_test,name='location_get_test'),
     path('create-challenge/', views.createChallenge,name='createChallenge'),
     path('create-response/<int:pk>/',views.createResponse,name='createResponse'),
     path('recent-activity/',views.recentActivity,name='recentActivity'),

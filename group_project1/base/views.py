@@ -163,22 +163,6 @@ def createChallenge(request):
     return render(request, 'base/createChallenge.html', context)
 
 
-# This successfully receives the post request from the XMLHTTP.
-# Need to handle properly, however this is a solid start
-def location_get_test(request):
-    if request.method == 'POST':
-        print(request.body)
-        response = HttpResponse()
-        return response
-    else:
-        categories = Category.objects.all()
-        challenges = Challenges.objects.all()
-
-        context = {'categories':categories,'challenges':challenges}
-
-        return render(request, 'base/location_get_test.html/', context)
-    
-
 @login_required(login_url='/login')
 def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
