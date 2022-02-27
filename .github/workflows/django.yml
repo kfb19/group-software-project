@@ -31,7 +31,7 @@ jobs:
         pip install PyYAML
         pip install python-dateutil
     - name: Lint with flake8
-      uses: julianwachholz/flake8-action@v2.0.2 
+      uses: py-actions/flake8@v2
       with:
         max-line-length: "130"
         exclude: ".git, *migrations*"
