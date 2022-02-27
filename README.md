@@ -3,8 +3,6 @@ Prerequisites:
   
   pip install django
 
-  pip install folium
-
   pip install django-axes
 
   pip install python-decouple
@@ -39,3 +37,4 @@ To run app:
 If you lock yourself out, do:
     
     python manage.py axes_reset
+
