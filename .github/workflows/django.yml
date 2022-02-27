@@ -33,7 +33,7 @@ jobs:
     - name: Lint with flake8
       uses: py-actions/flake8@v2
       with:
-        args: "--max-line-length=13 --exclude .git *migrations*"
+        args: "--max-line-length=130 --exclude .git *migrations*"
     - name: Coverage report
       run: |
         pip install coverage
