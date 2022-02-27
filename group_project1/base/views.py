@@ -309,7 +309,7 @@ def password_reset_request(request):
     return render(request=request, template_name="password/password_reset.html",
                   context={"password_reset_form": password_reset_form})
 
-
+# View to show the responses logged in user
 @login_required(login_url='/login')
 def myResponses(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
@@ -319,7 +319,7 @@ def myResponses(request):
     
     return render(request,'base/myResponses.html',context)
 
-
+# View to show all the responses to challenges 
 def recentActivity(request):
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
@@ -327,6 +327,7 @@ def recentActivity(request):
 
     return render(request,'base/recentActivity.html',context)
 
+# View to show the responses of a challenge
 def challengeResponses(request,pk):
     challenge = Challenges.objects.get(id=pk)
     responses = Responses.objects.filter(challenge = challenge).order_by('-created')
@@ -334,6 +335,8 @@ def challengeResponses(request,pk):
     context = {'responses':responses, 'challenge':challenge, 'categories':categories}
     return render(request,'base/challengeResponses.html',context)
 
+
+# View to show the responses of a user
 def userResponses(request,pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
@@ -342,15 +345,18 @@ def userResponses(request,pk):
     return render(request, 'base/userResponses.html',context)
 
 
+# View to like a response to a challenge
 @login_required(login_url='/login')
 def likeResponse(request):
+    
+    # Get the response that has been liked
     if request.method == 'POST':
         response_id = request.POST.get('response_id')
         response = Responses.objects.get(id=response_id)
 
         profile = response.user.profile
       
-
+        # If user has already liked the response
         if request.user in response.liked.all():
             response.liked.remove(request.user)
             profile.points -= 1
@@ -364,6 +370,7 @@ def likeResponse(request):
 
         like, created = Likes.objects.get_or_create(user = request.user, response_id = response_id)
 
+        # Change content of button based on if it is already liked
         if not created:
             if like.value == 'like':
                 
