@@ -30,15 +30,12 @@ jobs:
         pip install msal
         pip install PyYAML
         pip install python-dateutil
-    - name: Lint with flake8
-      uses: py-actions/flake8@v2
-      with:
-        args: "--max-line-length=130 --exclude .git --exclude *migrations*"
     - name: Coverage report
       run: |
         pip install coverage
         coverage run manage.py test
         coverage report
-    - name: Django Testing
-      run: |
-        python3 manage.py test
+    - name: Lint with flake8
+      uses: py-actions/flake8@v2
+      with:
+        args: "--max-line-length=130 --exclude .git --exclude *migrations*"
