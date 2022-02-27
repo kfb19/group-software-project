@@ -114,8 +114,11 @@ def location_get_test(request):
         response = HttpResponse()
         return response
     else:
-        data = json.load(open('base/resources/latLong.json', 'r'))
-        context = {'locations': data}
+        categories = Category.objects.all()
+        challenges = Challenges.objects.all()
+
+        context = {'categories':categories,'challenges':challenges}
+
         return render(request, 'base/location_get_test.html/', context)
     
 
