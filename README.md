@@ -14,7 +14,7 @@ UniExplore is an application designed to help students explore their university 
 - pip install python-dateutil
 - pip install coverage
 - pip install flake8
-- 
+
 ## Getting Started
 
 Make sure you are in the UniExplore directory:
@@ -49,7 +49,7 @@ To create an admin account:
 - Tomas Premoli
 - Jack Purkiss
 - Lucas Smith
-- 
+
 ## Handle
 
 https://github.com/ExeterTeam25/group-software-project
@@ -57,7 +57,7 @@ https://github.com/ExeterTeam25/group-software-project
 ## Publish Date
 
 - Version 0.0.1 is currently in development.
-- 
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
