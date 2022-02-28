@@ -25,7 +25,7 @@ class ChallengeForm(ModelForm):
 class ResponseForm(ModelForm):
     class Meta:
         model = Responses
-        fields = ['description', 'photograph']
+        fields = ['description']
 
 # Form to create a profile
 class ProfileForm(ModelForm):

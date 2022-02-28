@@ -6,8 +6,6 @@ Prerequisites:
   pip install django-axes
 
   pip install python-decouple
-  
-  pip install pillow 
 
   pip install msal
   
