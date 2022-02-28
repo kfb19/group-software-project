@@ -1,20 +1,9 @@
-
-from cgitb import reset
-from email import message
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
-from asyncio.windows_events import NULL
-from email import message
-from ipaddress import ip_address
-from http.client import responses
-import re
-from django.shortcuts import render, redirect, get_object_or_404
-
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from matplotlib.font_manager import json_load
-from matplotlib.style import context
 from .forms import UserRegisterForm
 from .models import Category, Challenges
 from .forms import ChallengeForm, UserRegisterForm, ResponseForm
