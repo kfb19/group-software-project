@@ -18,7 +18,9 @@
 {% endfor %}
 
 {% endif %}
-
+<div class="app-title">
+    <h1>UniExplore</h1>
+</div>
 
 <div class="login-form" id="form-wrapper" class="form-group">
     <form method="POST" action="">
@@ -54,6 +56,9 @@
 
 <div>
     <div class="form">
+        <div class="app-title">
+            <h1>UniExplore</h1>
+        </div>
         <form class="register-form" method="POST" action="">
           {% csrf_token %}
           <fieldset class = "form-group">
