@@ -13,6 +13,8 @@ urlpatterns = [
     path('recent-activity/',views.recentActivity,name='recentActivity'),
     path('challenge-responses/<int:pk>',views.challengeResponses,name='challengeResponses'),
     path('userResponses/<int:pk>',views.userResponses,name='userResponses'),
+    path('likes/', views.likeResponse, name='like-post'),
+
 
 
 
