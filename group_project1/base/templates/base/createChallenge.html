@@ -40,24 +40,24 @@
 
         var clickLocation = {};
 
+        // Onclick for adding markers
         map.on('click', function(e){
             lat = e.latlng.lat;
             lon = e.latlng.lng;
 
-            console.log("You clicked the map at LAT: "+ lat+" and LONG: "+lon );
+            console.log("Lat: "+ lat + ", Lon:"+lon );
             
-            //Clear existing marker, 
+            //Clear existing marker
             if (clickLocation != undefined) {
                 map.removeLayer(clickLocation);
             };
 
-            //Add a marker to show where you clicked.
+            //Add a marker to show where you clicked
             clickLocation = L.marker([lat,lon]).addTo(map); 
             
             document.getElementById("id_lat").value = lat;
             document.getElementById("id_long").value = lon;
         });
-
 
         map.invalidateSize();
     };
