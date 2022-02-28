@@ -140,15 +140,19 @@ def userProfile(request):
 
 # Create challenge
 def createChallenge(request):
+    categories = Category.objects.all()
     form = ChallengeForm()
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
 
+
         # If valid challenge, add to database
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
             return redirect('home')
-    context = {'form': form}
+    context = {'form': form, 'categories':categories}
     return render(request, 'base/createChallenge.html', context)
 
 

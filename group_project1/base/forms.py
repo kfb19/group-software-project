@@ -15,20 +15,22 @@ class UserRegisterForm(UserCreationForm):
 
 
 # Form for challenges to be added
-class ChallengeForm(ModelForm):
+class ChallengeForm(forms.ModelForm):
     class Meta:
         model = Challenges
-        fields = '__all__'
+        fields = ['category','name','points','description','lat','long']
+        widgets = {'lat': forms.HiddenInput(), 'long':forms.HiddenInput}
+        
 
 
 # Form for responding to a challenge
-class ResponseForm(ModelForm):
+class ResponseForm(forms.ModelForm):
     class Meta:
         model = Responses
         fields = ['description']
 
 # Form to create a profile
-class ProfileForm(ModelForm):
+class ProfileForm(forms.ModelForm):
     class Meta:
         model = Challenges
         fields = '__all__'
