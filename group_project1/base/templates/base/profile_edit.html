@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit profile</title>
+</head>
+
+<body>
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Edit Profile</h1>
+<br/><br/>
+
+<div class="form-group">
+    <form method="POST">
+        {% csrf_token %}
+        <h4>TODO: Change profile pic</h4>
+        {{ form.as_p }}
+        <button>Update Profile</button>
+    </form>
+</div>
+
+{% endblock %}
+
+</body>
+
+
+</html>

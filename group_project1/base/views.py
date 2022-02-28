@@ -338,8 +338,8 @@ def userResponses(request,pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
     categories = Category.objects.all()
-    context = {'responses':responses,'user':user, 'categories':categories}
-    return render(request, 'base/userResponses.html',context)
+    context = {'responses': responses, 'user': user, 'categories': categories}
+    return render(request, 'base/profile.html', context)
 
 def sign_in_sso(request):
     # Get the sign-in flow
