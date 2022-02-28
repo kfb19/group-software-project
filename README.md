@@ -37,4 +37,3 @@ To run app:
 If you lock yourself out, do:
     
     python manage.py axes_reset
-
