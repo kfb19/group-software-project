@@ -7,7 +7,10 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-
+<!--Leafletjs css import-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
 
 <div class="form">
     <form class="register-form" method="POST" action="">
@@ -15,12 +18,85 @@
         <fieldset class = "form-group">
             <legend class="border-bottom mb-4"></legend>
             {{form.as_p}}
-            Test commit
 
+            <div id="displaybox">
+                <div id="map"></div>
+                <style>
+                    #map { height: 500px; width: 1000px }
+                </style>
+            </div>
+            
         </fieldset>
         <input type="submit", value="Submit">
     </form>
 </div>
+
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Initializing everything
+    window.onload = function(){
+        map = mapgen('map');
+
+        var clickLocation = {};
+
+
+        map.invalidateSize();
+    };
+
+    // Probably separate this into another file, with tweaks available for range etc
+    function mapgen (divName){
+        // map border
+        var swest = L.latLng(50.729748, -3.520532),
+            neast = L.latLng(50.741780, -3.548116),
+            bounds = L.latLngBounds(swest, neast);
+    
+        var map = L.map(divName)
+        
+        //map.invalidateSize();
+        
+        map.setView([50.735805, -3.533051], 15);
+    
+        // mapbox is also a good tileset for this
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxBounds: bounds,
+            maxZoom: 18,
+            minZoom: 15,
+            tileSize: 512,
+            zoomOffset: -1,
+        }).addTo(map);
+    
+        // This draws a polygon around the playable area
+        var areamarker = [
+            [ // Exterior Ring
+                [90, -180],
+                [90, 180],
+                [-90, 180],
+                [-90, -180]
+            ], // Then holes (interior rings)
+            [ // No red in this square
+                [50.729748, -3.520532],
+                [50.729748, -3.548116],
+                [50.741780, -3.548116],
+                [50.741780, -3.520532]
+            ]
+        ];
+    
+        // adding polygon to map
+        L.polygon(areamarker, {color: "#ff2600", weight: 2, interactive: false}).addTo(map);
+    
+        map.setMaxBounds(map.getBounds());
+        
+        return map;
+    }
+    
+</script>
+
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
