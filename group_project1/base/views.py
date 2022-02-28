@@ -7,6 +7,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views import generic
+from django.views.generic import CreateView
+
 from .forms import ChallengeForm, UserRegisterForm, ResponseForm
 from .models import Category, Challenges, Responses, Profile
 from django.db.models import Q
@@ -14,7 +17,7 @@ from axes.models import AccessAttempt
 from .models import AccessAttemptAddons
 from django.shortcuts import render, redirect
 from django.core.mail import BadHeaderError
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import PasswordResetForm, UserChangeForm
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
@@ -22,7 +25,7 @@ from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
 from graph_helper import *
 import datetime
@@ -36,6 +39,7 @@ def add_location(map, location, popup):
     folium.Marker(location, popup, tooltip=tooltip).add_to(map)
     return map
 
+
 # Function to open and return a json file
 
 
@@ -46,7 +50,6 @@ def open_json_file(file_name):
 
 # View for the main homepage
 def home(request):
-
     # Map is centred at this location
     center = [50.735805, -3.533051]
 
@@ -98,7 +101,6 @@ def home(request):
 
 # View for logging in
 def loginPage(request):
-
     # Allows us to change the page based on if a user is logged in
     page = 'login'
     if request.user.is_authenticated:
@@ -129,14 +131,12 @@ def loginPage(request):
 
 # Logout usef
 def logoutUser(request):
-
     logout(request)
     return redirect('home')
 
 
 # User registration
 def registerPage(request):
-
     # Getting form from forms.py
     form = UserRegisterForm()
 
@@ -167,6 +167,21 @@ def registerPage(request):
 @login_required(login_url='/login')
 def userProfile(request):
     return render(request, 'base/profile.html', {})
+
+
+class UserEditView(generic.UpdateView):
+    form_class = UserChangeForm
+    template_name = 'base/profile_edit.html'
+    success_url = reverse_lazy('home')
+
+    def get_object(self):
+        return self.request.user
+
+
+# See another user's profile
+#def profile(request, username):
+ #   person = User.objects.get(username=username)
+  #  return render(request, 'base/profile.html', {"person": person})
 
 
 # Create challenge
@@ -202,9 +217,8 @@ def createResponse(request, pk):
             profile.points += challenge.points
             profile.save()
             return redirect('home')
-    context = {'form':form,'categories':categories}
-    return render(request,'base/createResponse.html',context)
-
+    context = {'form': form, 'categories': categories}
+    return render(request, 'base/createResponse.html', context)
 
 
 # Converts timedelta object into a readable string
@@ -235,6 +249,7 @@ def strfdelta_round(tdelta, round_period='second'):
             break
 
     return string
+
 
 # When user is locked out add message and redirect to home page
 
@@ -315,31 +330,34 @@ def myResponses(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
 
     categories = Category.objects.all()
-    context = {'responses':responses,'categories':categories}
-    
-    return render(request,'base/myResponses.html',context)
+    context = {'responses': responses, 'categories': categories}
+
+    return render(request, 'base/myResponses.html', context)
 
 
 def recentActivity(request):
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
-    context = {'responses':responses, 'categories':categories}
+    context = {'responses': responses, 'categories': categories}
 
-    return render(request,'base/recentActivity.html',context)
+    return render(request, 'base/recentActivity.html', context)
 
-def challengeResponses(request,pk):
+
+def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
-    responses = Responses.objects.filter(challenge = challenge).order_by('-created')
+    responses = Responses.objects.filter(challenge=challenge).order_by('-created')
     categories = Category.objects.all()
-    context = {'responses':responses, 'challenge':challenge, 'categories':categories}
-    return render(request,'base/challengeResponses.html',context)
+    context = {'responses': responses, 'challenge': challenge, 'categories': categories}
+    return render(request, 'base/challengeResponses.html', context)
 
-def userResponses(request,pk):
+
+def userResponses(request, pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
     categories = Category.objects.all()
     context = {'responses': responses, 'user': user, 'categories': categories}
     return render(request, 'base/profile.html', context)
+
 
 def sign_in_sso(request):
     # Get the sign-in flow
