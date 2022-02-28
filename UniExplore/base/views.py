@@ -262,7 +262,7 @@ def password_reset_request(request):
                     email_template = "password/password_reset_email.txt"
                     body = {
                         "email": user.email,
-                        "domain": "127.0.0.1:8000",
+                        "domain": "localhost:8000",
                         "site_name": "exeter",
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
