@@ -159,14 +159,14 @@ def createResponse(request, pk):
     form = ResponseForm()
     if request.method == 'POST':
         form = ResponseForm(request.POST)
-
-        # If valid response, add to database
+        #If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
             obj.challenge = challenge
 
             obj.save()
+            
             profile = request.user.profile
             profile.points += challenge.points
             profile.save()
