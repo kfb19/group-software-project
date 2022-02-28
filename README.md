@@ -61,4 +61,5 @@ https://github.com/ExeterTeam25/group-software-project
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
 Please look in the LICENSE folder for more information.
