@@ -9,6 +9,9 @@ class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     points = models.IntegerField(default=0, null=True)
+    bio = models.CharField(default="No bio set.", max_length=200)
+    university = models.CharField(default="Uni of Exeter", max_length=200) #TODO: Dropdown for available unis?
+    # TODO: Implement profile pics
 
     def __str__(self) -> str:
         return self.name
