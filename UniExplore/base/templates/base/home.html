@@ -87,11 +87,15 @@
             {% load static %}
             // Creating user marker to move it around with location
             var userIcon = L.icon({
-                iconUrl: "{% static 'images/userMarker.jpg' %}",
-                iconSize:     [50, 50], // size of the icon
-                iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-                popupAnchor:  [0, -50] // point from which the popup should open relative to the iconAnchor
+                iconUrl:        "{% static 'images/userMarker.png' %}",
+                iconSize:       [25, 41], // size of the icon
+                iconAnchor:     [12.5, 41], // point of the icon which will correspond to marker's location
+                popupAnchor:    [0, -41], // point from which the popup should open relative to the iconAnchor
+                shadowUrl:      "{% static 'images/userMarkerShadow.png' %}",
+                shadowAnchor:   [7,25],
+                shadowSize:     [25, 25]
             });
+            
             var usermarker = L.marker([0,0], {icon: userIcon});
             usermarker.bindPopup("<b>You are here!</b>");
             usermarker.addTo(map);
@@ -153,6 +157,7 @@
     window.onload = function(){
         map = mapgen('map');
 
+        // This loop writes the markers for the challenges in JavaScript which are then rendered by the map
         // This works, but after a certain number of locations it stops with a "..." for loop restrictions?
         // This can be extended to add GET requests after clicking on markers, and you can go to the challenge
         // page 
@@ -182,13 +187,10 @@
         map.setView([50.735805, -3.533051], 15);
     
         // mapbox is also a good tileset for this
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxBounds: bounds,
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             minZoom: 15,
-            tileSize: 512,
-            zoomOffset: -1,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
     
         // This draws a polygon around the playable area
@@ -208,7 +210,7 @@
         ];
     
         // adding polygon to map
-        L.polygon(areamarker, {color: "#ff2600", weight: 2, interactive: false}).addTo(map);
+        L.polygon(areamarker, {color: "#ff2600", weight: 2, fillOpacity: 0.1, interactive: false}).addTo(map);
     
         map.setMaxBounds(map.getBounds());
         
