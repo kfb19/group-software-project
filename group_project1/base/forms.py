@@ -20,15 +20,14 @@ class ChallengeForm(ModelForm):
         model = Challenges
         fields = '__all__'
 
+
 # Form for responding to a challenge
-
-
 class ResponseForm(ModelForm):
     class Meta:
         model = Responses
         fields = ['description']
 
-
+# Form to create a profile
 class ProfileForm(ModelForm):
     class Meta:
         model = Challenges
