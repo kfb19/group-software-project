@@ -6,7 +6,7 @@ UniExplore is an application designed to help students explore their university 
 
 ## Prerequisites:
 
-- pip install django
+- pip install django 
 - pip install django-axes
 - pip install python-decouple
 - pip install msal
