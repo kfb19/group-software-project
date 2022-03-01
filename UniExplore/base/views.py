@@ -31,32 +31,26 @@ def open_json_file(file_name):
 
 # View for the main homepage
 def home(request):
-    if request.method == 'POST':
-        # user location data handling goes here
-        print(request.body)
-        response = HttpResponse()
-        return response
+    categories = Category.objects.all()
+
+    # Get the filter from the ?q= in the URL
+    q = request.GET.get('q') if request.GET.get('q') is not None else ''
+
+    # Get all challenges, not done by the current user
+    if request.user.is_authenticated:
+        responses = Responses.objects.filter(user=request.user).values_list('challenge_id')
+
+        challenges = Challenges.objects.exclude(id__in=responses).filter(Q(
+            category__name__icontains=q)).order_by('-created')
     else:
-        categories = Category.objects.all()
-
-        # Get the filter from the ?q= in the URL
-        q = request.GET.get('q') if request.GET.get('q') is not None else ''
-
-        # Get all challenges, not done by the current user
-        if request.user.is_authenticated:
-            responses = Responses.objects.filter(user=request.user).values_list('challenge_id')
-
-            challenges = Challenges.objects.exclude(id__in=responses).filter(Q(
-                category__name__icontains=q)).order_by('-created')
-        else:
-            challenges = Challenges.objects.all().order_by('-created')
-            #add locations to map
+        challenges = Challenges.objects.all().order_by('-created')
+        #add locations to map
 
 
         # Variables to pass to the database
-        context = {'categories': categories, 'challenges': challenges}
+    context = {'categories': categories, 'challenges': challenges}
 
-        return render(request, 'base/home.html', context)
+    return render(request, 'base/home.html', context)
 
 
 # View for logging in
