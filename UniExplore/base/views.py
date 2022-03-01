@@ -162,14 +162,14 @@ def createResponse(request, pk):
     form = ResponseForm()
     if request.method == 'POST':
         form = ResponseForm(request.POST)
-
-        # If valid response, add to database
+        #If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
             obj.challenge = challenge
 
             obj.save()
+            
             profile = request.user.profile
             profile.points += challenge.points
             profile.save()
@@ -261,7 +261,7 @@ def password_reset_request(request):
                     email_template = "password/password_reset_email.txt"
                     body = {
                         "email": user.email,
-                        "domain": "127.0.0.1:8000",
+                        "domain": "localhost:8000",
                         "site_name": "exeter",
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
