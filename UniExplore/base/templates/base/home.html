@@ -42,7 +42,7 @@
             <style>
                 #map { height: 500px; width: 1000px }
             </style>
-            <button id="devModeSwitch">Enable Debug mode</button>
+            <button id="devModeSwitch">Enable spoof mode</button>
         </div>
 
 
@@ -67,7 +67,7 @@
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     // this function starts the location watcher
-    function startLocator(map) {
+    function startLocator(map, marker=null) {
         if (navigator.geolocation) {
             // watchposition ties a method to every time the user's location changes;
             // here it'll run displayposition, using the getposition return values as the args
@@ -85,23 +85,26 @@
                 maximumAge: 5000
             };
             
-            {% load static %}
-            // Creating user marker to move it around with location
-            var userIcon = L.icon({
-                iconUrl:        "{% static 'images/userMarker.png' %}",
-                iconSize:       [25, 41], // size of the icon
-                iconAnchor:     [12.5, 41], // point of the icon which will correspond to marker's location
-                popupAnchor:    [0, -41], // point from which the popup should open relative to the iconAnchor
-                shadowUrl:      "{% static 'images/userMarkerShadow.png' %}",
-                shadowAnchor:   [7,25],
-                shadowSize:     [25, 25]
-            });
-            
-            var usermarker = L.marker([0,0], {icon: userIcon});
-            usermarker.bindPopup("<b>You are here!</b>");
-            usermarker.addTo(map);
+            if (marker == null){
+                {% load static %}
+                // Creating user marker to move it around with location
+                var userIcon = L.icon({
+                    iconUrl:        "{% static 'images/userMarker.png' %}",
+                    iconSize:       [25, 41], // size of the icon
+                    iconAnchor:     [12.5, 41], // point of the icon which will correspond to marker's location
+                    popupAnchor:    [0, -41], // point from which the popup should open relative to the iconAnchor
+                    shadowUrl:      "{% static 'images/userMarkerShadow.png' %}",
+                    shadowAnchor:   [7,25],
+                    shadowSize:     [25, 25]
+                });
+                
+                var usermarker = L.marker([0,0], {icon: userIcon});
+                usermarker.bindPopup("<b>You are here!</b>");
+                usermarker.addTo(map);
+            } 
 
             // it'll run success if loc gotten, error, if not.
+            // Helpful to return watchID and usermarker if we need to use them
             return [navigator.geolocation.watchPosition(success, error, options), usermarker];
         } else {
             console.log("User has declined geolocation access");
@@ -176,19 +179,33 @@
         // These are all dev mode loads
         // This shouldn't render in the template when not a gamemaster/superuser
         var button = document.getElementById('devModeSwitch');
+        var devModeOn = false;
         button.addEventListener("click", function() {
-            // Clearing geolocation watcher
-            navigator.geolocation.clearWatch(watcher[0]);
+            if (devModeOn){
+                //returning to normal settings
+                map.off('click');
+                map.removeLayer(watcher[1]);
+                watcher = startLocator(map);
+                devModeOn = false;
+                button.innerHTML = "Enable spoof mode";
+            } else {
+                // Clearing geolocation watcher
+                navigator.geolocation.clearWatch(watcher[0]);
 
-            // Onclick for moving user marker
-            map.on('click', function(e){
-                lat = e.latlng.lat;
-                lon = e.latlng.lng;
+                // Onclick for moving user marker
+                map.on('click', function(e){
+                    lat = e.latlng.lat;
+                    lon = e.latlng.lng;
 
-                console.log("Lat: "+ lat + ", Lon:"+lon );
+                    console.log("Lat: "+ lat + ", Lon:"+lon );
 
-                watcher[1].setLatLng([lat, lon]).addTo(map);
-            });
+                    watcher[1].setLatLng([lat, lon]).addTo(map);
+
+                    devModeOn = true;
+                });
+
+                button.innerHTML = "Disable spoof mode";
+            }
         });
     };
 
