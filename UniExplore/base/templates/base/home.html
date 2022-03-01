@@ -72,7 +72,14 @@
             // watchposition ties a method to every time the user's location changes;
             // here it'll run displayposition, using the getposition return values as the args
             function success (position){
-                displayPosition( map, usermarker, position );
+                usermarker.setLatLng([position.coords.latitude, position.coords.longitude]).addTo(map);
+
+                var addedLoc = position.coords.latitude + ", " +
+                position.coords.longitude +
+                " at " + position.timestamp;
+
+                console.log(addedLoc);
+
             }
 
             function error(err) {
@@ -109,17 +116,6 @@
         } else {
             console.log("User has declined geolocation access");
         }
-    }
-
-    // This will display function on the map and log it
-    function displayPosition(map, usermarker, position) {
-        usermarker.setLatLng([position.coords.latitude, position.coords.longitude]).addTo(map);
-        
-        var addedLoc = position.coords.latitude + ", " +
-            position.coords.longitude +
-            " at " + position.timestamp;
-
-        console.log(addedLoc);
     }
 
     // This is a framework for location posting to the home server 
@@ -204,6 +200,7 @@
                     devModeOn = true;
                 });
 
+                devModeOn = true;
                 button.innerHTML = "Disable spoof mode";
             }
         });
