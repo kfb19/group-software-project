@@ -14,6 +14,7 @@ urlpatterns = [
     path('challenge-responses/<int:pk>',views.challengeResponses,name='challengeResponses'),
     path('userResponses/<int:pk>',views.userResponses,name='userResponses'),
     path('likes/', views.likeResponse, name='like-post'),
+    path('leaderboard/',views.leaderboard,name='leaderboard'),
 
 
 
