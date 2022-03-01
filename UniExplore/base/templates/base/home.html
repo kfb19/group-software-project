@@ -95,7 +95,7 @@
 
                 console.log(addedLoc);
 
-                postPosition(position.coords.latitude, position.coords.longitude);
+                determineChallenges(position.coords.latitude, position.coords.longitude);
             }
 
             function error(err) {
@@ -134,30 +134,11 @@
         }
     }
 
-    // This is a framework for location posting to the home server 
-    function postPosition(lat, lon) {
-        var req = new XMLHttpRequest();
-        var url = "/";
-
-        req.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("server got location and response is 200")
-            } else if (this.readyState == 4 && this.status != 200) {
-                console.log("server got location and response is not 200")
-            }
-        };
-        
-        // Probably add user identification here
-        req.open("POST", url);
-        req.setRequestHeader('X-CSRFToken', csrftoken)
-        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
+    // This will display challenges close enough 
+    function determineChallenges(lat, lon) {
         var pos = {"lat": lat, "lon": lon}
 
         var div = document.getElementById('available')
-
-        
-        
 
         available = document.getElementById('available')
         notavail = document.getElementById('unavailable')
@@ -192,13 +173,9 @@
             else{
                 notavail.innerHTML += challenge
             }
-           
-
-
 
        {% endfor %}
 
-        req.send(JSON.stringify(pos));
     }
 
 
