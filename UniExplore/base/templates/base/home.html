@@ -42,6 +42,7 @@
             <style>
                 #map { height: 500px; width: 1000px }
             </style>
+            <button id="devModeSwitch">Enable Debug mode</button>
         </div>
 
 
@@ -101,7 +102,7 @@
             usermarker.addTo(map);
 
             // it'll run success if loc gotten, error, if not.
-            navigator.geolocation.watchPosition(success, error, options);
+            return [navigator.geolocation.watchPosition(success, error, options), usermarker];
         } else {
             console.log("User has declined geolocation access");
         }
@@ -152,7 +153,6 @@
         }
     }
 
-
     // Initializing everything
     window.onload = function(){
         map = mapgen('map');
@@ -168,9 +168,18 @@
             "<br>" + {{'"'}}{{challenge.description|safe}}{{'"'}}).addTo(map);
         {% endfor %}
 
-        startLocator(map);
+        // Returns the watcher ID and user marker in an array of len 2
+        watcher = startLocator(map);
 
         map.invalidateSize();
+
+        // These are all dev mode loads
+        // This shouldn't render in the template when not a gamemaster/superuser
+        var button = document.getElementById('devModeSwitch');
+        button.addEventListener("click", function() {
+            // Clearing geolocation watcher
+            navigator.geolocation.clearWatch(watcher[0]);
+        });
     };
 
     // Probably separate this into another file, with tweaks available for range etc
