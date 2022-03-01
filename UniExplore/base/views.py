@@ -136,16 +136,20 @@ def userProfile(request):
 #Only allow game masters and developers to create challenge
 @allowed_users(allowed_roles=["game_master", 'developer'])
 def createChallenge(request):
+    categories = Category.objects.all()
     form = ChallengeForm()
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
 
+
         # If valid challenge, add to database
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
             return redirect('home')
-    context = {'form':form}
-    return render(request,'base/createChallenge.html',context)
+    context = {'form': form, 'categories':categories}
+    return render(request, 'base/createChallenge.html', context)
 
 
 @login_required(login_url='/login')
@@ -169,6 +173,15 @@ def createResponse(request, pk):
             return redirect('home')
     context = {'form':form,'categories':categories}
     return render(request,'base/createResponse.html',context)
+
+
+def leaderboard(request):
+
+     categories = Category.objects.all()
+     profiles = Profile.objects.all().order_by('-points')
+     context = {'profiles':profiles,'categories':categories}
+     return render(request,'base/leaderboard.html',context)
+
 
 
 

@@ -45,13 +45,14 @@
         </div>
 
 
-    <br>
     {%for group in request.user.groups.all %}
-            {%if group.name == 'game_master' %}
-                <a href="{% url 'createChallenge' %}">Add Challenge</a>
-            {% endif %}
-        {% endfor %}
-    <hr>
+        {%if group.name == 'game_master' %}
+            <a href="{% url 'createChallenge' %}">Add Challenge</a>
+            <hr>
+        {% endif %}
+    {% endfor %}
+
+    
     {% for challenge in challenges %}
         <div class="challenge">
             <p><a href="{% url 'challengeResponses' challenge.id%}">{{challenge.name}} </a><small>{{challenge.created | timesince}} ago</small></p>
