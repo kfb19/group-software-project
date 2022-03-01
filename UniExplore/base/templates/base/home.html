@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<script id = "template" type="text/html">
+<template id = "template">
     <div class="challenge">
             <p><a href= '{link1}'> {chalname} </a><small> {timesince} </small></p>
             <small><a href= '{link2}'>Complete Challenge</a></small><br>
@@ -74,8 +74,7 @@
             <small>{chaldes}</small><br>
             <hr>
     </div>
-
-</script>
+</template>
 
 
 <script>
@@ -153,18 +152,17 @@
        
        {% for challenge in challenges %}
 
-            var x1 = lat
-            var y1 = lon
+            var x1 = lat;
+            var y1 = lon;
 
-            var x2 = {{challenge.lat}}
-            var y2 = {{challenge.long}}
+            var x2 = {{challenge.lat}};
+            var y2 = {{challenge.long}};
 
            challenge = document.getElementById('template').innerHTML.replace('{chalname}', "{{challenge.name}}")
            .replace('{timesince}',"{{challenge.created | timesince}}")
            .replace('{link1}',"{% url 'challengeResponses' challenge.id%}")
-           .replace('{link2}',"{% url 'createResponse' challenge.id %}")
            .replace('{chalpoint}',"{{challenge.points}}")
-           .replace('{chaldes}',"{{challenge.description}}")
+           .replace('{chaldes}',"{{challenge.description}}");
 
           
             if (Math.hypot(x2 - x1, y2 - y1) <=0.004){
@@ -224,7 +222,7 @@
 
                     watcher[1].setLatLng([lat, lon]).addTo(map);
 
-                    postPosition(lat,lon);
+                    determineChallenges(lat,lon);
                 });
 
                 devModeOn = true;
