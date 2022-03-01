@@ -65,7 +65,7 @@
 
     </div>
 </div>
-
+<!--This is essentially a template that challenges will be written into-->
 <template id = "template">
     <div class="challenge">
             <p><a href= '{link1}'> {chalname} </a><small> {timesince} </small></p>
@@ -84,7 +84,7 @@
     function startLocator(map, marker=null) {
         if (navigator.geolocation) {
             // watchposition ties a method to every time the user's location changes;
-            // here it'll run displayposition, using the getposition return values as the args
+            // here it'll run determineChallenges, Which will update challenge list
             function success (position){
                 usermarker.setLatLng([position.coords.latitude, position.coords.longitude]).addTo(map);
 
@@ -107,6 +107,7 @@
                 maximumAge: 5000
             };
             
+            // if there isn't already a user marker
             if (marker == null){
                 {% load static %}
                 // Creating user marker to move it around with location
@@ -135,13 +136,14 @@
 
     // This will display challenges close enough 
     function determineChallenges(lat, lon) {
-        var pos = {"lat": lat, "lon": lon}
 
-        var div = document.getElementById('available')
+        // Available contains challenges close enough to complete
+        available = document.getElementById('available');
 
-        available = document.getElementById('available')
-        notavail = document.getElementById('unavailable')
+        // notavail contains challenges too far to complete
+        notavail = document.getElementById('unavailable');
 
+        // Clear the tables
         while (available.lastChild) {
              available.removeChild(available.lastChild);
         }
@@ -150,7 +152,8 @@
              notavail.removeChild(notavail.lastChild);
         }
        
-       {% for challenge in challenges %}
+        // This loop will create a script for each challenge to update appropriately
+        {% for challenge in challenges %}
 
             var x1 = lat;
             var y1 = lon;
@@ -158,17 +161,18 @@
             var x2 = {{challenge.lat}};
             var y2 = {{challenge.long}};
 
-           challenge = document.getElementById('template').innerHTML.replace('{chalname}', "{{challenge.name}}")
-           .replace('{timesince}',"{{challenge.created | timesince}}")
-           .replace('{link1}',"{% url 'challengeResponses' challenge.id%}")
-           .replace('{chalpoint}',"{{challenge.points}}")
-           .replace('{chaldes}',"{{challenge.description}}");
+            // This is essentially filling in the html template from before with the challenge info
+            challenge = document.getElementById('template').innerHTML.replace('{chalname}', "{{challenge.name}}")
+                .replace('{timesince}',"{{challenge.created | timesince}}")
+                .replace('{link1}',"{% url 'challengeResponses' challenge.id%}")
+                .replace('{chalpoint}',"{{challenge.points}}")
+                .replace('{chaldes}',"{{challenge.description}}");
 
-          
+            // If within the range, include the link and URL in the available challenges section
             if (Math.hypot(x2 - x1, y2 - y1) <=0.001){
                 available.innerHTML += challenge.replace('{link2}',"{% url 'createResponse' challenge.id %}")
-                        .replace('{completeChal}', "Complete Challenge");;
-            }
+                          .replace('{completeChal}', "Complete Challenge");;
+            }   // Else, remove that info and place in the unavailable challenges section
             else{
                 notavail.innerHTML += challenge.replace('{link2}',"")
                         .replace('{completeChal}', "");
@@ -222,8 +226,10 @@
 
                     console.log("Lat: "+ lat + ", Lon:"+lon );
 
+                    // Set usermarker to clicked location
                     watcher[1].setLatLng([lat, lon]).addTo(map);
 
+                    // Reload challenges
                     determineChallenges(lat,lon);
                 });
 
