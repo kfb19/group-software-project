@@ -53,19 +53,29 @@
         {% endif %}
     {% endfor %}
 
-    
-    {% for challenge in challenges %}
-        <div class="challenge">
-            <p><a href="{% url 'challengeResponses' challenge.id%}">{{challenge.name}} </a><small>{{challenge.created | timesince}} ago</small></p>
-            <small><a href="{% url 'createResponse' challenge.id %}">Complete Challenge</a></small><br>
-            <small>Points: {{challenge.points}}</small><br>
-            <small>{{challenge.description}}</small><br>
+    <h3>In Range:</h3>
+    <div id = "available">
+        
+   
+    </div>
 
+    <h3>Not in Range:</h3>
+    <div id = "unavailable"> 
+        
 
-                <hr>
-        </div>
-    {% endfor %}
+    </div>
 </div>
+
+<script id = "template" type="text/html">
+    <div class="challenge">
+            <p><a href= '{link1}'> {chalname} </a><small> {timesince} </small></p>
+            <small><a href= '{link2}'>Complete Challenge</a></small><br>
+            <small>Points: {chalpoint}</small><br>
+            <small>{chaldes}</small><br>
+            <hr>
+    </div>
+
+</script>
 
 
 <script>
@@ -143,6 +153,51 @@
         req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
         var pos = {"lat": lat, "lon": lon}
+
+        var div = document.getElementById('available')
+
+        
+        
+
+        available = document.getElementById('available')
+        notavail = document.getElementById('unavailable')
+
+        while (available.lastChild) {
+             available.removeChild(available.lastChild);
+        }
+
+        while (notavail.lastChild) {
+             notavail.removeChild(notavail.lastChild);
+        }
+       
+       {% for challenge in challenges %}
+
+            var x1 = lat
+            var y1 = lon
+
+            var x2 = {{challenge.lat}}
+            var y2 = {{challenge.long}}
+
+           challenge = document.getElementById('template').innerHTML.replace('{chalname}', "{{challenge.name}}")
+           .replace('{timesince}',"{{challenge.created | timesince}}")
+           .replace('{link1}',"{% url 'challengeResponses' challenge.id%}")
+           .replace('{link2}',"{% url 'createResponse' challenge.id %}")
+           .replace('{chalpoint}',"{{challenge.points}}")
+           .replace('{chaldes}',"{{challenge.description}}")
+
+          
+            if (Math.hypot(x2 - x1, y2 - y1) <=0.004){
+                available.innerHTML += challenge
+            }
+            else{
+                notavail.innerHTML += challenge
+            }
+           
+
+
+
+       {% endfor %}
+
         req.send(JSON.stringify(pos));
     }
 
