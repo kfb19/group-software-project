@@ -141,18 +141,6 @@
         req.send(JSON.stringify(pos));
     }
 
-    // This is required to be able to properly strigify the result from geolocation fetching
-    function posToObject (position) {
-        // there might be more data worth returning but this is probably what's useful to us
-        return {
-            timestamp: position.timestamp,
-            coords: {
-                accuracy: position.coords.accuracy,
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-            }
-        }
-    }
 
     // Initializing everything
     window.onload = function(){
