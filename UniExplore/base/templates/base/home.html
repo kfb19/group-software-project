@@ -179,6 +179,16 @@
         button.addEventListener("click", function() {
             // Clearing geolocation watcher
             navigator.geolocation.clearWatch(watcher[0]);
+
+            // Onclick for moving user marker
+            map.on('click', function(e){
+                lat = e.latlng.lat;
+                lon = e.latlng.lng;
+
+                console.log("Lat: "+ lat + ", Lon:"+lon );
+
+                watcher[1].setLatLng([lat, lon]).addTo(map);
+            });
         });
     };
 
