@@ -24,6 +24,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
 from graph_helper import *
+from .decorators import allowed_users
 import datetime
 import json
 
@@ -139,21 +140,19 @@ def userProfile(request):
 
 
 # Create challenge
+#Only allow game masters and developers to create challenge
+@allowed_users(allowed_roles=["game_master", 'developer'])
 def createChallenge(request):
-    categories = Category.objects.all()
     form = ChallengeForm()
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
 
-
         # If valid challenge, add to database
         if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
+            form.save()
             return redirect('home')
-    context = {'form': form, 'categories':categories}
-    return render(request, 'base/createChallenge.html', context)
+    context = {'form':form}
+    return render(request,'base/createChallenge.html',context)
 
 
 @login_required(login_url='/login')
