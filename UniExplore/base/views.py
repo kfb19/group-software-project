@@ -1,31 +1,24 @@
-from django.http import HttpResponse
-from django.shortcuts import render,redirect
-from django.shortcuts import render, redirect
+from .decorators import allowed_users
+from .forms import ChallengeForm, UserRegisterForm, ResponseForm
+from .models import Category, Challenges, Likes, Responses, Profile, AccessAttemptAddons
+from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
+from axes.models import AccessAttempt
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm
-from .models import Category, Challenges
-from .forms import ChallengeForm, UserRegisterForm, ResponseForm
-from .models import Category, Challenges, Likes, Responses, Profile
-from django.db.models import Q
-from axes.models import AccessAttempt
-from .models import AccessAttemptAddons
-from django.shortcuts import render, redirect
-from django.core.mail import BadHeaderError
 from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage, BadHeaderError
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
-from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
-from django.core.mail import EmailMessage
-from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
-from graph_helper import *
-from .decorators import allowed_users
 import datetime
+from graph_helper import *
 import json
 
 
