@@ -65,7 +65,8 @@
 
     </div>
 </div>
-<!--This is essentially a template that challenges will be written into-->
+<!--This is essentially a template that challenges will be written into
+    This code was written by Michael Hills-->
 <template id = "template">
     <div class="challenge">
             <p><a href= '{link1}'> {chalname} </a><small> {timesince} </small></p>
@@ -80,7 +81,7 @@
 <script>
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // this function starts the location watcher
+    // startLocator was written by Tomas Premoli
     function startLocator(map, marker=null) {
         if (navigator.geolocation) {
             // watchposition ties a method to every time the user's location changes;
@@ -134,7 +135,7 @@
         }
     }
 
-    // This will display challenges close enough 
+    // determineChallenges was written by Michael Hills
     function determineChallenges(lat, lon) {
 
         // Available contains challenges close enough to complete
@@ -183,7 +184,7 @@
     }
 
 
-    // Initializing everything
+    // This code was written by Tomas Premoli
     window.onload = function(){
         map = mapgen('map');
 
@@ -237,6 +238,8 @@
         });
     };
 
+
+    // Mapgen was written by Tomas Premoli
     // Probably separate this into another file, with tweaks available for range etc
     function mapgen (divName){
         // map border
