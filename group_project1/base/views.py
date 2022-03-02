@@ -1,16 +1,9 @@
-from asyncio.windows_events import NULL
-from email import message
-from ipaddress import ip_address
-from http.client import responses
-import re
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views import generic
-from django.views.generic import CreateView
 
-from .forms import ChallengeForm, UserRegisterForm, ResponseForm
+
+from .forms import ChallengeForm, UserRegisterForm, ResponseForm, UserUpdateForm, ProfileUpdateForm
 from .models import Category, Challenges, Responses, Profile
 from django.db.models import Q
 from axes.models import AccessAttempt
@@ -163,7 +156,7 @@ def registerPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Only let a user see profile if logged in
+# Only let a user see profile if logged in (done by Lucas)
 @login_required(login_url='/login')
 def userProfile(request):
     return render(request, 'base/profile.html', {})
