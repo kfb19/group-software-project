@@ -90,6 +90,10 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+# Checks to see if an email is valid given a valid suffix
+def is_valid_email(email, valid_suffix):
+    ending = email.split('@')[1].lower()
+    return valid_suffix.lower() == ending
 
 # User registration
 def registerPage(request):
@@ -102,20 +106,31 @@ def registerPage(request):
 
         # Save form if it is valid
         if form.is_valid():
-            user = form.save()
+            email = form.cleaned_data.get('email')
             username = form.cleaned_data.get('username')
 
-            user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
+            if is_valid_email(email, 'exeter.ac.uk'):
+                try:
+                     # Check to see if there is already a user with the same email registered
+                    User.objects.get(email=email)
+                except BaseException:
+                    user = form.save()
+                    user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
 
-            Profile.objects.create(
-                user=user,
-                name=user.username
-            )
+                    Profile.objects.create(
+                        user=user,
+                        name=user.username
+                 )
 
-            login(request, user)
-            messages.success(request, f'Account created for {username}!')
-            return redirect('home')
+                    login(request, user)
+                    messages.success(request, f'Account created for {username}!')
+                    return redirect('home')
 
+                messages.warning(request, "A User with this email already exists")
+                return redirect('login')
+            else:
+                messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
+                return redirect('login')
     context = {'form': form}
     return render(request, 'base/login_register.html', context)
 
@@ -380,6 +395,9 @@ def sign_out_sso(request):
 def callback(request):
     # Make the token request
     result = get_token_from_code(request)
+    if result == None:
+        messages.warning(request, 'Failed login')
+        return HttpResponseRedirect(reverse("login"))
 
     # Get the user's profile from graph_helper.py script
     user_details = get_user(result['access_token'])
