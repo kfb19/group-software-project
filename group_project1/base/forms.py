@@ -34,3 +34,18 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Challenges
         fields = '__all__'
+
+
+# Form for updating profile
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['name', 'bio', 'university', 'picture']
