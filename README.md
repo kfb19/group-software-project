@@ -15,6 +15,10 @@ Prerequisites:
 
   pip install python-dateutil
 
+  pip install pillow
+
+  pip install django-crispy-forms
+
 For testing:
 
   pip install coverage
