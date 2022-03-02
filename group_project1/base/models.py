@@ -10,8 +10,8 @@ class Profile(models.Model):
     name = models.CharField(max_length=200, null=True)
     points = models.IntegerField(default=0, null=True)
     bio = models.CharField(default="No bio set.", max_length=200)
-    university = models.CharField(default="Uni of Exeter", max_length=200) #TODO: Dropdown for available unis?
-    # TODO: Implement profile pics
+    university = models.CharField(default="No university set.", max_length=200) #TODO: Dropdown for available unis?
+    picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to='profile_pictures')
 
     def __str__(self) -> str:
         return self.name
