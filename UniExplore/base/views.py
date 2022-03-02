@@ -102,19 +102,27 @@ def registerPage(request):
 
         # Save form if it is valid
         if form.is_valid():
-            user = form.save()
+            email = form.cleaned_data.get('email')
             username = form.cleaned_data.get('username')
+            try:
+               # Check to see if there is already a user with the same email registered
+               User.objects.get(email=email)
+            except BaseException:
+                user = form.save()
+                user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
 
-            user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
+                Profile.objects.create(
+                    user=user,
+                    name=user.username
+                )
 
-            Profile.objects.create(
-                user=user,
-                name=user.username
-            )
+                login(request, user)
+                messages.success(request, f'Account created for {username}!')
+                return redirect('home')
 
-            login(request, user)
-            messages.success(request, f'Account created for {username}!')
-            return redirect('home')
+            messages.warning(request, "User with this email already exists")
+            return redirect('login')
+            
 
     context = {'form': form}
     return render(request, 'base/login_register.html', context)
