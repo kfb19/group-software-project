@@ -1,4 +1,6 @@
 """
+Edits by Kate Belson 
+
 ASGI config for UniExplore project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
