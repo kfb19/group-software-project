@@ -1,7 +1,8 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from . import views
-from .views import UserEditView
 
 urlpatterns = [
 
@@ -10,7 +11,7 @@ urlpatterns = [
     path('register/', views.registerPage, name='register'),
     path('logout/', views.logoutUser, name='logout'),
     path('profile/',views.userProfile,name='profile'),
-    path('profile_edit/', UserEditView.as_view(), name='editProfile'),
+    path('profile_edit/', views.editProfile, name='editProfile'),
     path('create-challenge/', views.createChallenge,name='createChallenge'),
     path('create-response/<int:pk>/',views.createResponse,name='createResponse'),
     path('recent-activity/',views.recentActivity,name='recentActivity'),
