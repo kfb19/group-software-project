@@ -1,6 +1,7 @@
 """
 Authors: 
     - Michael Hills
+    - Kate Belson 
 """
 
 from django import forms
