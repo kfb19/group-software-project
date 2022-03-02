@@ -56,7 +56,8 @@ def home(request):
         challenges = Challenges.objects.exclude(id__in=responses).filter(Q(
             category__name__icontains=q)).order_by('-created')
     else:
-        challenges = Challenges.objects.all().order_by('-created')
+        challenges = Challenges.objects.filter(Q(
+            category__name__icontains=q)).order_by('-created')
         #add locations to map
 
 
