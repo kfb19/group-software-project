@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from .models import Challenges, Responses
+from .models import Challenges, Responses, Profile
 
 
 # Form for user registrations
@@ -19,6 +19,7 @@ class ChallengeForm(ModelForm):
     class Meta:
         model = Challenges
         fields = '__all__'
+
 
 # Form for responding to a challenge
 
