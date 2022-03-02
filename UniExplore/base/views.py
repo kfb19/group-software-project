@@ -3,6 +3,7 @@ Authors:
     - Michael Hills
     - Conor Behard Roberts
     - Jack Purkiss
+    - Kate Belson (some edits)
 """
 
 from .decorators import allowed_users
