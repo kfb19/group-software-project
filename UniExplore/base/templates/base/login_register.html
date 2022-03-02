@@ -97,7 +97,6 @@ h1 {
     margin-top: 9px;
 }
 
-
 .login-form label {
     color: #fff;
     text-align: center;
@@ -125,7 +124,6 @@ h1 {
     margin-bottom: 9px;
 }
 
-
 .login-form input[type=submit]{
     background-color: #BBEBA6;
     outline: none;
@@ -133,14 +131,82 @@ h1 {
     box-shadow: none;
 }
 
-
-
 .login-form a {
   color: #BBEBA6;
 }
 
-.register-form a {
+.register-form  {
+    border: 3px solid #fff;
+    padding: 40px;
+    display: inline-block;
+    width: 25%;
+    min-width: 50px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-align: center;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    align-content: center;
+}
+
+.register-form label {
+    color: #fff;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
+
+.register-form legend {
+    color: #fff;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.login-form td {
+    color: #fff;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-bottom: 9px;
+    margin-top: 9px;
+}
+
+.extras a {
     color: #BBEBA6;
+}
+
+.register-form input[type=submit]{
+    background-color: #BBEBA6;
+    outline: none;
+    border: 0px;
+    box-shadow: none;
+}
+
+.extras small {
+    color: #fff;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
+
+.helptext, li {
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-top: 9px;
+    margin-bottom: 9px;
 }
 
 </style>
@@ -156,38 +222,42 @@ h1 {
 {% endfor %}
 
 {% endif %}
-<div class="app-title">
-    <h1>UniExplore</h1>
+<div></div>
+    <div class="app-title">
+        <h1>UniExplore</h1>
+    </div>
+
+
+    <div class="login-form">
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            <h1>Login</h1>
+            <label>Username:</label>
+            <br>
+            <input type="text" name="username" placeholder="Enter Username"/>
+            <br>
+
+            <label>Password:</label>
+            <br>
+            <input type="password" name="password" placeholder="Enter Password"/>
+
+            <br>
+            <input type="submit" value="Login"/>
+
+        </form>
+
+        <p>Haven't signed up yet?</p>
+        <a href="{% url 'register' %}">Sign up</a>
+        <br>
+        <a href="{% url 'password_reset' %}">Forgot password?</a>
+        <br>
+        <a href="{% url 'sign-in-sso' %}">Sign in with Microsoft</a>
+        <br>
+        <a href="{% url 'home' %}">Home</a>
+    </div>
 </div>
 
-<div class="login-form" id="form-wrapper" class="form-group">
-    <form method="POST" action="">
-        {% csrf_token %}
-        
-        <h1>Login</h1>
-        <label>Username:</label>
-        <br>
-        <input type="text" name="username" placeholder="Enter Username"/>
-        <br>
-
-        <label>Password:</label>
-        <br>
-        <input type="password" name="password" placeholder="Enter Password"/>
-
-        <br>
-        <input type="submit" value="Login"/>
-
-    </form>
-
-    <p>Haven't signed up yet?</p>
-    <a href="{% url 'register' %}">Sign up</a>
-    <br>
-    <a href="{% url 'password_reset' %}">Forgot password?</a>
-    <br>
-    <a href="{% url 'sign-in-sso' %}">Sign in with Microsoft</a>
-    <br>
-    <a href="{% url 'home' %}">Home</a>
-</div>
 
 
 
@@ -201,21 +271,19 @@ h1 {
         <form class="register-form" method="POST" action="">
           {% csrf_token %}
           <fieldset class = "form-group">
-              <legend class="border-bottom mb-4">Join Today</legend>
+              <legend class="border-bottom mb-4">Register Account</legend>
               {{form.as_p}}
 
           </fieldset>
           <div class="form-group">
-              <button class="btn btn-outline-info" type="submit">
-                  Sign Up
-
-              </button>
+            <input type="submit" value="Create Account"/>
 
           </div>
           
       </div>
-      <div class="border-top pt-3">
-        <small class="text-muted">Already have an account?>
+      <br>
+      <div class="extras">
+        <small>Already have an account?
             <a class="ml-2" href="{% url 'login' %}">Login</a>
         </small>
         
@@ -223,7 +291,7 @@ h1 {
     
 </div>
 
-<a href="{% url 'home' %}">Home</a>
+
 
 {% endif %}
 
