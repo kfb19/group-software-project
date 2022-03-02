@@ -5,15 +5,9 @@
 UniExplore is an application designed to help students explore their university and connect with their peers. Students can complete challenges at various locations across campus, see what their classmates did for those challenges, and like the responses of others.
 
 ## Prerequisites:
+In the root directory run:
 
-- pip install django 
-- pip install django-axes
-- pip install python-decouple
-- pip install msal
-- pip install PyYAML
-- pip install python-dateutil
-- pip install coverage
-- pip install flake8
+    pip install -r requirements.txt
 
 ## Getting Started
 
