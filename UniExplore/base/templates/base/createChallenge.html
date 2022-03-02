@@ -1,6 +1,11 @@
-<!--This code was written by Michael Hills and Tomas Premoli-->
+<!--
+    Authors:
+        - Michael Hills
+        - Tomas Premoli
+        - Kate Belson
+-->
+
 {% extends 'base.html' %}
-<!--Written by Michael Hills-->
 <!DOCTYPE html>  
 <html lang="en">  
 <head>  
@@ -9,9 +14,6 @@
 </head>  
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-
-
 
 
 {% block filter %}
@@ -48,8 +50,10 @@
 <script>
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Initializing everything
-    // This code was written by Tomas Premoli
+    /*
+        Authors: Tomas Premoli
+        Description: Makes map work for location selecting
+    */
     window.onload = function(){
         map = mapgen('map');
 
@@ -62,12 +66,12 @@
 
             console.log("Lat: "+ lat + ", Lon:"+lon );
             
-            //Clear existing marker
+            // Clear existing marker
             if (clickLocation != undefined) {
                 map.removeLayer(clickLocation);
             };
 
-            //Add a marker to show where you clicked
+            // Add a marker to show where you clicked
             clickLocation = L.marker([lat,lon]).addTo(map); 
             
             document.getElementById("id_lat").value = lat;
@@ -77,8 +81,10 @@
         map.invalidateSize();
     };
 
-    // Probably separate this into another file, with tweaks available for range etc
-    // This code was written by Tomas Premoli
+    /*
+        Authors: Tomas Premoli
+        Description: Map generator
+    */
     function mapgen (divName){
         // map border
         var swest = L.latLng(50.729748, -3.520532),
@@ -114,7 +120,7 @@
             ]
         ];
     
-        // adding polygon to map
+        // Adding polygon to map
         L.polygon(areamarker, {color: "#ff2600", weight: 2, fillOpacity: 0.1, interactive: false}).addTo(map);
     
         map.setMaxBounds(map.getBounds());

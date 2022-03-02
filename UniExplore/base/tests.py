@@ -1,3 +1,8 @@
+"""
+Authors: 
+    - Conor Behard Roberts
+"""
+
 from django.test import TestCase
 from datetime import datetime
 from .models import Profile, User, Category, Challenges, Responses
