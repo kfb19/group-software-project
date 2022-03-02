@@ -1,3 +1,4 @@
+<!--This code was written by Michael Hills and Tomas Premoli-->
 {% extends 'base.html' %}
 
 <!DOCTYPE html>  
@@ -65,7 +66,8 @@
 
     </div>
 </div>
-<!--This is essentially a template that challenges will be written into-->
+<!--This is essentially a template that challenges will be written into
+    This code was written by Michael Hills-->
 <template id = "template">
     <div class="challenge">
             <p><a href= '{link1}'> {chalname} </a><small> {timesince} </small></p>
@@ -80,7 +82,7 @@
 <script>
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // this function starts the location watcher
+    // startLocator was written by Tomas Premoli
     function startLocator(map, marker=null) {
         if (navigator.geolocation) {
             // watchposition ties a method to every time the user's location changes;
@@ -134,7 +136,7 @@
         }
     }
 
-    // This will display challenges close enough 
+    // determineChallenges was written by Michael Hills
     function determineChallenges(lat, lon) {
 
         // Available contains challenges close enough to complete
@@ -183,19 +185,17 @@
     }
 
 
-    // Initializing everything
+    // This code was written by Tomas Premoli
     window.onload = function(){
         map = mapgen('map');
 
         // This loop writes the markers for the challenges in JavaScript which are then rendered by the map
-        // This works, but after a certain number of locations it stops with a "..." for loop restrictions?
-        // This can be extended to add GET requests after clicking on markers, and you can go to the challenge
-        // page 
+        // Can be extended to go to challenge page on click
         {% for challenge in challenges %}
-        L.marker([ {{challenge.lat}}, {{challenge.long}} ],
-        {title: {{'"'}}{{challenge.name|safe}}{{'"'}}, bubblingMouseEvents: true })
-        .bindPopup("<b>" + {{'"'}}{{challenge.name|safe}}{{'"'}} + "</b>" +
-            "<br>" + {{'"'}}{{challenge.description|safe}}{{'"'}}).addTo(map);
+            L.marker([ {{challenge.lat}}, {{challenge.long}} ],
+                {title:     "{{challenge.name}}", bubblingMouseEvents: true })
+                .bindPopup( "<b>{{challenge.name}}</b>" +
+                            "<br>{{challenge.description}}" ).addTo(map);
         {% endfor %}
 
         // Returns the watcher ID and user marker in an array of len 2
@@ -203,6 +203,11 @@
 
         map.invalidateSize();
 
+        devModeToggle(map);
+    };
+
+    // devModeToggle was written by Tomas Premoli
+    function devModeToggle(map){
         // These are all dev mode loads
         // This shouldn't render in the template when not a gamemaster/superuser
         var button = document.getElementById('devModeSwitch');
@@ -237,8 +242,10 @@
                 button.innerHTML = "Disable spoof mode";
             }
         });
-    };
+    }
 
+
+    // Mapgen was written by Tomas Premoli
     // Probably separate this into another file, with tweaks available for range etc
     function mapgen (divName){
         // map border
