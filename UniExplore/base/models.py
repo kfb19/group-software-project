@@ -1,6 +1,7 @@
 """
 Authors: 
     - Michael Hills
+    - Kate Belson (some edits) 
 """
 
 from django.contrib.auth.models import User
