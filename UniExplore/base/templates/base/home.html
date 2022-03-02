@@ -1,4 +1,9 @@
-<!--This code was written by Michael Hills and Tomas Premoli-->
+<!--
+    Authors:
+        - Michael Hills
+        - Tomas Premoli
+-->
+
 {% extends 'base.html' %}
 
 <!DOCTYPE html>  
@@ -67,7 +72,7 @@
     </div>
 </div>
 <!--This is essentially a template that challenges will be written into
-    This code was written by Michael Hills-->
+    Author: Michael Hills-->
 <template id = "template">
     <div class="challenge">
             <p><a href= '{link1}'> {chalname} </a><small> {timesince} </small></p>
@@ -82,7 +87,10 @@
 <script>
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // startLocator was written by Tomas Premoli
+    /*
+        Authors: Tomas Premoli
+        Description: startLocator
+    */
     function startLocator(map, marker=null) {
         if (navigator.geolocation) {
             // watchposition ties a method to every time the user's location changes;
@@ -136,7 +144,10 @@
         }
     }
 
-    // determineChallenges was written by Michael Hills
+    /*
+        Authors: Michael Hills
+        Description: determineChallenges
+    */
     function determineChallenges(lat, lon) {
 
         // Available contains challenges close enough to complete
@@ -185,7 +196,10 @@
     }
 
 
-    // This code was written by Tomas Premoli
+    /*
+        Authors: Tomas Premoli
+        Description: 
+    */
     window.onload = function(){
         map = mapgen('map');
 
@@ -206,7 +220,10 @@
         devModeToggle(map);
     };
 
-    // devModeToggle was written by Tomas Premoli
+     /*
+        Authors: Tomas Premoli
+        Description: 
+    */
     function devModeToggle(map){
         // These are all dev mode loads
         // This shouldn't render in the template when not a gamemaster/superuser
@@ -245,8 +262,10 @@
     }
 
 
-    // Mapgen was written by Tomas Premoli
-    // Probably separate this into another file, with tweaks available for range etc
+    /*
+        Authors: Tomas Premoli
+        Description:  Probably separate this into another file, with tweaks available for range etc
+    */
     function mapgen (divName){
         // map border
         var swest = L.latLng(50.729748, -3.520532),

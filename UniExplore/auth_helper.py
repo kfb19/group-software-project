@@ -1,3 +1,8 @@
+"""
+Authors: 
+    - Conor Behard Roberts
+"""
+
 import yaml
 import msal
 

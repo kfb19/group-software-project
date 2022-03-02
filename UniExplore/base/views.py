@@ -1,3 +1,10 @@
+"""
+Authors: 
+    - Michael Hills
+    - Conor Behard Roberts
+    - Jack Purkiss
+"""
+
 from .decorators import allowed_users
 from .forms import ChallengeForm, UserRegisterForm, ResponseForm
 from .models import Category, Challenges, Likes, Responses, Profile, AccessAttemptAddons
@@ -23,13 +30,19 @@ import json
 
 
 
-# Function to open and return a json file
+"""
+    Authors: Conor Behard Roberts
+    Description: Function to open and return a json file
+"""
 def open_json_file(file_name):
     file = open(file_name)
     return json.load(file)
 
 
-# View for the main homepage (Michael Hills)
+"""
+    Authors: Michael Hills
+    Description: View for the main homepage
+"""
 def home(request):
     categories = Category.objects.all()
 
@@ -53,7 +66,11 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-# View for logging in (Michael Hills)
+
+"""
+    Authors: Michael Hills
+    Description: View for logging in
+"""
 def loginPage(request):
 
     # Allows us to change the page based on if a user is logged in
@@ -84,18 +101,29 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Logout user (Michael Hills)
+"""
+    Authors: Michael Hills
+    Description: Function to log the user out 
+"""
 def logoutUser(request):
 
     logout(request)
     return redirect('home')
 
-# Checks to see if an email is valid given a valid suffix
+
+"""
+    Authors: Conor Behard Roberts
+    Description: Checks to see if an email is valid given a valid suffix
+"""
 def is_valid_email(email, valid_suffix):
     ending = email.split('@')[1].lower()
     return valid_suffix.lower() == ending
 
-# User registration (Michael Hills)
+
+"""
+    Authors: Michael Hills, Conor Behard
+    Description: Function for user registration
+"""
 def registerPage(request):
 
     # Getting form from forms.py
@@ -135,14 +163,20 @@ def registerPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Only let a user see profile if logged in (Michael Hills)
+
+"""
+    Authors: Michael Hills 
+    Description: Only let a user see profile if logged in
+"""
 @login_required(login_url='/login')
 def userProfile(request):
     return render(request, 'base/profile.html', {})
 
 
-# Create challenge (Michael Hills)
-#Only allow game masters and developers to create challenge
+"""
+    Authors: Michael Hills, Jack Purkiss
+    Description: Only allow game masters and developers to create challenge
+"""
 @allowed_users(allowed_roles=["game_master", 'developer'])
 def createChallenge(request):
     categories = Category.objects.all()
@@ -161,7 +195,10 @@ def createChallenge(request):
     return render(request, 'base/createChallenge.html', context)
 
 
-# View to complete a challenge (Michael Hills)
+"""
+    Authors: Michael Hills
+    Description: View to complete a challenge 
+"""
 @login_required(login_url='/login')
 def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
@@ -185,7 +222,10 @@ def createResponse(request, pk):
     return render(request,'base/createResponse.html',context)
 
 
-# View of the leaderboard (Michael Hills)
+"""
+    Authors: Michael Hills
+    Description: View of the leaderboard
+"""
 def leaderboard(request):
 
      categories = Category.objects.all()
@@ -194,14 +234,11 @@ def leaderboard(request):
      return render(request,'base/leaderboard.html',context)
 
 
-
-
-# Converts timedelta object into a readable string
+"""
+    Authors: Conor Behard Roberts
+    Description: Converts timedelta object into a readable string
+"""
 def strfdelta_round(tdelta, round_period='second'):
-    """timedelta to string,  use for measure running time
-    attend period from days downto smaller period, round to minimum period
-    omit zero value period
-    """
     period_names = ('day', 'hour', 'minute', 'second', 'millisecond')
     if round_period not in period_names:
         raise Exception(f'round_period "{round_period}" invalid, should be one of {",".join(period_names)}')
@@ -225,9 +262,11 @@ def strfdelta_round(tdelta, round_period='second'):
 
     return string
 
-# When user is locked out add message and redirect to home page
 
-
+"""
+    Authors: Conor Behard Roberts
+    Description: When user is locked out add message and redirect to home page
+"""
 def lockout(request, credentials, *args, **kwargs):
     try:
         username = request.POST.get("username")
@@ -265,7 +304,10 @@ def lockout(request, credentials, *args, **kwargs):
     return redirect('login')
 
 
-# When a user request to change their password the email they send is checked to see if it exists within the user database
+"""
+    Authors: Conor Behard Roberts
+    Description: When a user request to change their password the email they send is checked to see if it exists within the user database
+"""
 def password_reset_request(request):
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
@@ -295,10 +337,13 @@ def password_reset_request(request):
         else:  # If the user email is not in the database display a message
             messages.warning(request, "Email does not exist in database")
     password_reset_form = PasswordResetForm()
-    return render(request=request, template_name="password/password_reset.html",
-                  context={"password_reset_form": password_reset_form})
+    return render(request=request, template_name="password/password_reset.html", context={"password_reset_form": password_reset_form})
 
-# View to show the responses logged in user (Michael Hills)
+
+"""
+    Authors: Michael Hills
+    Description: View to show the responses logged in user
+"""
 @login_required(login_url='/login')
 def myResponses(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
@@ -308,7 +353,11 @@ def myResponses(request):
     
     return render(request,'base/myResponses.html',context)
 
-# View to show all the responses to challenges (Michael Hills) 
+
+"""
+    Authors: Michael Hills
+    Description: View to show all the responses to challenges
+"""
 def recentActivity(request):
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
@@ -316,8 +365,12 @@ def recentActivity(request):
 
     return render(request,'base/recentActivity.html',context)
 
-# View to show the responses of a challenge (Michael Hills)
-def challengeResponses(request,pk):
+
+"""
+    Authors: Michael Hills
+    Description: View to show the responses of a challenge
+"""
+def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
     responses = Responses.objects.filter(challenge = challenge).order_by('-created')
     categories = Category.objects.all()
@@ -325,8 +378,12 @@ def challengeResponses(request,pk):
     return render(request,'base/challengeResponses.html',context)
 
 
-# View to show the responses of a user (Michael Hills)
-def userResponses(request,pk):
+
+"""
+    Authors: Michael Hills
+    Description: View to show the responses of a user
+"""
+def userResponses(request, pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
     categories = Category.objects.all()
@@ -334,7 +391,11 @@ def userResponses(request,pk):
     return render(request, 'base/userResponses.html',context)
 
 
-# View to like a response to a challenge (Michael Hills)
+
+"""
+    Authors: Michael Hills
+    Description: View to like a response to a challenge
+"""
 @login_required(login_url='/login')
 def likeResponse(request):
     
@@ -367,16 +428,15 @@ def likeResponse(request):
                 like.value = 'Unlike'
             else:
                 like.value = 'Like'
-                
-
-
-        
 
         like.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-
+"""
+    Authors: Conor Behard Roberts
+    Description: Function to sign the user in with Microsoft single sign on
+"""
 def sign_in_sso(request):
     # Get the sign-in flow
     flow = get_sign_in_flow()
@@ -389,12 +449,21 @@ def sign_in_sso(request):
     return HttpResponseRedirect(flow['auth_uri'])
 
 
+"""
+    Authors: Conor Behard Roberts
+    Description: Function to sign the user out when having signed on with SSO
+"""
 def sign_out_sso(request):
     # Clear out the user and token
     remove_user_and_token(request)
     return HttpResponseRedirect(reverse('home'))
 
 
+"""
+    Authors: Conor Behard Roberts
+    Description: Function which is called once the user is authenticated by SSO and if 
+                 successful logs the user in
+"""
 def callback(request):
     # Make the token request
     result = get_token_from_code(request)

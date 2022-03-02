@@ -1,4 +1,8 @@
-from re import L
+"""
+Authors: 
+    - Michael Hills
+"""
+
 from django.contrib import admin
 from .models import Profile, Category, Challenges, Responses, Likes
 

@@ -1,7 +1,9 @@
-from msilib.schema import ReserveCost
-from tkinter import CASCADE
-from django.contrib.auth.models import User
+"""
+Authors: 
+    - Michael Hills
+"""
 
+from django.contrib.auth.models import User
 from axes.models import AccessAttempt
 from django.db import models
 from django.utils.translation import gettext_lazy as _

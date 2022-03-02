@@ -1,3 +1,8 @@
+"""
+Authors: 
+    - Michael Hills
+"""
+
 from django.apps import AppConfig
 
 # (Michael Hills)
