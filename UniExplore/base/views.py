@@ -120,7 +120,7 @@ def registerPage(request):
                 messages.success(request, f'Account created for {username}!')
                 return redirect('home')
 
-            messages.warning(request, "User with this email already exists")
+            messages.warning(request, "A User with this email already exists")
             return redirect('login')
             
 
