@@ -6,6 +6,135 @@
 </head>  
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Quicksand');
+
+*, body {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
+}
+
+html, body {
+    height: 100%;
+    background-color: #177442;
+    overflow: hidden;
+    text-align: center;
+}
+
+.login-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+}
+
+.register-form {
+    order: 3px solid #fff;
+    padding: 40px;
+    display: inline-block;
+    width: 25%;
+    min-width: 50px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-align: center;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    align-content: center;
+}
+
+.login-form  {
+    border: 3px solid #fff;
+    padding: 40px;
+    display: inline-block;
+    width: 25%;
+    min-width: 50px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-align: center;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    align-content: center;
+}
+
+h1 {
+    color: #fff;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.login-form h3 {
+    color: #fff;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.login-form p {
+    color: #fff;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-bottom: 9px;
+    margin-top: 9px;
+}
+
+
+.login-form label {
+    color: #fff;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
+
+.login-form input[type=text], .login-form input[type=password] {
+    width: 100%;
+    padding: 9px 9px;
+    text-align: left;
+    border: 0;
+    outline: 0;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 300;
+    color: #8D8D8D;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
+
+
+.login-form input[type=submit]{
+    background-color: #BBEBA6;
+    outline: none;
+    border: 0px;
+    box-shadow: none;
+}
+
+
+
+.login-form a {
+  color: #BBEBA6;
+}
+
+.register-form a {
+    color: #BBEBA6;
+}
+
+</style>
+
 {%if page == 'login' %}
 
 {% if messages %}
@@ -25,7 +154,7 @@
 <div class="login-form" id="form-wrapper" class="form-group">
     <form method="POST" action="">
         {% csrf_token %}
-
+        <h1>Login</h1>
         <label>Username:</label>
         <br>
         <input type="text" name="username" placeholder="Enter Username"/>
@@ -35,12 +164,12 @@
         <br>
         <input type="password" name="password" placeholder="Enter Password"/>
 
-
+        <br>
         <input type="submit" value="Login"/>
 
     </form>
 
-    <p>Havn't signed up yet?</p>
+    <p>Haven't signed up yet?</p>
     <a href="{% url 'register' %}">Sign up</a>
     <br>
     <a href="{% url 'password_reset' %}">Forgot password?</a>
@@ -49,7 +178,6 @@
     <br>
     <a href="{% url 'home' %}">Home</a>
 </div>
-
 
 
 {% else %}
