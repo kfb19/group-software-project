@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from .models import Challenges, Responses
 
 
-# Form for user registrations
+# Form for user registrations (Michael Hills)
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
 
@@ -14,7 +14,7 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-# Form for challenges to be added
+# Form for challenges to be added (Michael Hills)
 class ChallengeForm(forms.ModelForm):
     class Meta:
         model = Challenges
@@ -23,13 +23,13 @@ class ChallengeForm(forms.ModelForm):
         
 
 
-# Form for responding to a challenge
+# Form for responding to a challenge (Michael Hills)
 class ResponseForm(forms.ModelForm):
     class Meta:
         model = Responses
         fields = ['description']
 
-# Form to create a profile
+# Form to create a profile (Michael Hills)
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Challenges

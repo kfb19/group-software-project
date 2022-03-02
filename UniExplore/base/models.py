@@ -6,7 +6,7 @@ from axes.models import AccessAttempt
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# Model for a user profile
+# Model for a user profile (Michael Hills)
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
@@ -15,14 +15,14 @@ class Profile(models.Model):
     def __str__(self) -> str:
         return self.name
 
-# Model for a category of challenges
+# Model for a category of challenges (Michael Hills)
 class Category(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self) -> str:
         return self.name
 
-# Model for the challenges
+# Model for the challenges (Michael Hills)
 class Challenges(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -36,7 +36,7 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
-# Model for the responses to challenges
+# Model for the responses to challenges (Michael Hills)
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
@@ -52,14 +52,14 @@ class Responses(models.Model):
     def num_likes(self):
         return self.liked.all().count()
 
-    # The options for the like button
+    # The options for the like button (Michael Hills)
 LIKE_CHOICES = (
     ('Like','Like'),
     ('Unlike','Unlike'),
 )
 
 
-# Model for the likes of a post
+# Model for the likes of a post (Michael Hills)
 class Likes(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     response = models.ForeignKey(Responses, on_delete = models.CASCADE)
