@@ -89,7 +89,7 @@
 
     /*
         Authors: Tomas Premoli
-        Description: startLocator
+        Description: Starts userlocation scripts
     */
     function startLocator(map, marker=null) {
         if (navigator.geolocation) {
@@ -146,7 +146,7 @@
 
     /*
         Authors: Michael Hills
-        Description: determineChallenges
+        Description: Determines what challenges should be available for completion
     */
     function determineChallenges(lat, lon) {
 
@@ -198,7 +198,7 @@
 
     /*
         Authors: Tomas Premoli
-        Description: 
+        Description: Loads all the challenges and map scripts
     */
     window.onload = function(){
         map = mapgen('map');
@@ -222,7 +222,7 @@
 
      /*
         Authors: Tomas Premoli
-        Description: 
+        Description: Function responsible for enabling & disabling spoof mode
     */
     function devModeToggle(map){
         // These are all dev mode loads
@@ -264,7 +264,7 @@
 
     /*
         Authors: Tomas Premoli
-        Description:  Probably separate this into another file, with tweaks available for range etc
+        Description:  Map generating function
     */
     function mapgen (divName){
         // map border
