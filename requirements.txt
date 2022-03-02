@@ -1,0 +1,8 @@
+django 
+django-axes
+python-decouple
+msal
+PyYAML
+python-dateutil
+coverage
+flake8
