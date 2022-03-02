@@ -29,7 +29,7 @@ def open_json_file(file_name):
     return json.load(file)
 
 
-# View for the main homepage
+# View for the main homepage (Michael Hills)
 def home(request):
     categories = Category.objects.all()
 
@@ -53,7 +53,7 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-# View for logging in
+# View for logging in (Michael Hills)
 def loginPage(request):
 
     # Allows us to change the page based on if a user is logged in
@@ -84,7 +84,7 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Logout user
+# Logout user (Michael Hills)
 def logoutUser(request):
 
     logout(request)
@@ -95,7 +95,7 @@ def is_valid_email(email, valid_suffix):
     ending = email.split('@')[1].lower()
     return valid_suffix.lower() == ending
 
-# User registration
+# User registration (Michael Hills)
 def registerPage(request):
 
     # Getting form from forms.py
@@ -135,13 +135,13 @@ def registerPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Only let a user see profile if logged in
+# Only let a user see profile if logged in (Michael Hills)
 @login_required(login_url='/login')
 def userProfile(request):
     return render(request, 'base/profile.html', {})
 
 
-# Create challenge
+# Create challenge (Michael Hills)
 #Only allow game masters and developers to create challenge
 @allowed_users(allowed_roles=["game_master", 'developer'])
 def createChallenge(request):
@@ -161,6 +161,7 @@ def createChallenge(request):
     return render(request, 'base/createChallenge.html', context)
 
 
+# View to complete a challenge (Michael Hills)
 @login_required(login_url='/login')
 def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
@@ -184,6 +185,7 @@ def createResponse(request, pk):
     return render(request,'base/createResponse.html',context)
 
 
+# View of the leaderboard (Michael Hills)
 def leaderboard(request):
 
      categories = Category.objects.all()
@@ -296,7 +298,7 @@ def password_reset_request(request):
     return render(request=request, template_name="password/password_reset.html",
                   context={"password_reset_form": password_reset_form})
 
-# View to show the responses logged in user
+# View to show the responses logged in user (Michael Hills)
 @login_required(login_url='/login')
 def myResponses(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
@@ -306,7 +308,7 @@ def myResponses(request):
     
     return render(request,'base/myResponses.html',context)
 
-# View to show all the responses to challenges 
+# View to show all the responses to challenges (Michael Hills) 
 def recentActivity(request):
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
@@ -314,7 +316,7 @@ def recentActivity(request):
 
     return render(request,'base/recentActivity.html',context)
 
-# View to show the responses of a challenge
+# View to show the responses of a challenge (Michael Hills)
 def challengeResponses(request,pk):
     challenge = Challenges.objects.get(id=pk)
     responses = Responses.objects.filter(challenge = challenge).order_by('-created')
@@ -323,7 +325,7 @@ def challengeResponses(request,pk):
     return render(request,'base/challengeResponses.html',context)
 
 
-# View to show the responses of a user
+# View to show the responses of a user (Michael Hills)
 def userResponses(request,pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
@@ -332,11 +334,12 @@ def userResponses(request,pk):
     return render(request, 'base/userResponses.html',context)
 
 
-# View to like a response to a challenge
+# View to like a response to a challenge (Michael Hills)
 @login_required(login_url='/login')
 def likeResponse(request):
     
     # Get the response that has been liked
+    
     if request.method == 'POST':
         response_id = request.POST.get('response_id')
         response = Responses.objects.get(id=response_id)
