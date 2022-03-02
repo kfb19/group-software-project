@@ -50,8 +50,10 @@
 <script>
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Initializing everything
-    // This code was written by Tomas Premoli
+    /*
+        Authors: Tomas Premoli
+        Description: Makes map work for location selecting
+    */
     window.onload = function(){
         map = mapgen('map');
 
@@ -79,8 +81,10 @@
         map.invalidateSize();
     };
 
-    // Probably separate this into another file, with tweaks available for range etc
-    // This code was written by Tomas Premoli
+    /*
+        Authors: Tomas Premoli
+        Description: Map generator
+    */
     function mapgen (divName){
         // map border
         var swest = L.latLng(50.729748, -3.520532),
