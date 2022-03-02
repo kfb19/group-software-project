@@ -203,6 +203,11 @@
 
         map.invalidateSize();
 
+        devModeToggle(map);
+    };
+
+    // devModeToggle was written by Tomas Premoli
+    function devModeToggle(map){
         // These are all dev mode loads
         // This shouldn't render in the template when not a gamemaster/superuser
         var button = document.getElementById('devModeSwitch');
@@ -237,7 +242,7 @@
                 button.innerHTML = "Disable spoof mode";
             }
         });
-    };
+    }
 
 
     // Mapgen was written by Tomas Premoli
