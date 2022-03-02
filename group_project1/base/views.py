@@ -159,13 +159,15 @@ def registerPage(request):
 # Only let a user see profile if logged in (done by Lucas)
 @login_required(login_url='/login')
 def userProfile(request):
-    return render(request, 'base/profile.html', {})
+    responses = Responses.objects.filter(user=request.user).order_by('-created')
 
+    categories = Category.objects.all()
+    context = {
+        'responses': responses,
+        'categories': categories
+    }
 
-class UserEditView(generic.UpdateView):
-    form_class = UserChangeForm
-    template_name = 'base/profile_edit.html'
-    success_url = reverse_lazy('home')
+    return render(request, 'base/profile.html', context)
 
 @login_required(login_url='/login')
 def editProfile(request):
