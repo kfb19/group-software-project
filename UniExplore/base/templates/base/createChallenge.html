@@ -1,3 +1,4 @@
+<!--This code was written by Michael Hills and Tomas Premoli-->
 {% extends 'base.html' %}
 <!DOCTYPE html>  
 <html lang="en">  
@@ -47,6 +48,7 @@
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     // Initializing everything
+    // This code was written by Tomas Premoli
     window.onload = function(){
         map = mapgen('map');
 
@@ -75,6 +77,7 @@
     };
 
     // Probably separate this into another file, with tweaks available for range etc
+    // This code was written by Tomas Premoli
     function mapgen (divName){
         // map border
         var swest = L.latLng(50.729748, -3.520532),
