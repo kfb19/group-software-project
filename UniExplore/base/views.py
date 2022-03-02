@@ -90,6 +90,10 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+# Checks to see if an email is valid given a valid suffix
+def is_valid_email(email, valid_suffix):
+    ending = email.split('@')[1].lower()
+    return valid_suffix.lower() == ending
 
 # User registration
 def registerPage(request):
@@ -104,26 +108,29 @@ def registerPage(request):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             username = form.cleaned_data.get('username')
-            try:
-               # Check to see if there is already a user with the same email registered
-               User.objects.get(email=email)
-            except BaseException:
-                user = form.save()
-                user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
 
-                Profile.objects.create(
-                    user=user,
-                    name=user.username
-                )
+            if is_valid_email(email, 'exeter.ac.uk'):
+                try:
+                     # Check to see if there is already a user with the same email registered
+                    User.objects.get(email=email)
+                except BaseException:
+                    user = form.save()
+                    user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
 
-                login(request, user)
-                messages.success(request, f'Account created for {username}!')
-                return redirect('home')
+                    Profile.objects.create(
+                        user=user,
+                        name=user.username
+                 )
 
-            messages.warning(request, "A User with this email already exists")
-            return redirect('login')
-            
+                    login(request, user)
+                    messages.success(request, f'Account created for {username}!')
+                    return redirect('home')
 
+                messages.warning(request, "A User with this email already exists")
+                return redirect('login')
+            else:
+                messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
+                return redirect('login')
     context = {'form': form}
     return render(request, 'base/login_register.html', context)
 
