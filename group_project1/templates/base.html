@@ -2,7 +2,13 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-    <title>Homepage</title>  
+
+    {% if title %}
+        <title>UniExplore - {{ title }}</title>
+    {% else %}
+        <title>UniExplore</title>
+    {% endif %}
+
     <style>
         .wrapper{  
             display: grid;
