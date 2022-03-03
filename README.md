@@ -9,10 +9,6 @@ In the root directory run:
 
     pip install -r requirements.txt
 
-    (plus these, sorry, will fix in my next PR - Lucas)
-    pip install pillow
-    pip install django-crispy-forms
-
 ## Getting Started
 
 Make sure you are in the UniExplore directory:

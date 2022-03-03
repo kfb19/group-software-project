@@ -9,7 +9,7 @@ from axes.models import AccessAttempt
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# Model for a user profile (Michael Hills)
+# Model for a user profile (Michael Hills, Lucas Smith)
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)

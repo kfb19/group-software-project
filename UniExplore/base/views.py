@@ -4,6 +4,7 @@ Authors:
     - Conor Behard Roberts
     - Jack Purkiss
     - Kate Belson (some edits)
+    - Lucas Smith (profile functionality)
 """
 
 from .decorators import allowed_users
@@ -175,7 +176,10 @@ def registerPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Only let a user see profile if logged in (done by Lucas)
+"""
+    Authors: Lucas Smith
+    Description: Profile page with completed tasks
+"""
 @login_required(login_url='/login')
 def userProfile(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
@@ -189,6 +193,10 @@ def userProfile(request):
     return render(request, 'base/profile.html', context)
 
 
+"""
+    Authors: Lucas Smith
+    Description: Edit profile page
+"""
 @login_required(login_url='/login')
 def editProfile(request):
     if request.method == 'POST':

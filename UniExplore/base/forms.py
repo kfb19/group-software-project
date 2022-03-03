@@ -2,6 +2,7 @@
 Authors:
     - Michael Hills
     - Kate Belson
+    - Lucas Smith
 """
 
 from django import forms
@@ -42,7 +43,7 @@ class ProfileForm(ModelForm):
         fields = '__all__'
 
 
-# Form for updating profile
+# Forms for updating profile (Lucas)
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField
 

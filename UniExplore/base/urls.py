@@ -5,6 +5,7 @@ Authors:
     - Michael Hills
     - Conor Behard Roberts
     - Tomas Premoli
+    - Lucas Smith
 """
 
 from django.urls import path
@@ -13,7 +14,7 @@ from . import views
 
 urlpatterns = [
 
-    # Author: Michael Hills
+    # Author: Michael Hills, Lucas Smith
     path('', views.home, name="home"),
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
