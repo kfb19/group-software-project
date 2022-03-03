@@ -35,6 +35,11 @@ To create an admin account:
 
     python manage.py createsuperuser
     
+To add a challange:
+    
+    - Add a user
+    - In the admin page add to a group called game_master
+    
 ## Authors
 
 - Conor Behard Roberts
