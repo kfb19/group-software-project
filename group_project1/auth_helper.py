@@ -29,6 +29,7 @@ def get_msal_app(cache=None):
         token_cache=cache)
     return auth_app
 
+
 # Method to generate a sign-in flow
 
 
@@ -37,6 +38,7 @@ def get_sign_in_flow():
     return auth_app.initiate_auth_code_flow(
         settings['scopes'],
         redirect_uri=settings['redirect'])
+
 
 # Method to exchange auth code for access token
 
@@ -59,7 +61,8 @@ def store_user(request, user):
             'is_authenticated': True,
             'name': user['displayName'],
             'email': user['mail'] if (user['mail'] is not None) else user['userPrincipalName'],
-            'timeZone': user['mailboxSettings']['timeZone'] if (user['mailboxSettings']['timeZone'] is not None) else 'UTC'
+            'timeZone': user['mailboxSettings']['timeZone'] if (
+                        user['mailboxSettings']['timeZone'] is not None) else 'UTC'
         }
     except Exception as e:
         print(e)

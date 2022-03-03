@@ -1,25 +1,22 @@
 {% extends 'base.html' %}
 
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>Homepage</title>  
-</head>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+</head>
 <Style>
-    
+
 </Style>
 
 <head>
     <title>Homepage</title>
 </head>
-    
-
 
 
 <h1>Home Template</h1>
 
-    
 
 {% block filter %}
 
@@ -33,22 +30,19 @@
     <a href="{% url 'createChallenge' %}">Add Challenge</a>
     <hr>
     {% for challenge in challenges %}
-        <div class="challenge">
-            <p><a href="{% url 'challengeResponses' challenge.id%}">{{challenge.name}} </a><small>{{challenge.created | timesince}} ago</small></p>
-            <small><a href="{% url 'createResponse' challenge.id %}">Complete Challenge</a></small><br>
-            <small>Points: {{challenge.points}}</small><br>
-            <small>{{challenge.description}}</small><br>
+    <div class="challenge">
+        <p><a href="{% url 'challengeResponses' challenge.id%}">{{challenge.name}} </a><small>{{challenge.created |
+            timesince}} ago</small></p>
+        <small><a href="{% url 'createResponse' challenge.id %}">Complete Challenge</a></small><br>
+        <small>Points: {{challenge.points}}</small><br>
+        <small>{{challenge.description}}</small><br>
 
 
-                <hr>
-        </div>
+        <hr>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}
-
-
-
-    
 
 
 </div>

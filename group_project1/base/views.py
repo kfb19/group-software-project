@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-
 from .forms import ChallengeForm, UserRegisterForm, ResponseForm, UserUpdateForm, ProfileUpdateForm
 from .models import Category, Challenges, Responses, Profile
 from django.db.models import Q
@@ -169,6 +168,7 @@ def userProfile(request):
 
     return render(request, 'base/profile.html', context)
 
+
 @login_required(login_url='/login')
 def editProfile(request):
     if request.method == 'POST':
@@ -194,9 +194,9 @@ def editProfile(request):
 
 
 # See another user's profile
-#def profile(request, username):
- #   person = User.objects.get(username=username)
-  #  return render(request, 'base/profile.html', {"person": person})
+# def profile(request, username):
+#   person = User.objects.get(username=username)
+#  return render(request, 'base/profile.html', {"person": person})
 
 
 # Create challenge

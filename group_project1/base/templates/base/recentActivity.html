@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>My Responses</title>  
-</head>  
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Responses</title>
+</head>
 
 
 {% block filter %}
 
 {% include 'sidebar.html' %}
-    
-{% endblock %}
 
+{% endblock %}
 
 
 {% block content %}
@@ -23,23 +21,22 @@
 
 <div>
     {% for response in responses %}
-        <div class="challenge">
-            <h5><a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small></h5>
-            <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
-            
-            <small>{{response.description}} </small> <br>
+    <div class="challenge">
+        <h5><a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small>
+        </h5>
+        <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
+
+        <small>{{response.description}} </small> <br>
 
 
-            <hr>
-        </div>
+        <hr>
+    </div>
     {% endfor %}
 </div>
 
 {% endblock %}
 
 </body>
-
-
 
 
 </html>
