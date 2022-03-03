@@ -29,6 +29,46 @@
 
 {% block filter %}
 
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Quicksand');
+    
+    *, body {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 400;
+    }
+    
+    html, body {
+        height: 100%;
+        background-color: #177442;
+        overflow: visible;
+        text-align: left;
+        color: #fff;
+    }
+
+    h1 {
+        color: #fff;
+        text-align: left;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    a {
+        color: #fff;
+        text-align: left;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    hr {
+        border: 1px solid #fff;
+        width: 100%;
+        margin-left:0;
+    }
+      
+</style>
+
 {% include 'sidebar.html' %}
 
 {% endblock %}
@@ -38,6 +78,8 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
+
+    
 
 <div class="challenges">
 
