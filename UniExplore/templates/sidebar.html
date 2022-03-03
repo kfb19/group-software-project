@@ -1,7 +1,69 @@
-<!--Written by Michael Hills-->
-<div class="options">
+<!--Written by Michael Hills and Kate Belson-->
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+</head>  
+
+<!--Written by Kate Belson-->
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Quicksand');
     
-    <div>
+    *, body {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 400;
+    }
+    
+    html, body {
+        height: 100%;
+        background-color: #177442;
+        overflow: visible;
+        text-align: left;
+        color: #fff;
+    }
+
+    h1 {
+        color: #fff;
+        text-align: left;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    a {
+        color: #fff;
+        text-align: left;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    hr {
+        border: 1px solid #fff;
+        width: 100%;
+        margin-left:0;
+    }
+
+    .all a {
+        color: #BBEBA6;
+        text-align: left;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .other-pages a {
+        color: #BBEBA6;
+        text-align: left;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+      
+</style>
+
+<div class="options">
+    <div class="all">
         <a href = "{% url 'home' %}">All</a>
     </div>
     {% for category in categories %}
@@ -9,7 +71,7 @@
         <a href = "{% url 'home' %}?q={{category.name}} ">{{category}}</a>
     </div>
     {% endfor %}
-    
+    <div class="other-pages">
     <hr>
     <br>
     <a href= "{% url 'myResponses' %}">Completed Challenges</a>
@@ -19,5 +81,6 @@
     <hr>
     <br>
     <a href = "{% url 'leaderboard' %}">Leaderboard</a>
+</div>
     
 </div >
