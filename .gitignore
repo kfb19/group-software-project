@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 *.xml
 *.iml
-/group_project1/oauth_settings.yml
+oauth_settings.yml
