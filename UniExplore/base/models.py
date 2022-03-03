@@ -9,11 +9,14 @@ from axes.models import AccessAttempt
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# Model for a user profile (Michael Hills)
+# Model for a user profile (Michael Hills, Lucas Smith)
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     points = models.IntegerField(default=0, null=True)
+    bio = models.CharField(default="No bio set.", max_length=200)
+    university = models.CharField(default="No university set.", max_length=200)  # TODO: Dropdown for available unis?
+    picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to='profile_pictures')
 
     def __str__(self) -> str:
         return self.name

@@ -1,12 +1,18 @@
+<!DOCTYPE html>
 <!--
     Authors:
         - Michael Hills
 -->
-<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
 
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
+    {% if title %}
+    <title>UniExplore - {{ title }}</title>
+    {% else %}
+    <title>UniExplore</title>
+    {% endif %}
+
     <title>Homepage</title>  
     <style>
         .wrapper{  
@@ -40,7 +46,7 @@
 
 {% if request.user.is_authenticated %}
 
-<p>Hello {{request.user}}</p>
+<p>Hello <a href="/profile">{{request.user}}</a></p>
 <a href="{% url 'logout' %}">Logout</a>
 <hr>
 

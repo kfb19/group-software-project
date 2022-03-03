@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('base', '0006_remove_challenges_likes'),
@@ -18,7 +17,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('description', models.TextField()),
-                ('challenge', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='base.challenges')),
+                ('challenge',
+                 models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='base.challenges')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

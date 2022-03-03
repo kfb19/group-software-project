@@ -1,20 +1,29 @@
+from django.conf import settings
+from django.conf.urls.static import static
 """
 Authors: 
     - Michael Hills
     - Conor Behard Roberts
     - Tomas Premoli
+    - Lucas Smith
 """
 
 from django.urls import path
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from . import views
+
 urlpatterns = [
 
-    # Author: Michael Hills
+    # Author: Michael Hills, Lucas Smith
     path('', views.home, name="home"),
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
     path('logout/', views.logoutUser, name='logout'),
+    path('create-challenge/', views.createChallenge, name='createChallenge'),
+    path('create-response/<int:pk>/', views.createResponse, name='createResponse'),
+    path('recent-activity/', views.recentActivity, name='recentActivity'),
+    path('challenge-responses/<int:pk>', views.challengeResponses, name='challengeResponses'),
+    path('userResponses/<int:pk>', views.userResponses, name='userResponses'),
     path('create-challenge/', views.createChallenge,name='createChallenge'),
     path('create-response/<int:pk>/',views.createResponse,name='createResponse'),
     path('recent-activity/',views.recentActivity,name='recentActivity'),
@@ -24,11 +33,15 @@ urlpatterns = [
     path('leaderboard/',views.leaderboard,name='leaderboard'),
     path('my-responses/', views.myResponses, name='myResponses'),
 
+    # Author: Lucas Smith
+    path('profile/', views.userProfile, name='profile'),
+    path('profile_edit/', views.editProfile, name='editProfile'),
+
     # Author: Tomas Premoli
     path('profile/',views.userProfile,name='profile'),
 
     # Author: Conor Behard Roberts
-    # Description: urls for password resetting 
+    # Description: urls for password resetting
     path('reset_password/', views.password_reset_request, name='password_reset'),
     path(
         'reset_password/done/',
@@ -54,3 +67,6 @@ urlpatterns = [
 
 ]
 
+# Need to change this before final deployment as django recommends to do this another way
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

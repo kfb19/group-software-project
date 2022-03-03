@@ -1,9 +1,10 @@
 """
-Authors: 
+Authors:
     - Michael Hills
     - Conor Behard Roberts
     - Jack Purkiss
     - Kate Belson (some edits)
+    - Lucas Smith (profile functionality)
 """
 
 from .decorators import allowed_users
@@ -17,15 +18,25 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+
+from .forms import ChallengeForm, UserRegisterForm, ResponseForm, UserUpdateForm, ProfileUpdateForm
+from .models import Category, Challenges, Responses, Profile
 from django.core.mail import EmailMessage, BadHeaderError
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.core.mail import BadHeaderError
+from django.contrib.auth.forms import PasswordResetForm, UserChangeForm
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.urls import reverse
 import datetime
+from django.core.mail import EmailMessage
+from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
 from graph_helper import *
 import json
 
@@ -103,12 +114,12 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
+# Logout user
 """
     Authors: Michael Hills
     Description: Function to log the user out 
 """
 def logoutUser(request):
-
     logout(request)
     return redirect('home')
 
@@ -165,14 +176,55 @@ def registerPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-
 """
-    Authors: Michael Hills 
-    Description: Only let a user see profile if logged in
+    Authors: Lucas Smith
+    Description: Profile page with completed tasks
 """
 @login_required(login_url='/login')
 def userProfile(request):
-    return render(request, 'base/profile.html', {})
+    responses = Responses.objects.filter(user=request.user).order_by('-created')
+
+    categories = Category.objects.all()
+    context = {
+        'responses': responses,
+        'categories': categories
+    }
+
+    return render(request, 'base/profile.html', context)
+
+
+"""
+    Authors: Lucas Smith
+    Description: Edit profile page
+"""
+@login_required(login_url='/login')
+def editProfile(request):
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+
+            messages.success(request, f'Your account has been updated successfully.')
+            return redirect('profile')
+
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+    return render(request, 'base/profile_edit.html', context)
+
+
+# See another user's profile
+# def profile(request, username):
+#   person = User.objects.get(username=username)
+#  return render(request, 'base/profile.html', {"person": person})
 
 
 """
@@ -215,7 +267,7 @@ def createResponse(request, pk):
             obj.challenge = challenge
 
             obj.save()
-            
+
             profile = request.user.profile
             profile.points += challenge.points
             profile.save()
@@ -241,6 +293,10 @@ def leaderboard(request):
     Description: Converts timedelta object into a readable string
 """
 def strfdelta_round(tdelta, round_period='second'):
+    """timedelta to string,  use for measure running time
+    attend period from days downto smaller period, round to minimum period
+    omit zero value period
+    """
     period_names = ('day', 'hour', 'minute', 'second', 'millisecond')
     if round_period not in period_names:
         raise Exception(f'round_period "{round_period}" invalid, should be one of {",".join(period_names)}')
@@ -400,33 +456,33 @@ def userResponses(request, pk):
 """
 @login_required(login_url='/login')
 def likeResponse(request):
-    
+
     # Get the response that has been liked
-    
+
     if request.method == 'POST':
         response_id = request.POST.get('response_id')
         response = Responses.objects.get(id=response_id)
 
         profile = response.user.profile
-      
+
         # If user has already liked the response
         if request.user in response.liked.all():
             response.liked.remove(request.user)
             profile.points -= 1
-            
+
         else:
             response.liked.add(request.user)
             profile.points += 1
 
         profile.save()
-            
+
 
         like, created = Likes.objects.get_or_create(user = request.user, response_id = response_id)
 
         # Change content of button based on if it is already liked
         if not created:
             if like.value == 'like':
-                
+
                 like.value = 'Unlike'
             else:
                 like.value = 'Like'

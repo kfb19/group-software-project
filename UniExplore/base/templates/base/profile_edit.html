@@ -1,0 +1,47 @@
+<!--
+    Authors:
+        - Lucas Smith
+-->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit profile</title>
+</head>
+
+<body>
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Edit Profile</h1>
+<br/><br/>
+
+<div class="form-group">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            {{ user_form|crispy }}
+            {{ profile_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+</body>
+
+
+</html>
