@@ -19,8 +19,6 @@ urlpatterns = [
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
     path('logout/', views.logoutUser, name='logout'),
-    path('profile/', views.userProfile, name='profile'),
-    path('profile_edit/', views.editProfile, name='editProfile'),
     path('create-challenge/', views.createChallenge, name='createChallenge'),
     path('create-response/<int:pk>/', views.createResponse, name='createResponse'),
     path('recent-activity/', views.recentActivity, name='recentActivity'),
@@ -34,6 +32,10 @@ urlpatterns = [
     path('likes/', views.likeResponse, name='like-post'),
     path('leaderboard/',views.leaderboard,name='leaderboard'),
     path('my-responses/', views.myResponses, name='myResponses'),
+
+    # Author: Lucas Smith
+    path('profile/', views.userProfile, name='profile'),
+    path('profile_edit/', views.editProfile, name='editProfile'),
 
     # Author: Tomas Premoli
     path('profile/',views.userProfile,name='profile'),
