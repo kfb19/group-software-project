@@ -1,0 +1,11 @@
+<!--Written by Michael Hills-->
+<form action = "{% url 'like-post' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden"  name = 'response_id' value = "{{response.id}}"> 
+    {% if request.user not in response.liked.all %}
+        <button type="submit">Like</button>
+    {% else %}
+        <button type="submit">Unlike</button>
+    {% endif %}
+    <strong>{{response.liked.all.count}} Likes</strong>
+</form>

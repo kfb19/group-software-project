@@ -1,45 +1,63 @@
-# group-software-project
-Prerequisites:
-  
-  pip install django
+# UniExplore
 
-  pip install folium
+## Introduction
 
-  pip install django-axes
+UniExplore is an application designed to help students explore their university and connect with their peers. Students can complete challenges at various locations across campus, see what their classmates did for those challenges, and like the responses of others.
 
-  pip install python-decouple
+## Prerequisites:
+In the root directory run:
 
-  pip install msal
-  
-  pip install PyYAML
+    pip install -r requirements.txt
 
-  pip install python-dateutil
+    (plus these, sorry, will fix in my next PR - Lucas)
+    pip install pillow
+    pip install django-crispy-forms
 
-  pip install pillow
+## Getting Started
 
-  pip install django-crispy-forms
+Make sure you are in the UniExplore directory:
 
-For testing:
-
-  pip install coverage
-
-  pip install flake8
-
-In group_project1 folder 
-
-run:
+    cd UniExplore
     
+Then run:
+
     python manage.py makemigrations
-
-then:
     
+Then run:
+
     python manage.py migrate
-
-
-To run app:
-   
-    python manage.py runserver
-
-If you lock yourself out, do:
     
+Then, to run the application:
+
+    python manage.py runserver
+    
+If you lock yourself out, do:
+
     python manage.py axes_reset
+    
+To create an admin account:
+
+    python manage.py createsuperuser
+    
+## Authors
+
+- Conor Behard Roberts
+- Kate Belson
+- Michael Hills
+- Tomas Premoli
+- Jack Purkiss
+- Lucas Smith
+
+## Handle
+
+https://github.com/ExeterTeam25/group-software-project
+
+## Publish Date
+
+- Version 0.0.1 is currently in development.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+Please look in the LICENSE file for more information.

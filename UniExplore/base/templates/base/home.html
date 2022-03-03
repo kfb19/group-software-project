@@ -1,0 +1,325 @@
+<!--
+    Authors:
+        - Michael Hills
+        - Tomas Premoli
+        - Kate Belson
+-->
+
+{% extends 'base.html' %}
+
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Homepage</title>  
+</head>  
+
+
+<head>
+    <title>Homepage</title>
+    
+
+</head>
+    
+
+
+
+<h1>Home Template</h1>
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+
+{% endblock %}
+{% block content %}
+
+<!--Leafletjs css import-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
+<div class="challenges">
+
+
+    {% csrf_token %}
+        
+        <div id="displaybox">
+            <div id="map"></div>
+            <style>
+                #map { height: 500px; width: 1000px }
+            </style>
+            <button id="devModeSwitch">Enable spoof mode</button>
+        </div>
+
+
+    {%for group in request.user.groups.all %}
+        {%if group.name == 'game_master' %}
+            <a href="{% url 'createChallenge' %}">Add Challenge</a>
+            <hr>
+        {% endif %}
+    {% endfor %}
+
+    <h3>In Range:</h3>
+    <div id = "available">
+        
+   
+    </div>
+
+    <h3>Not in Range:</h3>
+    <div id = "unavailable"> 
+        
+
+    </div>
+</div>
+<!--This is essentially a template that challenges will be written into
+    Author: Michael Hills-->
+<template id = "template">
+    <div class="challenge">
+            <p><a href= '{link1}'> {chalname} </a><small> {timesince} </small></p>
+            <small><a href= '{link2}'>{completeChal}</a></small><br>
+            <small>Points: {chalpoint}</small><br>
+            <small>{chaldes}</small><br>
+            <hr>
+    </div>
+</template>
+
+
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    /*
+        Authors: Tomas Premoli
+        Description: Starts userlocation scripts
+    */
+    function startLocator(map, marker=null) {
+        if (navigator.geolocation) {
+            // watchposition ties a method to every time the user's location changes;
+            // here it'll run determineChallenges, Which will update challenge list
+            function success (position){
+                usermarker.setLatLng([position.coords.latitude, position.coords.longitude]).addTo(map);
+
+                var addedLoc = position.coords.latitude + ", " +
+                position.coords.longitude +
+                " at " + position.timestamp;
+
+                console.log(addedLoc);
+
+                determineChallenges(position.coords.latitude, position.coords.longitude);
+            }
+
+            function error(err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            }
+
+            options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 5000
+            };
+            
+            // if there isn't already a user marker
+            if (marker == null){
+                {% load static %}
+                // Creating user marker to move it around with location
+                var userIcon = L.icon({
+                    iconUrl:        "{% static 'images/userMarker.png' %}",
+                    iconSize:       [25, 41], // size of the icon
+                    iconAnchor:     [12.5, 41], // point of the icon which will correspond to marker's location
+                    popupAnchor:    [0, -41], // point from which the popup should open relative to the iconAnchor
+                    shadowUrl:      "{% static 'images/userMarkerShadow.png' %}",
+                    shadowAnchor:   [7,25],
+                    shadowSize:     [25, 25]
+                });
+                
+                var usermarker = L.marker([0,0], {icon: userIcon});
+                usermarker.bindPopup("<b>You are here!</b>");
+                usermarker.addTo(map);
+            } 
+
+            // it'll run success if loc gotten, error, if not.
+            // Helpful to return watchID and usermarker if we need to use them
+            return [navigator.geolocation.watchPosition(success, error, options), usermarker];
+        } else {
+            console.log("User has declined geolocation access");
+        }
+    }
+
+    /*
+        Authors: Michael Hills
+        Description: Determines what challenges should be available for completion
+    */
+    function determineChallenges(lat, lon) {
+
+        // Available contains challenges close enough to complete
+        available = document.getElementById('available');
+
+        // notavail contains challenges too far to complete
+        notavail = document.getElementById('unavailable');
+
+        // Clear the tables
+        while (available.lastChild) {
+             available.removeChild(available.lastChild);
+        }
+
+        while (notavail.lastChild) {
+             notavail.removeChild(notavail.lastChild);
+        }
+       
+        // This loop will create a script for each challenge to update appropriately
+        {% for challenge in challenges %}
+
+            var x1 = lat;
+            var y1 = lon;
+
+            var x2 = {{challenge.lat}};
+            var y2 = {{challenge.long}};
+
+            // This is essentially filling in the html template from before with the challenge info
+            challenge = document.getElementById('template').innerHTML.replace('{chalname}', "{{challenge.name}}")
+                .replace('{timesince}',"{{challenge.created | timesince}}")
+                .replace('{link1}',"{% url 'challengeResponses' challenge.id%}")
+                .replace('{chalpoint}',"{{challenge.points}}")
+                .replace('{chaldes}',"{{challenge.description}}");
+
+            // If within the range, include the link and URL in the available challenges section
+            if (Math.hypot(x2 - x1, y2 - y1) <=0.001){
+                available.innerHTML += challenge.replace('{link2}',"{% url 'createResponse' challenge.id %}")
+                          .replace('{completeChal}', "Complete Challenge");;
+            }   // Else, remove that info and place in the unavailable challenges section
+            else{
+                notavail.innerHTML += challenge.replace('{link2}',"")
+                        .replace('{completeChal}', "");
+            }
+
+       {% endfor %}
+
+    }
+
+
+    /*
+        Authors: Tomas Premoli
+        Description: Loads all the challenges and map scripts
+    */
+    window.onload = function(){
+        map = mapgen('map');
+
+        // This loop writes the markers for the challenges in JavaScript which are then rendered by the map
+        // Can be extended to go to challenge page on click
+        {% for challenge in challenges %}
+            L.marker([ {{challenge.lat}}, {{challenge.long}} ],
+                {title:     "{{challenge.name}}", bubblingMouseEvents: true })
+                .bindPopup( "<b>{{challenge.name}}</b>" +
+                            "<br>{{challenge.description}}" ).addTo(map);
+        {% endfor %}
+
+        // Returns the watcher ID and user marker in an array of len 2
+        watcher = startLocator(map);
+
+        map.invalidateSize();
+
+        devModeToggle(map);
+    };
+
+     /*
+        Authors: Tomas Premoli
+        Description: Function responsible for enabling & disabling spoof mode
+    */
+    function devModeToggle(map){
+        // These are all dev mode loads
+        // This shouldn't render in the template when not a gamemaster/superuser
+        var button = document.getElementById('devModeSwitch');
+        var devModeOn = false;
+        button.addEventListener("click", function() {
+            if (devModeOn){
+                //returning to normal settings
+                map.off('click');
+                map.removeLayer(watcher[1]);
+                watcher = startLocator(map);
+                devModeOn = false;
+                button.innerHTML = "Enable spoof mode";
+            } else {
+                // Clearing geolocation watcher
+                navigator.geolocation.clearWatch(watcher[0]);
+
+                // Onclick for moving user marker
+                map.on('click', function(e){
+                    lat = e.latlng.lat;
+                    lon = e.latlng.lng;
+
+                    console.log("Lat: "+ lat + ", Lon:"+lon );
+
+                    // Set usermarker to clicked location
+                    watcher[1].setLatLng([lat, lon]).addTo(map);
+
+                    // Reload challenges
+                    determineChallenges(lat,lon);
+                });
+
+                devModeOn = true;
+                button.innerHTML = "Disable spoof mode";
+            }
+        });
+    }
+
+
+    /*
+        Authors: Tomas Premoli
+        Description:  Map generating function
+    */
+    function mapgen (divName){
+        // map border
+        var swest = L.latLng(50.729748, -3.520532),
+            neast = L.latLng(50.741780, -3.548116),
+            bounds = L.latLngBounds(swest, neast);
+    
+        var map = L.map(divName)
+        
+        map.invalidateSize();
+        
+        map.setView([50.735805, -3.533051], 15);
+    
+        // mapbox is also a good tileset for this
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            minZoom: 15,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    
+        // This draws a polygon around the playable area
+        var areamarker = [
+            [ // Exterior Ring
+                [90, -180],
+                [90, 180],
+                [-90, 180],
+                [-90, -180]
+            ], // Then holes (interior rings)
+            [ // No red in this square
+                [50.729748, -3.520532],
+                [50.729748, -3.548116],
+                [50.741780, -3.548116],
+                [50.741780, -3.520532]
+            ]
+        ];
+    
+        // adding polygon to map
+        L.polygon(areamarker, {color: "#ff2600", weight: 2, fillOpacity: 0.1, interactive: false}).addTo(map);
+    
+        map.setMaxBounds(map.getBounds());
+        
+        return map;
+    }
+    
+</script>
+
+    
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+   {% endblock %}
+
+</div>
+</html>
+

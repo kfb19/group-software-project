@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--Written by Michael Hills-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    {% if title %}
+    <title>UniExplore - {{ title }}</title>
+    {% else %}
+    <title>UniExplore</title>
+    {% endif %}
+
+    <style>
+        .wrapper{  
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+        }
+
+        .content{
+            width: 80%;
+        }
+    </style>
+</head>  
+{% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'UniExplore/style.css' %}">
+
+<body>
+<div class="app-title">
+    <h1>UniExplore</h1>
+</div>
+{% if messages %}
+{% for message in messages %}
+
+<div class="alert alert-{{message.tags}}">
+    {{message}}
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% if request.user.is_authenticated %}
+
+<p>Hello <a href="/profile">{{request.user}}</a></p>
+<a href="{% url 'logout' %}">Logout</a>
+<hr>
+
+
+{%else %}
+<a href="{% url 'login' %}">Login</a>
+<hr>
+
+
+{% endif %}
+
+<div class="wrapper">
+
+    <div class="options">
+
+        {% block filter %}
+        {% endblock %}
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+</div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</html>

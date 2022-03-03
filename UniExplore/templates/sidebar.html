@@ -1,0 +1,23 @@
+<!--Written by Michael Hills-->
+<div class="options">
+    
+    <div>
+        <a href = "{% url 'home' %}">All</a>
+    </div>
+    {% for category in categories %}
+    <div>
+        <a href = "{% url 'home' %}?q={{category.name}} ">{{category}}</a>
+    </div>
+    {% endfor %}
+    
+    <hr>
+    <br>
+    <a href="{% url 'profile' %}">Profile</a>
+    <hr>
+    <br>
+    <a href = "{% url 'recentActivity'%}">Recent Activity</a>
+    <hr>
+    <br>
+    <a href = "{% url 'leaderboard' %}">Leaderboard</a>
+
+</div >
