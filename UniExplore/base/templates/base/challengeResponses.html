@@ -31,7 +31,7 @@
 }
 
     #title {
-    color: rgb(0, 0, 0);
+    color: #fff;
     text-align: center;
     font-size: 40px;
     font-weight: 600;
@@ -70,6 +70,11 @@ small{
     font-weight: 600;
     margin-bottom: 5px;
 }
+
+#profile-pic {
+    float: left;
+    margin-right: 20px;
+}
 </style>
 
 <h1 id="title">{{challenge.name}}</h1>
@@ -77,6 +82,9 @@ small{
 <div>
     {% for response in responses %}
             <div class="challenge">
+                <div id="profile-pic"  style="float:left">
+                    <img class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
+                </div>
                 <p> <a href = "{% url 'userResponses' response.user.id %}">{{response.user.username}}</a></p>
                 <small>{{response.description}}</small> <br>
                 {% include 'like.html' %}

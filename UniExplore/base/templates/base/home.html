@@ -86,10 +86,18 @@
     margin-bottom: 5px;
 }
 
-.challenge a{
+.challenge #chalname{
     color: #177442;
     text-align: left;
     font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.challenge #completeChal{
+    color: #177442;
+    text-align: left;
+    font-size: 18px;
     font-weight: 600;
     margin-bottom: 5px;
 }
@@ -102,9 +110,24 @@ small{
     margin-bottom: 5px;
 }
 
+#createChal {
+    color: #177442;
+    background-color: #BBEBA6;
+    border: 3px solid #fff;
+    border-radius: 5px;
+    font-size: 24px;
+}
+
       
 </style>
-
+<template id = "template">
+    <div class="challenge">
+            <p><a href= '{link1}' id="chalname"> {chalname} </a><small> {timesince} </small></p>
+            <small><a href= '{link2}' id="completeChal">{completeChal}</a></small><br>
+            <small>Points: {chalpoint}</small><br>
+            <small>{chaldes}</small><br>
+    </div>
+</template>
 {% include 'sidebar.html' %}
 
 {% endblock %}
@@ -133,7 +156,7 @@ small{
 
     {%for group in request.user.groups.all %}
         {%if group.name == 'game_master' %}
-            <a href="{% url 'createChallenge' %}">Add Challenge</a>
+            <a href="{% url 'createChallenge' %}" id="createChal">Add Challenge</a>
             <hr>
         {% endif %}
     {% endfor %}
@@ -158,7 +181,6 @@ small{
             <small><a href= '{link2}'>{completeChal}</a></small><br>
             <small>Points: {chalpoint}</small><br>
             <small>{chaldes}</small><br>
-            <hr>
     </div>
 </template>
 

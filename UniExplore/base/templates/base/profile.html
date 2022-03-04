@@ -59,7 +59,7 @@
 }
 
 .challenge a{
-    color: rgb(0, 0, 0);
+    color: #177442;
     text-align: left;
     font-size: 24px;
     font-weight: 600;
@@ -101,7 +101,6 @@ small{
         <p><a href="{% url 'challengeResponses' response.challenge.id %}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small>
         </p>
         <small>{{response.description}}</small> <br>
-        <hr>
     </div>
     {% endfor %}
 </div>
