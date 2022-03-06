@@ -8,91 +8,97 @@
 {% extends 'base.html' %}
 
 <!--Written by Michael Hills-->
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>Leaderboard</title>  
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Leaderboard</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <style></style>
+  </head>
+  <body>
+    {% block filter %} {% include 'sidebar.html' %} {% endblock %} {% block
+    content %}
+
     <style>
-      
+      @import url("https://fonts.googleapis.com/css?family=Quicksand");
+
+      *,
+      body {
+        font-family: "Quicksand", sans-serif;
+        font-weight: 400;
+      }
+
+      #title {
+        color: #fff;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      th {
+        background-color: #177442;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      tr {
+        background-color: #bbeba6;
+        color: rgb(0, 0, 0);
+        font-size: 16px;
+        font-family: "Quicksand", sans-serif;
+      }
+
+      tr:hover {
+        color: #fff;
+        background-color: #177442;
+      }
     </style>
 
-</head>
-<body>
-  {% block filter %}
-  {% include 'sidebar.html' %}
-  {% endblock %}
-  
-  {% block content %}
-  
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Quicksand');
+    <h3 id="title">Leaderboard</h3>
+    <table id="table" class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Total points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in profiles %}
 
-    *, body {
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 400;
-    }
-    
-    #title {
-      color: #fff;
-      text-align: center;
-      font-size: 40px;
-      font-weight: 600;
-      margin-bottom: 20px;
-}
-
-
-    th{
-      background-color: #177442;
-      color: #fff;
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    tr{
-      background-color: #BBEBA6;
-      color: rgb(0, 0, 0);
-      font-size: 16px;
-      font-family: 'Quicksand', sans-serif;
-    }
-
-    tr:hover {color: #fff; background-color: #177442;}
-  </style>
-
-  <h3 id="title">Leaderboard</h3>
-  <table id = 'table' class="table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Username</th>
-        <th>Total points</th>
-      </tr>
-    </thead>
-    <tbody>
-     
-          {% for profile in profiles %}
-
-          <tr>
-              <td>{{forloop.counter}}</td>
-              <td>{{profile.user.username}}</td>
-              <td>{{profile.points}}</td>
-          </tr>
-          {% endfor %}
-      
-    </tbody>
-    
-  </table>
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td>{{profile.user.username}}</td>
+          <td>{{profile.points}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
     {% endblock %}
-</body>
-<script>
-    
-
-</script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
+  </body>
+  <script></script>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"
+  ></script>
 </html>
-

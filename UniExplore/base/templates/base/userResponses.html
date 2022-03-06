@@ -5,91 +5,85 @@
 -->
 
 {% extends 'base.html' %}
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
 
-<body>
-
-
-{% block filter %}
-
-{% include 'sidebar.html' %}
-    
-{% endblock %}
-
-
-
-{% block content %}
+  <body>
+    {% block filter %} {% include 'sidebar.html' %} {% endblock %} {% block
+    content %}
 
     <style>
-    @import url('https://fonts.googleapis.com/css?family=Quicksand');
+      @import url("https://fonts.googleapis.com/css?family=Quicksand");
 
-    *, body {
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 400;
-}
+      *,
+      body {
+        font-family: "Quicksand", sans-serif;
+        font-weight: 400;
+      }
 
-    #title {
-    color: rgb(0, 0, 0);
-    text-align: center;
-    font-size: 40px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-.challenge {
-    position: relative;
-    display: block;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    background-color: #BBEBA6;
-    border: 3px solid;
-    border-radius: 10px;
-}
+      #title {
+        color: rgb(0, 0, 0);
+        text-align: center;
+        font-size: 40px;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      .challenge {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        background-color: #bbeba6;
+        border: 3px solid;
+        border-radius: 10px;
+      }
 
-.challenge h5{
-    color: rgb(0, 0, 0);
-    text-align: left;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
+      .challenge h5 {
+        color: rgb(0, 0, 0);
+        text-align: left;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
 
-.challenge a{
-    color: rgb(0, 0, 0);
-    text-align: left;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
+      .challenge a {
+        color: rgb(0, 0, 0);
+        text-align: left;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
 
-small{
-    color: rgb(0, 0, 0);
-    text-align: left;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-</style>
+      small {
+        color: rgb(0, 0, 0);
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+    </style>
 
-<h1>{{user.username}}'s Completed Challenges</h1>
-<h4>Total Points: {{user.profile.points}}</h4>
+    <h1>{{user.username}}'s Completed Challenges</h1>
+    <h4>Total Points: {{user.profile.points}}</h4>
 
-<div>
-    {% for response in responses %}
-        <div class="challenge">
-            <p> <a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small></p>
-            <small>{{response.description}} </small> <br>
-            {% include 'like.html' %}
-        </div>
-    {% endfor %}
-</div>
+    <div>
+      {% for response in responses %}
+      <div class="challenge">
+        <p>
+          <a href="{% url 'challengeResponses' response.challenge.id%}"
+            >{{response.challenge.name}}</a
+          >
+          | <small>{{response.challenge.points}}</small>
+        </p>
+        <small>{{response.description}} </small> <br />
+        {% include 'like.html' %}
+      </div>
+      {% endfor %}
+    </div>
 
-{% endblock %}
-
-</body>
-
-
+    {% endblock %}
+  </body>
 </html>
