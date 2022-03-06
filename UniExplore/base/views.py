@@ -180,7 +180,7 @@ def registerPage(request):
                 else:
                     messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
                     return redirect('login')
-            messages.warning(request, "This username already exists")
+            messages.warning(request, "This username is taken")
             return redirect('login')    
     context = {'form': form}
     return render(request, 'base/login_register.html', context)
@@ -563,7 +563,7 @@ def callback(request):
                 email=user_details['mail']),
             name=user_details['displayName'])
         user = User.objects.get(email=user_details['mail'])
-        
+
     user.backend = 'django.contrib.auth.backends.ModelBackend'
     # Adds the user to the user group
     group = Group.objects.get(name='user')
