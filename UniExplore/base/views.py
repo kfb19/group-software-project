@@ -93,7 +93,7 @@ def loginPage(request):
 
     # Get info from html form
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        username = request.POST.get('username').lower().capitalize()
         password = request.POST.get('password')
 
         try:
@@ -134,7 +134,7 @@ def is_valid_email(email, valid_suffix):
 
 
 """
-    Authors: Michael Hills, Conor Behard
+    Authors: Michael Hills, Conor Behard Roberts
     Description: Function for user registration
 """
 def registerPage(request):
@@ -148,30 +148,34 @@ def registerPage(request):
         # Save form if it is valid
         if form.is_valid():
             email = form.cleaned_data.get('email')
-            username = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username').lower().capitalize()
+            try:
+                User.objects.get(username=username)
+            except BaseException:
+                if is_valid_email(email, 'exeter.ac.uk'):
+                    try:
+                        # Check to see if there is already a user with the same email registered
+                        User.objects.get(email=email)
+                    except BaseException:
+                        user = form.save()
+                        user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
 
-            if is_valid_email(email, 'exeter.ac.uk'):
-                try:
-                     # Check to see if there is already a user with the same email registered
-                    User.objects.get(email=email)
-                except BaseException:
-                    user = form.save()
-                    user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
+                        Profile.objects.create(
+                            user=user,
+                            name=username.lower().capitalize()
+                        )
 
-                    Profile.objects.create(
-                        user=user,
-                        name=user.username
-                 )
+                        login(request, user)
+                        messages.success(request, f'Account created for {username}!')
+                        return redirect('home')
 
-                    login(request, user)
-                    messages.success(request, f'Account created for {username}!')
-                    return redirect('home')
-
-                messages.warning(request, "A User with this email already exists")
-                return redirect('login')
-            else:
-                messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
-                return redirect('login')
+                    messages.warning(request, "A User with this email already exists")
+                    return redirect('login')
+                else:
+                    messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
+                    return redirect('login')
+            messages.warning(request, "This username already exists")
+            return redirect('login')    
     context = {'form': form}
     return render(request, 'base/login_register.html', context)
 
