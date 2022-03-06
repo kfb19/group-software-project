@@ -95,7 +95,7 @@ def loginPage(request):
 
     # Get info from html form
     if request.method == 'POST':
-        username = request.POST.get('username').lower().capitalize()
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
