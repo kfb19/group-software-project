@@ -28,9 +28,8 @@ class UserRegisterForm(UserCreationForm):
 class ChallengeForm(forms.ModelForm):
     class Meta:
         model = Challenges
-        fields = ['category','name','points','description','lat','long']
-        widgets = {'lat': forms.HiddenInput(), 'long':forms.HiddenInput}
-
+        fields = ['category', 'name', 'points', 'description', 'lat', 'long']
+        widgets = {'lat': forms.HiddenInput(), 'long': forms.HiddenInput}
 
 
 # Form for responding to a challenge (Michael Hills)

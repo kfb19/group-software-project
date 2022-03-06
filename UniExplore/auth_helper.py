@@ -70,7 +70,7 @@ def store_user(request, user):
             'name': user['displayName'],
             'email': user['mail'] if (user['mail'] is not None) else user['userPrincipalName'],
             'timeZone': user['mailboxSettings']['timeZone'] if (
-                        user['mailboxSettings']['timeZone'] is not None) else 'UTC'
+                user['mailboxSettings']['timeZone'] is not None) else 'UTC'
         }
     except Exception as e:
         print(e)

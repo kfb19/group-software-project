@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 '''Edits by Kate Belson'''
 """Django's command-line utility for administrative tasks."""
+
+
+
+
 import os
 import sys
-
-
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'UniExplore.settings')
