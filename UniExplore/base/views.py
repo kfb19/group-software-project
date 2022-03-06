@@ -18,7 +18,6 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
 from .forms import ChallengeForm, UserRegisterForm, ResponseForm, UserUpdateForm, ProfileUpdateForm
 from .models import Category, Challenges, Responses, Profile
 from django.core.mail import EmailMessage, BadHeaderError
@@ -26,19 +25,22 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.mail import BadHeaderError
-from django.contrib.auth.forms import PasswordResetForm, UserChangeForm
+from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.urls import reverse
-import datetime
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
 from graph_helper import *
+from django.contrib.auth.models import Group
+import datetime
+import random
 import json
+
 
 
 
@@ -149,6 +151,7 @@ def registerPage(request):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             username = form.cleaned_data.get('username').lower().capitalize()
+
             try:
                 User.objects.get(username=username)
             except BaseException:
@@ -162,9 +165,12 @@ def registerPage(request):
 
                         Profile.objects.create(
                             user=user,
-                            name=username.lower().capitalize()
+                            name=username,
                         )
-
+                        # Adds the user to the user group
+                        group = Group.objects.get(name='user')
+                        user.groups.add(group)
+                        
                         login(request, user)
                         messages.success(request, f'Account created for {username}!')
                         return redirect('home')
@@ -208,12 +214,16 @@ def editProfile(request):
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-
-            messages.success(request, f'Your account has been updated successfully.')
-            return redirect('profile')
-
+            username = user_form.cleaned_data.get('username').lower().capitalize()
+            try:
+                User.objects.get(username=username)
+            except BaseException:
+                user_form.save()
+                profile_form.save() 
+                messages.success(request, f'Your account has been updated successfully.')
+                return redirect('profile')
+            messages.warning(request, "This username already exists")
+            return redirect('profile')    
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
@@ -547,12 +557,16 @@ def callback(request):
         last_name = full_name[0]
         Profile.objects.create(
             user=User.objects.create_user(
-                username=first_name,
+                username=''.join(random.choice([chr(i) for i in range(ord('a'),ord('z'))]) for _ in range(10)),
                 first_name=first_name,
                 last_name=last_name,
                 email=user_details['mail']),
             name=user_details['displayName'])
         user = User.objects.get(email=user_details['mail'])
+        
     user.backend = 'django.contrib.auth.backends.ModelBackend'
+    # Adds the user to the user group
+    group = Group.objects.get(name='user')
+    user.groups.add(group)
     login(request, user)
     return HttpResponseRedirect(reverse("home"))
