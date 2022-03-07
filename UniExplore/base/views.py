@@ -18,7 +18,6 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
 from .forms import ChallengeForm, UserRegisterForm, ResponseForm, UserUpdateForm, ProfileUpdateForm
 from .models import Category, Challenges, Responses, Profile
 from django.core.mail import EmailMessage, BadHeaderError
@@ -26,26 +25,29 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.mail import BadHeaderError
-from django.contrib.auth.forms import PasswordResetForm, UserChangeForm
+from django.contrib.auth.forms import PasswordResetForm
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.urls import reverse
-import datetime
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
 from graph_helper import *
+from django.contrib.auth.models import Group
+import datetime
+import random
 import json
-
 
 
 """
     Authors: Conor Behard Roberts
     Description: Function to open and return a json file
 """
+
+
 def open_json_file(file_name):
     file = open(file_name)
     return json.load(file)
@@ -55,6 +57,8 @@ def open_json_file(file_name):
     Authors: Michael Hills
     Description: View for the main homepage
 """
+
+
 def home(request):
     categories = Category.objects.all()
 
@@ -70,8 +74,7 @@ def home(request):
     else:
         challenges = Challenges.objects.filter(Q(
             category__name__icontains=q)).order_by('-created')
-        #add locations to map
-
+        # add locations to map
 
         # Variables to pass to the database
     context = {'categories': categories, 'challenges': challenges}
@@ -79,11 +82,12 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-
 """
     Authors: Michael Hills
     Description: View for logging in
 """
+
+
 def loginPage(request):
 
     # Allows us to change the page based on if a user is logged in
@@ -119,6 +123,8 @@ def loginPage(request):
     Authors: Michael Hills
     Description: Function to log the user out 
 """
+
+
 def logoutUser(request):
     logout(request)
     return redirect('home')
@@ -128,15 +134,19 @@ def logoutUser(request):
     Authors: Conor Behard Roberts
     Description: Checks to see if an email is valid given a valid suffix
 """
+
+
 def is_valid_email(email, valid_suffix):
     ending = email.split('@')[1].lower()
     return valid_suffix.lower() == ending
 
 
 """
-    Authors: Michael Hills, Conor Behard
+    Authors: Michael Hills, Conor Behard Roberts
     Description: Function for user registration
 """
+
+
 def registerPage(request):
 
     # Getting form from forms.py
@@ -148,30 +158,38 @@ def registerPage(request):
         # Save form if it is valid
         if form.is_valid():
             email = form.cleaned_data.get('email')
-            username = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username').lower().capitalize()
 
-            if is_valid_email(email, 'exeter.ac.uk'):
-                try:
-                     # Check to see if there is already a user with the same email registered
-                    User.objects.get(email=email)
-                except BaseException:
-                    user = form.save()
-                    user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
+            try:
+                User.objects.get(username=username)
+            except BaseException:
+                if is_valid_email(email, 'exeter.ac.uk'):
+                    try:
+                        # Check to see if there is already a user with the same email registered
+                        User.objects.get(email=email)
+                    except BaseException:
+                        user = form.save()
+                        user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
 
-                    Profile.objects.create(
-                        user=user,
-                        name=user.username
-                 )
+                        Profile.objects.create(
+                            user=user,
+                            name=username,
+                        )
+                        # Adds the user to the user group
+                        group = Group.objects.get(name='user')
+                        user.groups.add(group)
 
-                    login(request, user)
-                    messages.success(request, f'Account created for {username}!')
-                    return redirect('home')
+                        login(request, user)
+                        messages.success(request, f'Account created for {username}!')
+                        return redirect('home')
 
-                messages.warning(request, "A User with this email already exists")
-                return redirect('login')
-            else:
-                messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
-                return redirect('login')
+                    messages.warning(request, "A User with this email already exists")
+                    return redirect('register')
+                else:
+                    messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
+                    return redirect('register')
+            messages.warning(request, "This username is taken")
+            return redirect('register')
     context = {'form': form}
     return render(request, 'base/login_register.html', context)
 
@@ -180,6 +198,8 @@ def registerPage(request):
     Authors: Lucas Smith
     Description: Profile page with completed tasks
 """
+
+
 @login_required(login_url='/login')
 def userProfile(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
@@ -197,6 +217,8 @@ def userProfile(request):
     Authors: Lucas Smith
     Description: Edit profile page
 """
+
+
 @login_required(login_url='/login')
 def editProfile(request):
     if request.method == 'POST':
@@ -204,12 +226,16 @@ def editProfile(request):
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-
-            messages.success(request, f'Your account has been updated successfully.')
+            username = user_form.cleaned_data.get('username').lower().capitalize()
+            try:
+                User.objects.get(username=username)
+            except BaseException:
+                user_form.save()
+                profile_form.save()
+                messages.success(request, f'Your account has been updated successfully.')
+                return redirect('profile')
+            messages.warning(request, "This username already exists")
             return redirect('profile')
-
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
@@ -231,6 +257,8 @@ def editProfile(request):
     Authors: Michael Hills, Jack Purkiss
     Description: Only allow game masters and developers to create challenge
 """
+
+
 @allowed_users(allowed_roles=["game_master", 'developer'])
 def createChallenge(request):
     categories = Category.objects.all()
@@ -238,14 +266,13 @@ def createChallenge(request):
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
 
-
         # If valid challenge, add to database
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
             obj.save()
             return redirect('home')
-    context = {'form': form, 'categories':categories}
+    context = {'form': form, 'categories': categories}
     return render(request, 'base/createChallenge.html', context)
 
 
@@ -253,6 +280,8 @@ def createChallenge(request):
     Authors: Michael Hills
     Description: View to complete a challenge 
 """
+
+
 @login_required(login_url='/login')
 def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
@@ -260,7 +289,7 @@ def createResponse(request, pk):
     form = ResponseForm()
     if request.method == 'POST':
         form = ResponseForm(request.POST)
-        #If valid response, add to database
+        # If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
@@ -272,26 +301,30 @@ def createResponse(request, pk):
             profile.points += challenge.points
             profile.save()
             return redirect('home')
-    context = {'form':form,'categories':categories}
-    return render(request,'base/createResponse.html',context)
+    context = {'form': form, 'categories': categories}
+    return render(request, 'base/createResponse.html', context)
 
 
 """
     Authors: Michael Hills
     Description: View of the leaderboard
 """
+
+
 def leaderboard(request):
 
-     categories = Category.objects.all()
-     profiles = Profile.objects.all().order_by('-points')
-     context = {'profiles':profiles,'categories':categories}
-     return render(request,'base/leaderboard.html',context)
+    categories = Category.objects.all()
+    profiles = Profile.objects.all().order_by('-points')
+    context = {'profiles': profiles, 'categories': categories}
+    return render(request, 'base/leaderboard.html', context)
 
 
 """
     Authors: Conor Behard Roberts
     Description: Converts timedelta object into a readable string
 """
+
+
 def strfdelta_round(tdelta, round_period='second'):
     """timedelta to string,  use for measure running time
     attend period from days downto smaller period, round to minimum period
@@ -325,6 +358,8 @@ def strfdelta_round(tdelta, round_period='second'):
     Authors: Conor Behard Roberts
     Description: When user is locked out add message and redirect to home page
 """
+
+
 def lockout(request, credentials, *args, **kwargs):
     try:
         username = request.POST.get("username")
@@ -366,6 +401,8 @@ def lockout(request, credentials, *args, **kwargs):
     Authors: Conor Behard Roberts
     Description: When a user request to change their password the email they send is checked to see if it exists within the user database
 """
+
+
 def password_reset_request(request):
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
@@ -402,58 +439,66 @@ def password_reset_request(request):
     Authors: Michael Hills
     Description: View to show the responses logged in user
 """
+
+
 @login_required(login_url='/login')
 def myResponses(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
 
     categories = Category.objects.all()
-    context = {'responses':responses,'categories':categories}
-    
-    return render(request,'base/myResponses.html',context)
+    context = {'responses': responses, 'categories': categories}
+
+    return render(request, 'base/myResponses.html', context)
 
 
 """
     Authors: Michael Hills
     Description: View to show all the responses to challenges
 """
+
+
 def recentActivity(request):
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
-    context = {'responses':responses, 'categories':categories}
+    context = {'responses': responses, 'categories': categories}
 
-    return render(request,'base/recentActivity.html',context)
+    return render(request, 'base/recentActivity.html', context)
 
 
 """
     Authors: Michael Hills
     Description: View to show the responses of a challenge
 """
+
+
 def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
-    responses = Responses.objects.filter(challenge = challenge).order_by('-created')
+    responses = Responses.objects.filter(challenge=challenge).order_by('-created')
     categories = Category.objects.all()
-    context = {'responses':responses, 'challenge':challenge, 'categories':categories}
-    return render(request,'base/challengeResponses.html',context)
-
+    context = {'responses': responses, 'challenge': challenge, 'categories': categories}
+    return render(request, 'base/challengeResponses.html', context)
 
 
 """
     Authors: Michael Hills
     Description: View to show the responses of a user
 """
+
+
 def userResponses(request, pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
     categories = Category.objects.all()
-    context = {'responses':responses,'user':user, 'categories':categories}
-    return render(request, 'base/userResponses.html',context)
-
+    context = {'responses': responses, 'user': user, 'categories': categories}
+    return render(request, 'base/userResponses.html', context)
 
 
 """
     Authors: Michael Hills
     Description: View to like a response to a challenge
 """
+
+
 @login_required(login_url='/login')
 def likeResponse(request):
 
@@ -476,8 +521,7 @@ def likeResponse(request):
 
         profile.save()
 
-
-        like, created = Likes.objects.get_or_create(user = request.user, response_id = response_id)
+        like, created = Likes.objects.get_or_create(user=request.user, response_id=response_id)
 
         # Change content of button based on if it is already liked
         if not created:
@@ -495,6 +539,8 @@ def likeResponse(request):
     Authors: Conor Behard Roberts
     Description: Function to sign the user in with Microsoft single sign on
 """
+
+
 def sign_in_sso(request):
     # Get the sign-in flow
     flow = get_sign_in_flow()
@@ -511,6 +557,8 @@ def sign_in_sso(request):
     Authors: Conor Behard Roberts
     Description: Function to sign the user out when having signed on with SSO
 """
+
+
 def sign_out_sso(request):
     # Clear out the user and token
     remove_user_and_token(request)
@@ -522,6 +570,8 @@ def sign_out_sso(request):
     Description: Function which is called once the user is authenticated by SSO and if 
                  successful logs the user in
 """
+
+
 def callback(request):
     # Make the token request
     result = get_token_from_code(request)
@@ -543,12 +593,16 @@ def callback(request):
         last_name = full_name[0]
         Profile.objects.create(
             user=User.objects.create_user(
-                username=first_name,
+                username=''.join(random.choice([chr(i) for i in range(ord('a'), ord('z'))]) for _ in range(10)),
                 first_name=first_name,
                 last_name=last_name,
                 email=user_details['mail']),
             name=user_details['displayName'])
         user = User.objects.get(email=user_details['mail'])
+
     user.backend = 'django.contrib.auth.backends.ModelBackend'
+    # Adds the user to the user group
+    group = Group.objects.get(name='user')
+    user.groups.add(group)
     login(request, user)
     return HttpResponseRedirect(reverse("home"))

@@ -24,13 +24,13 @@ urlpatterns = [
     path('recent-activity/', views.recentActivity, name='recentActivity'),
     path('challenge-responses/<int:pk>', views.challengeResponses, name='challengeResponses'),
     path('userResponses/<int:pk>', views.userResponses, name='userResponses'),
-    path('create-challenge/', views.createChallenge,name='createChallenge'),
-    path('create-response/<int:pk>/',views.createResponse,name='createResponse'),
-    path('recent-activity/',views.recentActivity,name='recentActivity'),
-    path('challenge-responses/<int:pk>',views.challengeResponses,name='challengeResponses'),
-    path('userResponses/<int:pk>',views.userResponses,name='userResponses'),
+    path('create-challenge/', views.createChallenge, name='createChallenge'),
+    path('create-response/<int:pk>/', views.createResponse, name='createResponse'),
+    path('recent-activity/', views.recentActivity, name='recentActivity'),
+    path('challenge-responses/<int:pk>', views.challengeResponses, name='challengeResponses'),
+    path('userResponses/<int:pk>', views.userResponses, name='userResponses'),
     path('likes/', views.likeResponse, name='like-post'),
-    path('leaderboard/',views.leaderboard,name='leaderboard'),
+    path('leaderboard/', views.leaderboard, name='leaderboard'),
     path('my-responses/', views.myResponses, name='myResponses'),
 
     # Author: Lucas Smith
@@ -38,7 +38,7 @@ urlpatterns = [
     path('profile_edit/', views.editProfile, name='editProfile'),
 
     # Author: Tomas Premoli
-    path('profile/',views.userProfile,name='profile'),
+    path('profile/', views.userProfile, name='profile'),
 
     # Author: Conor Behard Roberts
     # Description: urls for password resetting

@@ -3,6 +3,7 @@ Authors:
     - Michael Hills
     - Kate Belson
     - Lucas Smith
+    - Conor Behard Roberts
 """
 
 from django import forms
@@ -12,22 +13,23 @@ from django.forms import ModelForm
 from .models import Challenges, Responses, Profile
 
 
-# Form for user registrations (Michael Hills)
+# Form for user registrations (Michael Hills, Conor Behard Roberts)
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
 
 # Form for challenges to be added (Michael Hills)
 class ChallengeForm(forms.ModelForm):
     class Meta:
         model = Challenges
-        fields = ['category','name','points','description','lat','long']
-        widgets = {'lat': forms.HiddenInput(), 'long':forms.HiddenInput}
-
+        fields = ['category', 'name', 'points', 'description', 'lat', 'long']
+        widgets = {'lat': forms.HiddenInput(), 'long': forms.HiddenInput}
 
 
 # Form for responding to a challenge (Michael Hills)
@@ -43,16 +45,16 @@ class ProfileForm(ModelForm):
         fields = '__all__'
 
 
-# Forms for updating profile (Lucas)
+# Forms for updating profile (Lucas, Conor Behard Roberts)
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username']
 
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['name', 'bio', 'university', 'picture']
+        fields = ['bio', 'university', 'picture']

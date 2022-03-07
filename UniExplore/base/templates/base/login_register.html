@@ -210,7 +210,7 @@ h1 {
 }
 
 </style>
-{%if page == 'login' %}
+{%if page == 'login'%}
 
 {% if messages %}
 {% for message in messages %}
@@ -222,6 +222,7 @@ h1 {
 {% endfor %}
 
 {% endif %}
+
 <div></div>
     <div class="app-title">
         <h1>UniExplore</h1>
@@ -262,6 +263,17 @@ h1 {
 
 
 {% else %}
+
+{% if messages %}
+{% for message in messages %}
+
+<div class="alert alert-{{message.tags}}">
+    {{message}}
+</div>
+
+{% endfor %}
+
+{% endif %}
 
 <div>
     <div class="form">
