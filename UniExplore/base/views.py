@@ -184,12 +184,12 @@ def registerPage(request):
                         return redirect('home')
 
                     messages.warning(request, "A User with this email already exists")
-                    return redirect('login')
+                    return redirect('register')
                 else:
                     messages.warning(request, "Must sign up with an email ending in exeter.ac.uk")
-                    return redirect('login')
+                    return redirect('register')
             messages.warning(request, "This username is taken")
-            return redirect('login')
+            return redirect('register')
     context = {'form': form}
     return render(request, 'base/login_register.html', context)
 
