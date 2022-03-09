@@ -283,7 +283,7 @@ small{
                 .replace('{chaldes}',"{{challenge.description}}");
 
             // If within the range, include the link and URL in the available challenges section
-            if (Math.hypot(x2 - x1, y2 - y1) <=0.001){
+            if (Math.hypot(x2 - x1, y2 - y1) <= {{ settings.CHALLENGE_VALIDITY_DISTANCE }}){
                 available.innerHTML += challenge.replace('{link2}',"{% url 'createResponse' challenge.id %}")
                           .replace('{completeChal}', "Complete Challenge");;
             }   // Else, remove that info and place in the unavailable challenges section

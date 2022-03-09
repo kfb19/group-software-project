@@ -44,11 +44,14 @@ MAX_WEST = -3.548116
 MIN_ZOOM = 15
 MAX_ZOOM = 19
 
+# How close you have to be to complete a challenge
+CHALLENGE_VALIDITY_DISTANCE = 0.001
+
 # Should be in hex format
 BOUNDING_BOX_COLOR = '#ff2600'
 DRAW_BOUNDING_BOX = 'true'
 
-# These settings are available outside of the applcation
+# These settings are available within templates
 SETTINGS_EXPORT = [
     'EMAIL_EXTENSION',
     'MAX_SOUTH',
@@ -59,6 +62,7 @@ SETTINGS_EXPORT = [
     'MAX_ZOOM',
     'DRAW_BOUNDING_BOX',
     'BOUNDING_BOX_COLOR',
+    'CHALLENGE_VALIDITY_DISTANCE',
 ]
 
 
