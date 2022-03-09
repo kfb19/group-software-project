@@ -368,21 +368,28 @@ small{
         Description:  Map generating function
     */
     function mapgen (divName){
+        var maxSouth = {{ settings.MAX_SOUTH }};
+        var maxNorth = {{ settings.MAX_NORTH }};
+        var maxWest = {{ settings.MAX_WEST }};
+        var maxEast = {{ settings.MAX_EAST }};
+
         // map border
-        var swest = L.latLng(50.729748, -3.520532),
-            neast = L.latLng(50.741780, -3.548116),
+        var swest = L.latLng(maxSouth, maxWest),
+            neast = L.latLng(maxNorth, maxEast),
             bounds = L.latLngBounds(swest, neast);
     
         var map = L.map(divName)
         
         map.invalidateSize();
         
-        map.setView([50.735805, -3.533051], 15);
+        var center = [((maxSouth + maxNorth) / 2), ((maxWest + maxEast) / 2)];
+
+        map.setView(center, {{ settings.MIN_ZOOM }});
     
         // mapbox is also a good tileset for this
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            minZoom: 15,
+            maxZoom: {{ settings.MAX_ZOOM }},
+            minZoom: {{ settings.MIN_ZOOM }},
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
     
@@ -395,10 +402,10 @@ small{
                 [-90, -180]
             ], // Then holes (interior rings)
             [ // No red in this square
-                [50.729748, -3.520532],
-                [50.729748, -3.548116],
-                [50.741780, -3.548116],
-                [50.741780, -3.520532]
+                [maxSouth, maxWest],
+                [maxSouth, maxEast],
+                [maxNorth, maxEast],
+                [maxNorth, maxWest]
             ]
         ];
     
