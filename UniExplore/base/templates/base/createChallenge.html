@@ -161,116 +161,30 @@
         Description: Makes map work for location selecting
     */
     window.onload = function () {
-      map = mapgen("map");
+      var maxSouth = {{ settings.MAX_SOUTH }};
+      var maxNorth = {{ settings.MAX_NORTH }};
+      var maxWest = {{ settings.MAX_WEST }};
+      var maxEast = {{ settings.MAX_EAST }};
+      var minZoom = {{ settings.MIN_ZOOM }};
+      var maxZoom = {{ settings.MAX_ZOOM }};
+      var drawBox = {{ settings.DRAW_BOUNDING_BOX }};
+      var boxColor = "{{ settings.BOUNDING_BOX_COLOR }}";
+      map = mapgen('map', maxSouth, maxNorth, maxWest, maxEast, minZoom, maxZoom, drawBox, boxColor);
+
 
       var clickLocation = {};
 
       // Onclick for adding markers
-      map.on("click", function (e) {
-        lat = e.latlng.lat;
-        lon = e.latlng.lng;
-
-        console.log("Lat: " + lat + ", Lon:" + lon);
-
-        var maxSouth = {{ settings.MAX_SOUTH }};
-        var maxNorth = {{ settings.MAX_NORTH }};
-        var maxWest = {{ settings.MAX_WEST }};
-        var maxEast = {{ settings.MAX_EAST }};
-
-        var outOfRange = false;
-
-        if (lat < maxSouth){
-          lat = maxSouth;
-          outOfRange = true;
-        }
-        else if (lat > maxNorth){
-          lat = maxNorth;
-          outOfRange = true;
-        }
-
-        if (lon < maxWest){
-          lon = maxWest;
-          outOfRange = true;
-        }
-        else if (lon > maxEast){
-          lon = maxEast;
-          outOfRange = true;
-        }
-
-        // Clear existing marker
-        if (clickLocation != undefined) {
-          map.removeLayer(clickLocation);
-        }
-
-        // Add a marker to show where you clicked
-        clickLocation = L.marker([lat, lon]).addTo(map);
-
-        if (outOfRange)
-          clickLocation.bindPopup("Marker has been adjusted to map bounds").openPopup();
-
-        document.getElementById("id_lat").value = lat;
-        document.getElementById("id_long").value = lon;
+      map.on("click", function (e){ 
+        clickLocation = addChallengeMarker(e, map, maxSouth, maxNorth, maxWest, maxEast, clickLocation,
+                        document.getElementById("id_lat"), document.getElementById("id_long")); 
       });
 
-      map.invalidateSize();
-    };
-
-    /*
-        Authors: Tomas Premoli
-        Description:  Map generating function
-    */
-    function mapgen (divName){
-        var maxSouth = {{ settings.MAX_SOUTH }};
-        var maxNorth = {{ settings.MAX_NORTH }};
-        var maxWest = {{ settings.MAX_WEST }};
-        var maxEast = {{ settings.MAX_EAST }};
-
-        // map border
-        var swest = L.latLng(maxSouth, maxWest),
-            neast = L.latLng(maxNorth, maxEast),
-            bounds = L.latLngBounds(swest, neast);
-    
-        var map = L.map(divName)
-        
-        map.invalidateSize();
-        
-        var center = [((maxSouth + maxNorth) / 2), ((maxWest + maxEast) / 2)];
-
-        map.setView(center, {{ settings.MIN_ZOOM }});
-    
-        // mapbox is also a good tileset for this
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: {{ settings.MAX_ZOOM }},
-            minZoom: {{ settings.MIN_ZOOM }},
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-    
-        // This draws a polygon around the playable area
-        var areamarker = [
-            [ // Exterior Ring
-                [90, -180],
-                [90, 180],
-                [-90, 180],
-                [-90, -180]
-            ], // Then holes (interior rings)
-            [ // No red in this square
-                [maxSouth, maxWest],
-                [maxSouth, maxEast],
-                [maxNorth, maxEast],
-                [maxNorth, maxWest]
-            ]
-        ];
-    
-        // adding polygon to map
-        if ({{ settings.DRAW_BOUNDING_BOX }}){
-            L.polygon(areamarker, {color: "{{ settings.BOUNDING_BOX_COLOR }}", weight: 2, fillOpacity: 0.1, interactive: false}).addTo(map);
-        }
-        
-        map.setMaxBounds(map.getBounds());
-        
-        return map;
     }
   </script>
+
+  {% load static %}
+<script src="{% static '/scripts/mapfuncs.js' %}"></script>
 
   <!-- Make sure you put this AFTER Leaflet's CSS -->
   <script
