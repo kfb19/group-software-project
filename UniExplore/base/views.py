@@ -34,6 +34,7 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
+from django.conf import settings
 from auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token
 from graph_helper import *
 from django.contrib.auth.models import Group
@@ -163,7 +164,7 @@ def registerPage(request):
             try:
                 User.objects.get(username=username)
             except BaseException:
-                if is_valid_email(email, 'exeter.ac.uk'):
+                if is_valid_email(email, settings.EMAIL_EXTENSION):
                     try:
                         # Check to see if there is already a user with the same email registered
                         User.objects.get(email=email)
