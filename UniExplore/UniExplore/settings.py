@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 import datetime as dt
+from pickle import TRUE
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,6 +30,40 @@ SECRET_KEY = 'django-insecure-vwg%snc#1k1rt2pi_6=k2%xvi(w2bbbmd3uwez-$#&dscpxl#)
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+
+# These variables are settings variables for modifying aspects of the application
+# Email extension:
+EMAIL_EXTENSION = "exeter.ac.uk"
+
+# Map settings
+MAX_SOUTH = 50.729748
+MAX_NORTH = 50.741780
+MAX_EAST = -3.520532
+MAX_WEST = -3.548116
+
+MIN_ZOOM = 15
+MAX_ZOOM = 19
+
+# How close you have to be to complete a challenge
+CHALLENGE_VALIDITY_DISTANCE = 0.001
+
+# Should be in hex format
+BOUNDING_BOX_COLOR = '#ff2600'
+DRAW_BOUNDING_BOX = 'true'
+
+# These settings are available within templates
+SETTINGS_EXPORT = [
+    'EMAIL_EXTENSION',
+    'MAX_SOUTH',
+    'MAX_NORTH',
+    'MAX_WEST',
+    'MAX_EAST',
+    'MIN_ZOOM',
+    'MAX_ZOOM',
+    'DRAW_BOUNDING_BOX',
+    'BOUNDING_BOX_COLOR',
+    'CHALLENGE_VALIDITY_DISTANCE',
+]
 
 
 # Application definition
@@ -69,6 +104,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django_settings_export.settings_export',
             ],
         },
     },

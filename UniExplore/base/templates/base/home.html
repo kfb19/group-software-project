@@ -283,7 +283,7 @@ small{
                 .replace('{chaldes}',"{{challenge.description}}");
 
             // If within the range, include the link and URL in the available challenges section
-            if (Math.hypot(x2 - x1, y2 - y1) <=0.001){
+            if (Math.hypot(x2 - x1, y2 - y1) <= {{ settings.CHALLENGE_VALIDITY_DISTANCE }}){
                 available.innerHTML += challenge.replace('{link2}',"{% url 'createResponse' challenge.id %}")
                           .replace('{completeChal}', "Complete Challenge");;
             }   // Else, remove that info and place in the unavailable challenges section
@@ -368,21 +368,28 @@ small{
         Description:  Map generating function
     */
     function mapgen (divName){
+        var maxSouth = {{ settings.MAX_SOUTH }};
+        var maxNorth = {{ settings.MAX_NORTH }};
+        var maxWest = {{ settings.MAX_WEST }};
+        var maxEast = {{ settings.MAX_EAST }};
+
         // map border
-        var swest = L.latLng(50.729748, -3.520532),
-            neast = L.latLng(50.741780, -3.548116),
+        var swest = L.latLng(maxSouth, maxWest),
+            neast = L.latLng(maxNorth, maxEast),
             bounds = L.latLngBounds(swest, neast);
     
         var map = L.map(divName)
         
         map.invalidateSize();
         
-        map.setView([50.735805, -3.533051], 15);
+        var center = [((maxSouth + maxNorth) / 2), ((maxWest + maxEast) / 2)];
+
+        map.setView(center, {{ settings.MIN_ZOOM }});
     
         // mapbox is also a good tileset for this
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            minZoom: 15,
+            maxZoom: {{ settings.MAX_ZOOM }},
+            minZoom: {{ settings.MIN_ZOOM }},
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
     
@@ -395,17 +402,19 @@ small{
                 [-90, -180]
             ], // Then holes (interior rings)
             [ // No red in this square
-                [50.729748, -3.520532],
-                [50.729748, -3.548116],
-                [50.741780, -3.548116],
-                [50.741780, -3.520532]
+                [maxSouth, maxWest],
+                [maxSouth, maxEast],
+                [maxNorth, maxEast],
+                [maxNorth, maxWest]
             ]
         ];
     
         // adding polygon to map
-        L.polygon(areamarker, {color: "#ff2600", weight: 2, fillOpacity: 0.1, interactive: false}).addTo(map);
-    
-        map.setMaxBounds(map.getBounds());
+        if ({{ settings.DRAW_BOUNDING_BOX }}){
+            L.polygon(areamarker, {color: "{{ settings.BOUNDING_BOX_COLOR }}", weight: 2, fillOpacity: 0.1, interactive: false}).addTo(map);
+        }
+        
+        map.setMaxBounds(bounds);
         
         return map;
     }
