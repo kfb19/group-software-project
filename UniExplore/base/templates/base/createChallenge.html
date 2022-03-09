@@ -20,8 +20,8 @@
     crossorigin="anonymous"
   />
 
-  {% block filter %} {% include 'sidebar.html' %} {% endblock %} {% block
-  content %}
+  {% block filter %} {% include 'sidebar.html' %} {% endblock %} 
+  {% block content %}
 
   <!--Leafletjs css import-->
   <link
@@ -172,6 +172,31 @@
 
         console.log("Lat: " + lat + ", Lon:" + lon);
 
+        var maxSouth = {{ settings.MAX_SOUTH }};
+        var maxNorth = {{ settings.MAX_NORTH }};
+        var maxWest = {{ settings.MAX_WEST }};
+        var maxEast = {{ settings.MAX_EAST }};
+
+        var outOfRange = false;
+
+        if (lat < maxSouth){
+          lat = maxSouth;
+          outOfRange = true;
+        }
+        else if (lat > maxNorth){
+          lat = maxNorth;
+          outOfRange = true;
+        }
+
+        if (lon < maxWest){
+          lon = maxWest;
+          outOfRange = true;
+        }
+        else if (lon > maxEast){
+          lon = maxEast;
+          outOfRange = true;
+        }
+
         // Clear existing marker
         if (clickLocation != undefined) {
           map.removeLayer(clickLocation);
@@ -179,6 +204,9 @@
 
         // Add a marker to show where you clicked
         clickLocation = L.marker([lat, lon]).addTo(map);
+
+        if (outOfRange)
+          clickLocation.bindPopup("Marker has been adjusted to map bounds").openPopup();
 
         document.getElementById("id_lat").value = lat;
         document.getElementById("id_long").value = lon;
@@ -189,57 +217,58 @@
 
     /*
         Authors: Tomas Premoli
-        Description: Map generator
+        Description:  Map generating function
     */
-    function mapgen(divName) {
-      // map border
-      var swest = L.latLng(50.729748, -3.520532),
-        neast = L.latLng(50.74178, -3.548116),
-        bounds = L.latLngBounds(swest, neast);
+    function mapgen (divName){
+        var maxSouth = {{ settings.MAX_SOUTH }};
+        var maxNorth = {{ settings.MAX_NORTH }};
+        var maxWest = {{ settings.MAX_WEST }};
+        var maxEast = {{ settings.MAX_EAST }};
 
-      var map = L.map(divName);
+        // map border
+        var swest = L.latLng(maxSouth, maxWest),
+            neast = L.latLng(maxNorth, maxEast),
+            bounds = L.latLngBounds(swest, neast);
+    
+        var map = L.map(divName)
+        
+        map.invalidateSize();
+        
+        var center = [((maxSouth + maxNorth) / 2), ((maxWest + maxEast) / 2)];
 
-      map.invalidateSize();
-
-      map.setView([50.735805, -3.533051], 15);
-
-      // mapbox is also a good tileset for this
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        minZoom: 15,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      // This draws a polygon around the playable area
-      var areamarker = [
-        [
-          // Exterior Ring
-          [90, -180],
-          [90, 180],
-          [-90, 180],
-          [-90, -180],
-        ], // Then holes (interior rings)
-        [
-          // No red in this square
-          [50.729748, -3.520532],
-          [50.729748, -3.548116],
-          [50.74178, -3.548116],
-          [50.74178, -3.520532],
-        ],
-      ];
-
-      // Adding polygon to map
-      L.polygon(areamarker, {
-        color: "#ff2600",
-        weight: 2,
-        fillOpacity: 0.1,
-        interactive: false,
-      }).addTo(map);
-
-      map.setMaxBounds(map.getBounds());
-
-      return map;
+        map.setView(center, {{ settings.MIN_ZOOM }});
+    
+        // mapbox is also a good tileset for this
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: {{ settings.MAX_ZOOM }},
+            minZoom: {{ settings.MIN_ZOOM }},
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    
+        // This draws a polygon around the playable area
+        var areamarker = [
+            [ // Exterior Ring
+                [90, -180],
+                [90, 180],
+                [-90, 180],
+                [-90, -180]
+            ], // Then holes (interior rings)
+            [ // No red in this square
+                [maxSouth, maxWest],
+                [maxSouth, maxEast],
+                [maxNorth, maxEast],
+                [maxNorth, maxWest]
+            ]
+        ];
+    
+        // adding polygon to map
+        if ({{ settings.DRAW_BOUNDING_BOX }}){
+            L.polygon(areamarker, {color: "{{ settings.BOUNDING_BOX_COLOR }}", weight: 2, fillOpacity: 0.1, interactive: false}).addTo(map);
+        }
+        
+        map.setMaxBounds(map.getBounds());
+        
+        return map;
     }
   </script>
 
