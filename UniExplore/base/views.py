@@ -278,7 +278,7 @@ def createChallenge(request):
 
 
 """
-    Authors: Michael Hills
+    Authors: Michael Hills and Kate Belson 
     Description: View to complete a challenge 
 """
 
