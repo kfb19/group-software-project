@@ -86,7 +86,10 @@ small{
                     <img class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
                 </div>
                 <p> <a href = "{% url 'userResponses' response.user.id %}">{{response.user.username}}</a></p>
-                <small>{{response.description}}</small> <br>
+
+                <img src="{{ response.photograph }}" alt="image" />
+                <br>
+                <small>{{response.description}} </small> <br>
                 {% include 'like.html' %}
 
             </div>

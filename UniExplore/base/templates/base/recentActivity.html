@@ -97,7 +97,9 @@ img {
             </div>
             <h5><a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small></h5>
             <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
+
             <img src="{{ response.photograph }}" alt="image" />
+            <br>
             <small>{{response.description}} </small> <br>
             
             {% include 'like.html' %}
