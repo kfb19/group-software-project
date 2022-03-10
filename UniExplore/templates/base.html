@@ -46,7 +46,7 @@
 
 {% if request.user.is_authenticated %}
 
-<p>Hello <a href="/profile">{{request.user}}</a></p>
+<p>Hello <a href="/profile">{{request.user.first_name}}</a></p>
 <a href="{% url 'logout' %}">Logout</a>
 <hr>
 
