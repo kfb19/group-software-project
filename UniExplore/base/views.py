@@ -3,7 +3,7 @@ Authors:
     - Michael Hills
     - Conor Behard Roberts
     - Jack Purkiss
-    - Kate Belson (some edits)
+    - Kate Belson 
     - Lucas Smith (profile functionality)
 """
 

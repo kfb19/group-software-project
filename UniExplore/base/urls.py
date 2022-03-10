@@ -6,6 +6,7 @@ Authors:
     - Conor Behard Roberts
     - Tomas Premoli
     - Lucas Smith
+    - Kate Belson 
 """
 
 from django.urls import path
