@@ -586,9 +586,12 @@ def callback(request):
     # Store user from auth_helper.py script
     store_user(request, user_details)
 
+    first_time = False
+
     try:
         user = User.objects.get(email=user_details['mail'])
     except BaseException:
+        first_time = True
         full_name = user_details['displayName'].split(", ")
         first_name = full_name[1]
         last_name = full_name[0]
@@ -606,4 +609,8 @@ def callback(request):
     group = Group.objects.get(name='user')
     user.groups.add(group)
     login(request, user)
-    return HttpResponseRedirect(reverse("home"))
+    if (first_time):
+        return HttpResponseRedirect(reverse("editProfile"))
+    else:
+        return HttpResponseRedirect(reverse("home"))
+    
