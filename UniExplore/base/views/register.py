@@ -11,8 +11,6 @@ from django.contrib.auth.models import Group
     Authors: Conor Behard Roberts
     Description: Checks to see if an email is valid given a valid suffix
 """
-
-
 def is_valid_email(email, valid_suffix):
     ending = email.split('@')[1].lower()
     return valid_suffix.lower() == ending
@@ -22,8 +20,6 @@ def is_valid_email(email, valid_suffix):
     Authors: Michael Hills, Conor Behard Roberts
     Description: Function for user registration
 """
-
-
 def registerPage(request):
 
     # Getting form from forms.py

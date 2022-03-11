@@ -7,8 +7,6 @@ from django.shortcuts import render, redirect
     Authors: Michael Hills
     Description: View for logging in
 """
-
-
 def loginPage(request):
 
     # Allows us to change the page based on if a user is logged in
@@ -39,13 +37,10 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-# Logout user
 """
     Authors: Michael Hills
     Description: Function to log the user out 
 """
-
-
 def logoutUser(request):
     logout(request)
     return redirect('home')

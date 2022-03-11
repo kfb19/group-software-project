@@ -9,8 +9,6 @@ from django.shortcuts import render, redirect
     Authors: Lucas Smith
     Description: Profile page with completed tasks
 """
-
-
 @login_required(login_url='/login')
 def userProfile(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
@@ -28,8 +26,6 @@ def userProfile(request):
     Authors: Lucas Smith
     Description: Edit profile page
 """
-
-
 @login_required(login_url='/login')
 def editProfile(request):
     if request.method == 'POST':

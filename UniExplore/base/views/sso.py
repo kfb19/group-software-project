@@ -13,7 +13,6 @@ import random
     Authors: Conor Behard Roberts
     Description: Function to sign the user in with Microsoft single sign on
 """
-
 def sign_in_sso(request):
     # Get the sign-in flow
     flow = get_sign_in_flow()
@@ -30,8 +29,6 @@ def sign_in_sso(request):
     Authors: Conor Behard Roberts
     Description: Function to sign the user out when having signed on with SSO
 """
-
-
 def sign_out_sso(request):
     # Clear out the user and token
     remove_user_and_token(request)
@@ -43,8 +40,6 @@ def sign_out_sso(request):
     Description: Function which is called once the user is authenticated by SSO and if 
                  successful logs the user in
 """
-
-
 def callback(request):
     # Make the token request
     result = get_token_from_code(request)

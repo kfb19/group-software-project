@@ -6,8 +6,6 @@ from django.shortcuts import redirect
     Authors: Michael Hills
     Description: View to like a response to a challenge
 """
-
-
 @login_required(login_url='/login')
 def likeResponse(request):
 

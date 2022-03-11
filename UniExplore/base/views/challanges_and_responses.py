@@ -9,8 +9,6 @@ from django.shortcuts import render, redirect
     Authors: Michael Hills, Jack Purkiss
     Description: Only allow game masters and developers to create challenge
 """
-
-
 @allowed_users(allowed_roles=["game_master", 'developer'])
 def createChallenge(request):
     categories = Category.objects.all()
@@ -59,8 +57,6 @@ def createResponse(request, pk):
     Authors: Michael Hills
     Description: View to show the responses of a challenge
 """
-
-
 def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
     responses = Responses.objects.filter(challenge=challenge).order_by('-created')
@@ -73,8 +69,6 @@ def challengeResponses(request, pk):
     Authors: Michael Hills
     Description: View to show the responses logged in user
 """
-
-
 @login_required(login_url='/login')
 def myResponses(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
@@ -89,7 +83,6 @@ def myResponses(request):
     Authors: Michael Hills
     Description: View to show the responses of a user
 """
-
 def userResponses(request, pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')

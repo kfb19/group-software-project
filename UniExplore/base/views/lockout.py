@@ -1,3 +1,4 @@
+from .login import loginPage
 from ..models import AccessAttemptAddons
 from axes.models import AccessAttempt
 from django.contrib import messages
@@ -8,8 +9,6 @@ import datetime
     Authors: Conor Behard Roberts
     Description: Converts timedelta object into a readable string
 """
-
-
 def strfdelta_round(tdelta, round_period='second'):
     """timedelta to string,  use for measure running time
     attend period from days downto smaller period, round to minimum period
@@ -43,8 +42,6 @@ def strfdelta_round(tdelta, round_period='second'):
     Authors: Conor Behard Roberts
     Description: When user is locked out add message and redirect to home page
 """
-
-
 def lockout(request, credentials, *args, **kwargs):
     try:
         username = request.POST.get("username")

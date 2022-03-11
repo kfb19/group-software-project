@@ -14,8 +14,6 @@ from django.utils.encoding import force_bytes
     Authors: Conor Behard Roberts
     Description: When a user request to change their password the email they send is checked to see if it exists within the user database
 """
-
-
 def password_reset_request(request):
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
