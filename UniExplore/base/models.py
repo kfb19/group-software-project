@@ -48,6 +48,13 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
+class WeeklyChallenge(models.Model):
+    challenge = models.ForeignKey(Challenges)
+    renewed = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return str(self.name)
+
 # Model for the responses to challenges (Michael Hills)
 
 
