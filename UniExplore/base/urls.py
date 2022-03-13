@@ -27,7 +27,6 @@ urlpatterns = [
     path('userResponses/<int:pk>', views.userResponses, name='userResponses'),
     path('create-challenge/', views.createChallenge, name='createChallenge'),
     path('create-response/<int:pk>/', views.createResponse, name='createResponse'),
-    path('recent-activity/', views.recentActivity, name='recentActivity'),
     path('challenge-responses/<int:pk>', views.challengeResponses, name='challengeResponses'),
     path('userResponses/<int:pk>', views.userResponses, name='userResponses'),
     path('likes/', views.likeResponse, name='like-post'),

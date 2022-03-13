@@ -233,7 +233,7 @@ def editProfile(request):
             except BaseException:
                 user_form.save()
                 profile_form.save()
-                messages.success(request, f'Your account has been updated successfully.')
+                messages.success(request, 'Your account has been updated successfully.')
                 return redirect('profile')
             messages.warning(request, "This username already exists")
             return redirect('profile')
@@ -289,7 +289,7 @@ def createResponse(request, pk):
     categories = Category.objects.all()
     form = ResponseForm()
     if request.method == 'POST':
-        form = ResponseForm(request.POST)
+        form = ResponseForm(request.POST, request.FILES)
         # If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
@@ -301,6 +301,7 @@ def createResponse(request, pk):
             profile = request.user.profile
             profile.points += challenge.points
             profile.save()
+
             return redirect('home')
     context = {'form': form, 'categories': categories}
     return render(request, 'base/createResponse.html', context)
