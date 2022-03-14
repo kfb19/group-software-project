@@ -44,8 +44,14 @@ def createResponse(request, pk):
             Q(challenge=challenge),
             Q(user=request.user)).order_by('-created')
     
+    # If it's been completed by said user, throw an error
     if len(existing_responses) != 0:
         messages.warning(request, 'ERROR: Can only respond to a challenge once!')
+        return redirect('home')
+    # If it's expired, throw an error
+    elif challenge.expires_on < timezone.now():
+        print("ruh oh")
+        messages.warning(request, 'ERROR: The challenge you selected to has expired!')
         return redirect('home')
 
 
@@ -53,11 +59,7 @@ def createResponse(request, pk):
         form = ResponseForm(request.POST, request.FILES)
 
         # If valid response, add to database
-        if challenge.expires_on <  timezone.now():
-            messages.warning(request, 'ERROR: The challenge you responded to has expired!')
-            return redirect('home')
-
-        elif form.is_valid():
+        if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
             obj.challenge = challenge
