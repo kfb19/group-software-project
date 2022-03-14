@@ -27,14 +27,25 @@
     <div class="challenge">
       <p>
         <a href="{% url 'challengeResponses' response.challenge.id %}"
-          >{{response.challenge.name}}</a
-        >
+          >{{response.challenge.name}}</a>
         | <small>{{response.challenge.points}}</small>
       </p>
       <img src="{{ response.photograph.url }}" alt="image" />
         <br>
         <small>{{response.description}}</small> <br> 
       {% include 'like.html' %}
+      <hr>
+            <div  style= "height: 100px; overflow-y: scroll;" >
+            
+                {% for comment in response.comments.all %}
+                    
+                    <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
+                    <br>
+
+                {% endfor %}
+
+            </div>
+
     </div>
     {% endfor %}
   </div>
