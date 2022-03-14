@@ -42,9 +42,17 @@ class Challenges(models.Model):
     points = models.IntegerField()
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    expires_on = models.DateTimeField(default="2025-01-01")
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
 
+    def __str__(self):
+        return str(self.name)
+
+class WeeklyChallenge(models.Model):
+    challenge = models.ForeignKey(Challenges, on_delete=models.CASCADE)
+    renewed = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return str(self.name)
 
