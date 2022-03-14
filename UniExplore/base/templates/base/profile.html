@@ -12,6 +12,7 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>{{user.username}}'s profile</title>
+    
 </head>
 
 <body>
@@ -57,6 +58,24 @@
         <img src="{{ response.photograph.url }}" alt="image" />
         <br>
         <small>{{response.description}}</small> <br>
+        {% include 'like.html' %}
+        <small>Comments: </small><br>
+        <small><a href="{% url 'createComments' response.id %}">Add Comment</a></small>
+            {% if not response.comments.all %}
+            <small>No comments yet</small>
+            {%else%}
+            <hr>
+            <div  style= "height: 100px; overflow-y: scroll;" >
+            
+                {% for comment in response.comments.all %}
+                    
+                    <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
+                    <br>
+
+                {% endfor %}
+
+            </div>
+            {% endif %}
     </div>
     {% endfor %}
 </div>

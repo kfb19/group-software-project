@@ -55,6 +55,12 @@ class ProfileForm(ModelForm):
         fields = '__all__'
 
 
+class commentForm(ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['text']
+
+
 # Forms for updating profile (Lucas, Conor Behard Roberts)
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField
