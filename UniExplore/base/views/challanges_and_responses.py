@@ -4,6 +4,8 @@ from ..models import Category, Challenges, Responses
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils import timezone
 
 """
     Authors: Michael Hills, Jack Purkiss
@@ -40,7 +42,11 @@ def createResponse(request, pk):
     if request.method == 'POST':
         form = ResponseForm(request.POST, request.FILES)
         # If valid response, add to database
-        if form.is_valid():
+        if challenge.expires_on <  timezone.now():
+            messages.warning(request, 'ERROR: The challenge you responded to has expired!')
+            return redirect('home')
+
+        elif form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
             obj.challenge = challenge
@@ -52,6 +58,7 @@ def createResponse(request, pk):
             profile.save()
 
             return redirect('home')
+
     context = {'form': form, 'categories': categories}
     return render(request, 'base/createResponse.html', context)
 
