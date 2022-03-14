@@ -27,16 +27,18 @@ def createChallenge(request):
 
 
 """
-    Authors: Michael Hills
+    Authors: Michael Hills and Kate Belson 
     Description: View to complete a challenge 
 """
+
+
 @login_required(login_url='/login')
 def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
     categories = Category.objects.all()
     form = ResponseForm()
     if request.method == 'POST':
-        form = ResponseForm(request.POST)
+        form = ResponseForm(request.POST, request.FILES)
         # If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
@@ -48,9 +50,11 @@ def createResponse(request, pk):
             profile = request.user.profile
             profile.points += challenge.points
             profile.save()
+
             return redirect('home')
     context = {'form': form, 'categories': categories}
     return render(request, 'base/createResponse.html', context)
+
 
 
 """
