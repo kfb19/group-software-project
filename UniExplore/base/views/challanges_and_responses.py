@@ -4,6 +4,7 @@ from ..models import Category, Challenges, Responses
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from django.contrib import messages
 from django.utils import timezone
 
@@ -39,8 +40,20 @@ def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
     categories = Category.objects.all()
     form = ResponseForm()
+
+    # This prevents from a user uploading multiple responses to challenges
+    existing_responses = Responses.objects.filter(
+            Q(challenge=challenge),
+            Q(user=request.user)).order_by('-created')
+    
+    if len(existing_responses) != 0:
+        messages.warning(request, 'ERROR: Can only respond to a challenge once!')
+        return redirect('home')
+
+
     if request.method == 'POST':
         form = ResponseForm(request.POST, request.FILES)
+
         # If valid response, add to database
         if challenge.expires_on <  timezone.now():
             messages.warning(request, 'ERROR: The challenge you responded to has expired!')
