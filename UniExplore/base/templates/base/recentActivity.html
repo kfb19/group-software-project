@@ -25,68 +25,10 @@
 
 {% block content %}
 
-<style>
-    @import url('https://fonts.googleapis.com/css?family=Quicksand');
-
-    *, body {
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 400;
-}
-
-    #title {
-    color: #fff(0, 0, 0);
-    text-align: center;
-    font-size: 40px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-.challenge {
-    position: relative;
-    display: block;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    background-color: #BBEBA6;
-    border: 3px solid;
-    border-radius: 10px;
-}
-
-.challenge h5{
-    color: rgb(0, 0, 0);
-    text-align: left;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.challenge a{
-    color: #177442;
-    text-align: left;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-small{
-    color: #000000;
-    text-align: left;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-img {
-    border: 0 none;
-    border-radius: 1000px
-}
-
-#profile-pic {
-    float: left;
-    margin-right: 20px;
-}
-
-</style>
-
 <h1 id="title">Recent Activity</h1>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
 
 <div>
@@ -97,8 +39,11 @@ img {
             </div>
             <h5><a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small></h5>
             <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
-            
+
+            <img src="{{ response.photograph.url }}" alt="image" />
+            <br>
             <small>{{response.description}} </small> <br>
+            
             {% include 'like.html' %}
 
 

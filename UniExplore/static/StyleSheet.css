@@ -1,0 +1,135 @@
+/* 
+
+Written by Kate Belson and Jack Purkiss 
+
+To add to a template, ensure file is in static foler and paste this code
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
+
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+
+*, body {
+font-family: 'Quicksand', sans-serif;
+font-weight: 400;
+}
+
+html, body {
+    height: 100%;
+    background-color: #177442;
+    overflow: visible;
+    text-align: left;
+    color: #fff;
+}
+
+h1 {
+    color: #fff;
+    text-align: left;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+a {
+    color: #fff;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+hr {
+    border: 1px solid #fff;
+    width: 100%;
+    margin-left:0;
+}      
+
+#title {
+color: #fff(0, 0, 0);
+text-align: center;
+font-size: 40px;
+font-weight: 600;
+margin-bottom: 20px;
+}
+.challenge {
+position: relative;
+display: block;
+padding: 10px 15px;
+margin-bottom: 10px;
+background-color: #BBEBA6;
+border: 3px solid;
+border-radius: 10px;
+}
+
+.challenge h5{
+color: rgb(0, 0, 0);
+text-align: left;
+font-size: 24px;
+font-weight: 600;
+margin-bottom: 5px;
+}
+
+.challenge a{
+color: #177442;
+text-align: left;
+font-size: 24px;
+font-weight: 600;
+margin-bottom: 5px;
+}
+
+small{
+color: #000000;
+text-align: left;
+font-size: 16px;
+font-weight: 600;
+margin-bottom: 5px;
+}
+
+#profile-pic {
+float: left;
+margin-right: 20px;
+}
+
+h4 {
+    color: #fff;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+#points {
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+.challenge #chalname{
+    color: #177442;
+    text-align: left;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.challenge #completeChal{
+    color: #177442;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+#createChal {
+    color: #177442;
+    background-color: #BBEBA6;
+    border: 3px solid #fff;
+    border-radius: 5px;
+    font-size: 24px;
+}
+
+
