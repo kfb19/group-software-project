@@ -29,97 +29,9 @@
 
 {% block filter %}
 
-<style>
-    @import url('https://fonts.googleapis.com/css?family=Quicksand');
-    
-    *, body {
-        font-family: 'Quicksand', sans-serif;
-        font-weight: 400;
-    }
-    
-    html, body {
-        height: 100%;
-        background-color: #177442;
-        overflow: visible;
-        text-align: left;
-        color: #fff;
-    }
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
-    h1 {
-        color: #fff;
-        text-align: left;
-        font-size: 28px;
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-    
-    a {
-        color: #fff;
-        text-align: left;
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-    
-    hr {
-        border: 1px solid #fff;
-        width: 100%;
-        margin-left:0;
-    }
-
-
-.challenge {
-    position: relative;
-    display: block;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    background-color: #BBEBA6;
-    border: 3px solid;
-    border-radius: 10px;
-}
-
-.challenge h5{
-    color: rgb(0, 0, 0);
-    text-align: left;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.challenge #chalname{
-    color: #177442;
-    text-align: left;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.challenge #completeChal{
-    color: #177442;
-    text-align: left;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-small{
-    color: rgb(0, 0, 0);
-    text-align: left;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-#createChal {
-    color: #177442;
-    background-color: #BBEBA6;
-    border: 3px solid #fff;
-    border-radius: 5px;
-    font-size: 24px;
-}
-
-      
-</style>
 <template id = "template">
     <div class="challenge">
             <p><a href= '{link1}' id="chalname"> {chalname} </a><small> {timesince} </small></p>
