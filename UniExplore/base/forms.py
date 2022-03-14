@@ -24,12 +24,15 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
 
-# Form for challenges to be added (Michael Hills)
+# Form for challenges to be added (Michael Hills, Tomas Premoli)
+class DateTimeInput(forms.DateInput):
+    input_type = 'datetime-local'
+
 class ChallengeForm(forms.ModelForm):
     class Meta:
         model = Challenges
-        fields = ['category', 'name', 'points', 'description', 'lat', 'long']
-        widgets = {'lat': forms.HiddenInput(), 'long': forms.HiddenInput}
+        fields = ['category', 'name', 'points', 'description', 'lat', 'long', 'expires_on']
+        widgets = {'lat': forms.HiddenInput(), 'long': forms.HiddenInput, 'expires_on': DateTimeInput()}
 
 
 # Form for responding to a challenge (Michael Hills)
