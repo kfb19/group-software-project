@@ -1,6 +1,6 @@
 from .home import *
 from .sso import *
-from .challenges_and_responses import *
+from .challanges_and_responses import *
 from .leaderboard import *
 from .likes import *
 from .lockout import *
