@@ -30,11 +30,9 @@ def createChallenge(request):
 
 
 """
-    Authors: Michael Hills and Kate Belson 
+    Authors: Michael Hills, Kate Belson, Tomas Premoli
     Description: View to complete a challenge 
 """
-
-
 @login_required(login_url='/login')
 def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
