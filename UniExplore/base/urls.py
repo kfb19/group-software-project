@@ -32,7 +32,7 @@ urlpatterns = [
     path('likes/', views.likeResponse, name='like-post'),
     path('leaderboard/', views.leaderboard, name='leaderboard'),
     path('my-responses/', views.myResponses, name='myResponses'),
-    path('comments/<int:pk>', views.comments, name='comments'),
+    path('createComment/<int:pk>', views.createComment, name='createComments'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),

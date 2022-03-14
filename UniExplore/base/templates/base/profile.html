@@ -60,6 +60,7 @@
         <small>{{response.description}}</small> <br>
         {% include 'like.html' %}
         <small>Comments: </small><br>
+        <small><a href="{% url 'createComments' response.id %}">Add Comment</a></small>
             {% if not response.comments.all %}
             <small>No comments yet</small>
             {%else%}
