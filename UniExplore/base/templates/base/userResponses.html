@@ -78,7 +78,9 @@
           >
           | <small>{{response.challenge.points}}</small>
         </p>
-        <small>{{response.description}} </small> <br />
+        <img src="{{ response.photograph.url }}" alt="image" />
+        <br>
+        <small>{{response.description}}</small> <br>
         {% include 'like.html' %}
       </div>
       {% endfor %}

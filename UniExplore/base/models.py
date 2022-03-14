@@ -54,6 +54,7 @@ class Challenges(models.Model):
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
+    photograph = models.ImageField(upload_to='image_uploads', default = 'image_uploads/challenge-completed.png')
     challenge = models.ForeignKey(Challenges, related_name='challenge_response', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')

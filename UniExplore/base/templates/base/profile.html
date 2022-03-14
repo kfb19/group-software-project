@@ -108,6 +108,8 @@ h4 {
     <div class="challenge">
         <p><a href="{% url 'challengeResponses' response.challenge.id %}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small>
         </p>
+        <img src="{{ response.photograph.url }}" alt="image" />
+        <br>
         <small>{{response.description}}</small> <br>
     </div>
     {% endfor %}
