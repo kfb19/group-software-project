@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from .models import Challenges, Responses, Profile
+from django.utils import timezone
 
 
 # Form for user registrations (Michael Hills, Conor Behard Roberts)
@@ -33,6 +34,12 @@ class ChallengeForm(forms.ModelForm):
         model = Challenges
         fields = ['category', 'name', 'points', 'description', 'lat', 'long', 'expires_on']
         widgets = {'lat': forms.HiddenInput(), 'long': forms.HiddenInput, 'expires_on': DateTimeInput()}
+    
+    def clean_expires_on(self):
+        expires_on = self.cleaned_data['expires_on']
+        if expires_on < timezone.now():
+            raise forms.ValidationError("The expiry date cannot be in the past!")
+        return expires_on
 
 
 # Form for responding to a challenge (Michael Hills)
