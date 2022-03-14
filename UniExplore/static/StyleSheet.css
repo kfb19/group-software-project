@@ -1,4 +1,13 @@
-/* Written by Kate Belson and Jack Purkiss */
+/* 
+
+Written by Kate Belson and Jack Purkiss 
+
+To add to a template, ensure file is in static foler and paste this code
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
+
+*/
 
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
 
@@ -129,11 +138,3 @@ h4 {
 }
 
 
-/*  
-
-To add to a template, ensure file is in static foler and paste this code
-
-{% load static %}
-<link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
-
-*/
