@@ -50,12 +50,6 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
-class WeeklyChallenge(models.Model):
-    challenge = models.ForeignKey(Challenges, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return str(self.name)
-
 # Model for the responses to challenges (Michael Hills)
 
 
