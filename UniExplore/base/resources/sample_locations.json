@@ -64,7 +64,7 @@
         "long": -3.5351155
     },
     {
-        "name": "Great Hall, The",
+        "name": "The Great Hall",
         "lat": 50.73544159999999,
         "long": -3.534546
     },
@@ -84,7 +84,7 @@
         "long": -3.533349
     },
     {
-        "name": "Henry Wellcome Building for Biocatalysis, The",
+        "name": "Henry Wellcome Building for Biocatalysis",
         "lat": 50.7367135,
         "long": -3.5356199
     },
@@ -112,11 +112,6 @@
         "name": "INTO University of Exeter Building",
         "lat": 50.7360903,
         "long": -3.5337199
-    },
-    {
-        "name": "Isambard Parade",
-        "lat": 50.72817569999999,
-        "long": -3.5428027
     },
     {
         "name": "Kay Building",
@@ -179,11 +174,6 @@
         "long": -3.5340683
     },
     {
-        "name": "Owlets",
-        "lat": 50.7335945,
-        "long": -3.5267341
-    },
-    {
         "name": "Penryn Campus",
         "lat": 50.1709887,
         "long": -5.123756699999999
@@ -214,11 +204,6 @@
         "long": -3.5382805
     },
     {
-        "name": "Research, Innovation, Learning & Development Centre (RILD)",
-        "lat": 50.7190704,
-        "long": -3.5094304
-    },
-    {
         "name": "Roborough",
         "lat": 50.733218,
         "long": -3.5352715
@@ -247,16 +232,6 @@
         "name": "Thornlea Complex\n (Incl Thornlea White House, Thornlea Cottage, Rannoch and Alexander Building)",
         "lat": 50.729988,
         "long": -3.5383565
-    },
-    {
-        "name": "Truro Campus - Truro Knowledge Spa",
-        "lat": 50.2648158,
-        "long": -5.0936239
-    },
-    {
-        "name": "University of Exeter Medical School",
-        "lat": 50.72333159999999,
-        "long": -3.5155472
     },
     {
         "name": "Washington Singer Laboratories",
