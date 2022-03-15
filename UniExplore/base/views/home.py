@@ -59,8 +59,9 @@ def generate_weekly_challenges(request):
     expiry_date = timezone.now() + timezone.timedelta(days=7)
 
     if(weekly_category == None):
-        messages.warning(request, 'ERROR: No weekly challenge category! Contact admin to create one.')
-        raise ValidationError("No weekly challenge category! Contact admin to create one.")
+        new_challenge = Category(name="Weekly")
+        new_challenge.save()
+        weekly_category = Category.objects.filter(Q(name="Weekly")).first()
 
     for i in range(5):
         selected_challenge = choice(challenge_json)
