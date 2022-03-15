@@ -54,10 +54,13 @@
 
             <div  style= "height: 100px; overflow-y: scroll;" >
             
-                {% for comment in response.comments.all %}
+                {% for comment in comments %}
+                    {% if comment.response == response %}
                     
                     <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
                     <br>
+
+                    {% endif %}
 
                 {% endfor %}
 

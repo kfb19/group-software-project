@@ -44,18 +44,24 @@
                 <hr>
 
                 {% if not response.comments.all %}
-                <small>No comments yet</small>
-                {%else%}
-                <div  style= "height: 100px; overflow-y: scroll;" >
-            
-                {% for comment in response.comments.all %}
-                    
-                    <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
-                    <br>
+                    <small>No comments yet</small>
 
-                {% endfor %}
+                {%else%}
+                    <div  style= "height: 100px; overflow-y: scroll;" >
+            
+                        {% for comment in comments %}
+                    
+                            {% if comment.response == response %}
+                    
+                            <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
+                            <br>
+
+                            {% endif %}
+
+                        {% endfor %}
 
                 {% endif %}
+
 
             </div>
             </div>

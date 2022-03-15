@@ -1,4 +1,5 @@
 
+from atexit import register
 from ..models import Responses,Comments
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -28,3 +29,4 @@ def createComment(request, pk):
     
     context = {'response': response, 'form':form}
     return render(request, 'base/createComments.html', context)
+

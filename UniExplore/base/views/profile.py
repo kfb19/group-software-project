@@ -1,4 +1,4 @@
-from ..models import Category, Responses
+from ..models import Category, Responses, Comments
 from ..forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -12,11 +12,13 @@ from django.shortcuts import render, redirect
 @login_required(login_url='/login')
 def userProfile(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
+    comments = Comments.objects.all().order_by('-date_added')
 
     categories = Category.objects.all()
     context = {
         'responses': responses,
-        'categories': categories
+        'categories': categories,
+        'comments' : comments
     }
 
     return render(request, 'base/profile.html', context)

@@ -82,6 +82,7 @@ LIKE_CHOICES = (
 )
 
 
+
 class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     response = models.ForeignKey(Responses,related_name="comments", on_delete=models.CASCADE)
