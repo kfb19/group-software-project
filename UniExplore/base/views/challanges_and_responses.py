@@ -1,6 +1,6 @@
 from ..decorators import allowed_users
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, Responses
+from ..models import Category, Challenges, Responses, Comments
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -83,9 +83,10 @@ def createResponse(request, pk):
 """
 def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
+    comments = Comments.objects.all().order_by('-date_added')
     responses = Responses.objects.filter(challenge=challenge).order_by('-created')
     categories = Category.objects.all()
-    context = {'responses': responses, 'challenge': challenge, 'categories': categories}
+    context = {'responses': responses, 'challenge': challenge, 'categories': categories, 'comments':comments}
     return render(request, 'base/challengeResponses.html', context)
 
 

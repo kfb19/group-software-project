@@ -1,4 +1,5 @@
 
+from atexit import register
 from ..models import Responses,Comments
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -28,3 +29,19 @@ def createComment(request, pk):
     
     context = {'response': response, 'form':form}
     return render(request, 'base/createComments.html', context)
+
+
+"""
+    Authors: Michael Hills
+    Description: View to see all comments on a response
+"""
+def viewComments(request, pk):
+
+    
+    response = Responses.objects.get(id=pk)
+    comments = Comments.objects.all().filter(response=response).order_by('-date_added')
+
+    
+    context = {'response': response,'comments': comments}
+    return render(request, 'base/viewComments.html', context)
+
