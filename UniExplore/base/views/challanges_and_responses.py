@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.forms import ModelChoiceField
 from django.contrib import messages
 from django.utils import timezone
 
@@ -16,6 +17,9 @@ from django.utils import timezone
 def createChallenge(request):
     categories = Category.objects.all()
     form = ChallengeForm()
+
+    form.fields['category'] = ModelChoiceField(Category.objects.all().exclude(name="Weekly"))
+
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
 

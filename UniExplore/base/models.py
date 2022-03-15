@@ -36,23 +36,17 @@ class Category(models.Model):
 
 
 class Challenges(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     points = models.IntegerField()
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     expires_on = models.DateTimeField(default="2025-01-01")
+    is_weekly_challenge = models.BooleanField(default=False)
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
 
-    def __str__(self):
-        return str(self.name)
-
-class WeeklyChallenge(models.Model):
-    challenge = models.ForeignKey(Challenges, on_delete=models.CASCADE)
-    renewed = models.DateTimeField(auto_now_add=True)
-    
     def __str__(self):
         return str(self.name)
 
