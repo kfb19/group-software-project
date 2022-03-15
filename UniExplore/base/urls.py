@@ -33,6 +33,7 @@ urlpatterns = [
     path('leaderboard/', views.leaderboard, name='leaderboard'),
     path('my-responses/', views.myResponses, name='myResponses'),
     path('createComment/<int:pk>', views.createComment, name='createComments'),
+    path('viewComments/<int:pk>', views.viewComments, name='viewComments'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),
