@@ -10,7 +10,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from .models import Challenges, Responses, Profile
+from .models import Challenges, Responses, Profile, Comments
 from django.utils import timezone
 
 
@@ -53,6 +53,12 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Challenges
         fields = '__all__'
+
+
+class commentForm(ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['text']
 
 
 # Forms for updating profile (Lucas, Conor Behard Roberts)

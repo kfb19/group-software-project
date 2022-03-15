@@ -1,5 +1,8 @@
+from atexit import register
 from ..models import Category, Responses
 from django.shortcuts import render
+
+
 
 """
     Authors: Michael Hills
@@ -8,6 +11,9 @@ from django.shortcuts import render
 def recentActivity(request):
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
+    
     context = {'responses': responses, 'categories': categories}
 
     return render(request, 'base/recentActivity.html', context)
+
+
