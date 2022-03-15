@@ -82,6 +82,7 @@ LIKE_CHOICES = (
 )
 
 
+
 class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     response = models.ForeignKey(Responses,related_name="comments", on_delete=models.CASCADE)
@@ -89,7 +90,7 @@ class Comments(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.response)
+        return str(self.id)
 
 # Model for the likes of a post (Michael Hills)
 class Likes(models.Model):
