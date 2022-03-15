@@ -1,0 +1,46 @@
+[{
+        "name": "Photo op!",
+        "description": "Post a cool photo you took of this place"
+    },
+    {
+        "name": "20 Jumping Jacks!",
+        "description": "Do 20 jumping jacks"
+    },
+    {
+        "name": "Selfie time!",
+        "description": "Post a selfie with one of your friends at this location"
+    },
+    {
+        "name": "Sneaker snaps!",
+        "description": "Post a picture of your sneakers"
+    },
+    {
+        "name": "Stand up time!",
+        "description": "Post your favourite joke"
+    },
+    {
+        "name": "Memory game!",
+        "description": "Post your best memory in this place"
+    },
+    {
+        "name": "Make a friend!",
+        "description": "Make a friend and explain something you learnt about them"
+    },
+    {
+        "name": "Music is memory!",
+        "description": "Post the name of a song that reminds you of this place"
+    },
+    {
+        "name": "Poetic city!",
+        "description": "Write a poem about this place"
+    },
+    {
+        "name": "Confession time!",
+        "description": "Post a funny confession"
+    },
+    {
+        "name": "Dab city!",
+        "description": "Post a picture of you dabbing at this location"
+    }
+
+]
