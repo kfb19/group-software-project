@@ -65,6 +65,7 @@
             <small>No comments yet</small>
 
         {%else%}
+        <small><a href="{% url 'viewComments' response.id %}">See All Comments</a></small>
             <div  style= "height: 100px; overflow-y: scroll;" >
             
                 {% for comment in comments %}
