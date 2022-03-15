@@ -45,19 +45,25 @@
             <small>{{response.description}} </small> <br>
             {% include 'like.html' %}
             <small>Comments: </small><br>
-            <small><a href="{% url 'createComments' response.id %}">Add Comment</a></small>
+            <small><a href="{% url 'createComments' response.id %}">Add Comment</a></small><br>
+            
+
             <hr>
 
             {% if not response.comments.all %}
             <small>No comments yet</small>
             {%else%}
+            <small><a href="{% url 'viewComments' response.id %}">See All Comments</a></small>
 
             <div  style= "height: 100px; overflow-y: scroll;" >
             
-                {% for comment in response.comments.all %}
+                {% for comment in comments %}
+                    {% if comment.response == response %}
                     
                     <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
                     <br>
+
+                    {% endif %}
 
                 {% endfor %}
 
