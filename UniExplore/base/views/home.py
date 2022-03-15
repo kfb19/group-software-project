@@ -1,5 +1,4 @@
-from ..models import Category, Challenges, Responses, WeeklyChallenge
-from ..forms import ChallengeForm
+from ..models import Category, Challenges, Responses
 from django.shortcuts import render
 from django.db.models import Q
 from django.utils import timezone
