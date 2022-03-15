@@ -1,46 +1,57 @@
 [{
         "name": "Photo op!",
-        "description": "Post a cool photo you took of this place"
+        "description": "Post a cool photo you took of this place",
+        "points": 10
     },
     {
         "name": "20 Jumping Jacks!",
-        "description": "Do 20 jumping jacks"
+        "description": "Do 20 jumping jacks",
+        "points": 5
     },
     {
         "name": "Selfie time!",
-        "description": "Post a selfie with one of your friends at this location"
+        "description": "Post a selfie with one of your friends at this location",
+        "points": 15
     },
     {
         "name": "Sneaker snaps!",
-        "description": "Post a picture of your sneakers"
+        "description": "Post a picture of your sneakers",
+        "points": 5
     },
     {
         "name": "Stand up time!",
-        "description": "Post your favourite joke"
+        "description": "Post your favourite joke",
+        "points": 10
     },
     {
         "name": "Memory game!",
-        "description": "Post your best memory in this place"
+        "description": "Post your best memory in this place",
+        "points": 10
     },
     {
         "name": "Make a friend!",
-        "description": "Make a friend and explain something you learnt about them"
+        "description": "Make a friend and explain something you learnt about them",
+        "points": 15
     },
     {
         "name": "Music is memory!",
-        "description": "Post the name of a song that reminds you of this place"
+        "description": "Post the name of a song that reminds you of this place",
+        "points": 5
     },
     {
         "name": "Poetic city!",
-        "description": "Write a poem about this place"
+        "description": "Write a poem about this place",
+        "points": 20
     },
     {
         "name": "Confession time!",
-        "description": "Post a funny confession"
+        "description": "Post a funny confession",
+        "points": 15
     },
     {
         "name": "Dab city!",
-        "description": "Post a picture of you dabbing at this location"
+        "description": "Post a picture of you dabbing at this location",
+        "points": 20
     }
 
 ]

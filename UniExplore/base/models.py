@@ -36,7 +36,7 @@ class Category(models.Model):
 
 
 class Challenges(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     points = models.IntegerField()
