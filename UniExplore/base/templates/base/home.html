@@ -161,11 +161,14 @@
         var boxColor = "{{ settings.BOUNDING_BOX_COLOR }}";
         map = mapgen('map', maxSouth, maxNorth, maxWest, maxEast, minZoom, maxZoom, drawBox, boxColor);
 
+        weeklyIcon = generateWeeklyIcon();
+        
         // This loop writes the markers for the challenges in JavaScript which are then rendered by the map
         // Can be extended to go to challenge page on click
         {% for challenge in challenges %}
             L.marker([ {{challenge.lat}}, {{challenge.long}} ],
-                {title:     "{{challenge.name}}", bubblingMouseEvents: true })
+                {title:     "{{challenge.name}}", bubblingMouseEvents: true
+                {% if challenge.is_weekly_challenge %}, icon: weeklyIcon {% endif %}}) // Custom marker for weekly challenges
                 .bindPopup( "<b>{{challenge.name}}</b>" +
                             "<br>{{challenge.description}}" ).addTo(map);
         {% endfor %}
