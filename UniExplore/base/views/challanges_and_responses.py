@@ -118,3 +118,4 @@ def userResponses(request, pk):
     categories = Category.objects.all()
     context = {'responses': responses, 'user': user, 'categories': categories}
     return render(request, 'base/userResponses.html', context)
+

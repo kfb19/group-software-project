@@ -50,6 +50,9 @@ function mapgen(divName, maxSouth, maxNorth, maxWest, maxEast, minZoom, maxZoom,
     return map;
 }
 
+
+
+
 /*
     Authors: Tomas Premoli
     Description: Function responsible for enabling & disabling spoof mode
@@ -82,6 +85,7 @@ function devModeToggle(map, button) {
 
                 // Reload challenges
                 determineChallenges(lat, lon);
+                dailyRiddle(lat,lon)
             });
 
             devModeOn = true;
@@ -108,6 +112,7 @@ function startLocator(map, marker = null) {
             console.log(addedLoc);
 
             determineChallenges(position.coords.latitude, position.coords.longitude);
+            dailyRiddle(position.coords.latitude, position.coords.longitude);
         }
 
         function error(err) {
@@ -205,3 +210,4 @@ function generateWeeklyIcon() {
     });
     return weeklyIcon
 }
+

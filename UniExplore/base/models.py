@@ -32,9 +32,8 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
 # Model for the challenges (Michael Hills)
-
-
 class Challenges(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -50,9 +49,18 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
+
+class DailyRiddle(models.Model):
+    name = models.CharField(max_length=200,null=True)
+    points = models.IntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    lat = models.FloatField(default=0)
+    long = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.name
+
 # Model for the responses to challenges (Michael Hills)
-
-
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
@@ -99,3 +107,7 @@ class Likes(models.Model):
 class AccessAttemptAddons(models.Model):
     accessattempt = models.OneToOneField(AccessAttempt, on_delete=models.CASCADE)
     expiration_date = models.DateTimeField(_("Expiration Time"), auto_now_add=False)
+    
+
+
+
