@@ -21,7 +21,6 @@ def home(request):
         generateDailyRiddle()
 
     
-
     categories = Category.objects.all()
 
     unexpired_challenges = Challenges.objects.all()
@@ -105,7 +104,8 @@ def generateDailyRiddle():
         name = selected_riddle['description'],
         points = selected_riddle['points'],
         lat = selected_riddle['lat'],
-        long = selected_riddle['long']
+        long = selected_riddle['long'],
+        answer = selected_riddle['answer']
     )
     new_riddle.save()
     

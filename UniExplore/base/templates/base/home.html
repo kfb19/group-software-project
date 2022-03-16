@@ -177,8 +177,10 @@
                 if(document.getElementById('rid')){
 
                 }else{
-
-                    riddle.innerHTML += '<button id =' + "rid" + '>Complete Riddle</button>'
+                
+                    //riddle.innerHTML += '<button id =' + "rid" + 'onclick=>Complete Riddle</button>'
+                    riddle.innerHTML += '<h6><a href = {% url "viewRiddle" dailyRiddle.id %} >Complete Riddle</a></h6>'
+                    
 
                 }
 

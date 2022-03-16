@@ -56,6 +56,7 @@ class DailyRiddle(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
+    answer = models.CharField(max_length=200,null=True)
 
     def __str__(self):
         return self.name
