@@ -66,6 +66,8 @@
         {% endif %}
     {% endfor %}
 
+    {% if dailyRiddle %}
+
     <h2>Daily Riddle</h2>
     <div class="challenge" id="riddle">
         <p><small> {{dailyRiddle.name}}</small></p>
@@ -73,6 +75,8 @@
         
         
     </div>
+
+    {% endif %}
 
     <h2>In Range:</h2>
     <div id = "available">
@@ -155,6 +159,7 @@
 
     function dailyRiddle(lat,lon){
 
+        {% if dailyRiddle %}
        
 
         if(document.getElementById('riddle')){
@@ -177,7 +182,6 @@
 
                 }
 
-            
             }
             
             else{
@@ -189,14 +193,11 @@
 
 
             }
-            // Else, remove that info and place in the unavailable challenges section
-            
+         
         }
 
-        
 
-    
-        //button = document.getElementById('rid').remove()
+        {% endif %}
 
         
     }

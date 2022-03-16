@@ -85,7 +85,9 @@ function devModeToggle(map, button) {
 
                 // Reload challenges
                 determineChallenges(lat, lon);
+                
                 dailyRiddle(lat,lon)
+                
             });
 
             devModeOn = true;
@@ -113,6 +115,7 @@ function startLocator(map, marker = null) {
 
             determineChallenges(position.coords.latitude, position.coords.longitude);
             dailyRiddle(position.coords.latitude, position.coords.longitude);
+           
         }
 
         function error(err) {

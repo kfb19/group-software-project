@@ -60,6 +60,11 @@ class DailyRiddle(models.Model):
     def __str__(self):
         return self.name
 
+class CompleteRiddle(models.Model):
+    riddle = models.ForeignKey(DailyRiddle, related_name='complete_riddle', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 # Model for the responses to challenges (Michael Hills)
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -1,4 +1,4 @@
-from ..models import Category, Challenges, Responses, DailyRiddle
+from ..models import Category, Challenges, CompleteRiddle, Responses, DailyRiddle
 from django.shortcuts import render
 from django.db.models import Q
 from django.utils import timezone
@@ -20,9 +20,7 @@ def home(request):
     if len(current) == 0:
         generateDailyRiddle()
 
-
-    daily_riddle = DailyRiddle.objects.first()
-
+    
 
     categories = Category.objects.all()
 
@@ -41,6 +39,9 @@ def home(request):
 
     # Get all challenges, not done by the current user
     if request.user.is_authenticated:
+        Completed_Riddles = CompleteRiddle.objects.filter(user=request.user).values_list('riddle_id')
+        daily_riddle = DailyRiddle.objects.exclude(id__in=Completed_Riddles).first()
+        print(daily_riddle)
         responses = Responses.objects.filter(user=request.user).values_list('challenge_id')
 
         challenges = Challenges.objects.exclude(id__in=responses).filter(
@@ -54,6 +55,8 @@ def home(request):
             Q(category__name__icontains=q), 
             Q(expires_on__gt=timezone.now()) # This makes sure expired aren't rendered
             ).order_by('-created')
+
+        daily_riddle = DailyRiddle.objects.all().first()
         # add locations to map
 
         # Variables to pass to the database
