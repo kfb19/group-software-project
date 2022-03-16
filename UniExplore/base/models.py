@@ -2,29 +2,38 @@
 Authors: 
     - Michael Hills
     - Kate Belson (some edits) 
+    - Tomas Premoli
 """
 
 from django.contrib.auth.models import User
 from axes.models import AccessAttempt
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import os
+
+
+# File name setting for profile pics (Tomas Premoli)
+def content_file_name(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = str(instance.user.id) + "." + ext
+    existing = [filename for filename in os.listdir('media/profile_pictures/') if filename.startswith(str(instance.user.id) + ".")]
+    if len(existing) > 0:
+        os.remove(os.path.join('media/profile_pictures/', existing[0]))
+    return os.path.join('profile_pictures/', filename)
 
 # Model for a user profile (Michael Hills, Lucas Smith)
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     points = models.IntegerField(default=0, null=True)
     bio = models.CharField(default="No bio set.", max_length=200)
     university = models.CharField(default="No university set.", max_length=200)  # TODO: Dropdown for available unis?
-    picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to='profile_pictures')
+    picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to=content_file_name)
 
     def __str__(self) -> str:
         return self.name
 
 # Model for a category of challenges (Michael Hills)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
