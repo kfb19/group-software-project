@@ -10,6 +10,7 @@ from axes.models import AccessAttempt
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.conf import settings
 from PIL import Image
 from io import BytesIO
 import os
@@ -47,9 +48,9 @@ class Profile(models.Model):
         img = Image.open(self.picture)
         output = BytesIO()
         # Resize/modify the image
-        img = img.resize((150, 150))
+        img = img.resize(settings.PROFILE_PIC_SIZE)
         # after modifications, save it to the output
-        img.save(output, format='JPEG', quality=90)
+        img.save(output, format='JPEG', quality=settings.PROFILE_PIC_QUALITY)
         output.seek(0)
 
         # Set field to modified picture
@@ -112,9 +113,9 @@ class Responses(models.Model):
         img = Image.open(self.photograph)
         output = BytesIO()
         # Resize/modify the image
-        img = img.resize((500, 500))
+        img = img.resize(settings.RESPONSE_PHOTO_SIZE)
         # after modifications, save it to the output
-        img.save(output, format='JPEG', quality=90)
+        img.save(output, format='JPEG', quality=settings.RESPONSE_PHOTO_QUALITY)
         output.seek(0)
 
         # Set field to modified picture
