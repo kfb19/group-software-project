@@ -129,7 +129,7 @@ def viewRiddle(request,pk):
     completed = CompleteRiddle.objects.filter(riddle=dailyRiddle)
     allowed = True
     
-    if len(completed) >= 0:
+    if len(completed) > 0:
         allowed = False
 
     else:
