@@ -106,10 +106,30 @@ class Responses(models.Model):
     def __str__(self):
         return str(self.id)
 
+    # overrides image data to be compressed (Tomas Premoli)
+    def save(self, *args, **kwargs):
+        # Opening the uploaded image
+        img = Image.open(self.photograph)
+        output = BytesIO()
+        # Resize/modify the image
+        img = img.resize((500, 500))
+        # after modifications, save it to the output
+        img.save(output, format='JPEG', quality=90)
+        output.seek(0)
+
+        # Set field to modified picture
+        self.photograph = InMemoryUploadedFile(output, 'ImageField', 
+                                        "%s.jpg" % self.photograph.name.split('.')[0], 
+                                        'image/jpeg', sys.getsizeof(output), None)
+
+        super(Responses, self).save()
+
     # Number of likes of a challenge
     @property
     def num_likes(self):
         return self.liked.all().count()
+    
+    
 
     # The options for the like button (Michael Hills)
 LIKE_CHOICES = (
