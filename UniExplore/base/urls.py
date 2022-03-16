@@ -34,6 +34,7 @@ urlpatterns = [
     path('my-responses/', views.myResponses, name='myResponses'),
     path('createComment/<int:pk>', views.createComment, name='createComments'),
     path('viewComments/<int:pk>', views.viewComments, name='viewComments'),
+    path('viewRiddle/<int:pk>', views.viewRiddle, name='viewRiddle'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),

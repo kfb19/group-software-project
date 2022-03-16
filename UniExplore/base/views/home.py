@@ -1,4 +1,4 @@
-from ..models import Category, Challenges, Responses
+from ..models import Category, Challenges, CompleteRiddle, Responses, DailyRiddle
 from django.shortcuts import render
 from django.db.models import Q
 from django.utils import timezone
@@ -11,6 +11,17 @@ from random import choice
     Description: View for the main homepage
 """
 def home(request):
+
+    current = DailyRiddle.objects.all()
+    for riddle in current:
+        if riddle.created.day != timezone.now().day:
+            DailyRiddle.objects.filter(id=riddle.id).delete()
+            generateDailyRiddle()
+
+    if len(current) == 0:
+        generateDailyRiddle()
+
+    
     categories = Category.objects.all()
 
     unexpired_challenges = Challenges.objects.all()
@@ -28,25 +39,30 @@ def home(request):
 
     # Get all challenges, not done by the current user
     if request.user.is_authenticated:
+        Completed_Riddles = CompleteRiddle.objects.filter(user=request.user).values_list('riddle_id')
+        daily_riddle = DailyRiddle.objects.exclude(id__in=Completed_Riddles).first()
+        print(daily_riddle)
         responses = Responses.objects.filter(user=request.user).values_list('challenge_id')
 
         challenges = Challenges.objects.exclude(id__in=responses).filter(
             Q(category__name__icontains=q),
-            Q(expires_on__gt=timezone.now()) # This makes sure expired aren'trendered
+            Q(expires_on__gt=timezone.now()) # This makes sure expired aren't rendered
             ).order_by('-created')
 
         
     else:
         challenges = Challenges.objects.filter(
             Q(category__name__icontains=q), 
-            Q(expires_on__gt=timezone.now()) # This makes sure expired aren'trendered
+            Q(expires_on__gt=timezone.now()) # This makes sure expired aren't rendered
             ).order_by('-created')
+
+        daily_riddle = DailyRiddle.objects.all().first()
         # add locations to map
 
         # Variables to pass to the database
         
 
-    context = {'categories': categories, 'challenges': challenges}
+    context = {'categories': categories, 'challenges': challenges,'dailyRiddle':daily_riddle}
 
     return render(request, 'base/home.html', context)
 
@@ -79,4 +95,21 @@ def generate_weekly_challenges(request):
         )
 
         new_challenge.save()
+
+
+def generateDailyRiddle():
+    riddle_json = json.load(open('base/resources/daily_riddles.json'))
     
+    selected_riddle = choice(riddle_json)
+    new_riddle = DailyRiddle(
+        name = selected_riddle['description'],
+        points = selected_riddle['points'],
+        lat = selected_riddle['lat'],
+        long = selected_riddle['long'],
+        answer = selected_riddle['answer']
+    )
+    new_riddle.save()
+    
+
+    
+     
