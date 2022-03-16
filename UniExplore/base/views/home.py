@@ -16,6 +16,7 @@ def home(request):
     for riddle in current:
         if riddle.created.day != timezone.now().day:
             DailyRiddle.objects.filter(id=riddle.id).delete()
+            generateDailyRiddle()
 
     if len(current) == 0:
         generateDailyRiddle()
