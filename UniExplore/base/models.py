@@ -49,6 +49,7 @@ class Profile(models.Model):
         output = BytesIO()
         # Resize/modify the image
         img = img.resize(settings.PROFILE_PIC_SIZE)
+        img = img.convert('RGB')
         # after modifications, save it to the output
         img.save(output, format='JPEG', quality=settings.PROFILE_PIC_QUALITY)
         output.seek(0)
@@ -114,6 +115,7 @@ class Responses(models.Model):
         output = BytesIO()
         # Resize/modify the image
         img = img.resize(settings.RESPONSE_PHOTO_SIZE)
+        img = img.convert('RGB')
         # after modifications, save it to the output
         img.save(output, format='JPEG', quality=settings.RESPONSE_PHOTO_QUALITY)
         output.seek(0)
