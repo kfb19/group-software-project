@@ -1,9 +1,13 @@
 from ..decorators import allowed_users
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, Responses
+from ..models import Category, Challenges, Responses, Comments
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.db.models import Q
+from django.forms import ModelChoiceField
+from django.contrib import messages
+from django.utils import timezone
 
 """
     Authors: Michael Hills, Jack Purkiss
@@ -13,6 +17,9 @@ from django.shortcuts import render, redirect
 def createChallenge(request):
     categories = Category.objects.all()
     form = ChallengeForm()
+
+    form.fields['category'] = ModelChoiceField(Category.objects.all().exclude(name="Weekly"))
+
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
 
@@ -27,18 +34,34 @@ def createChallenge(request):
 
 
 """
-    Authors: Michael Hills and Kate Belson 
+    Authors: Michael Hills, Kate Belson, Tomas Premoli
     Description: View to complete a challenge 
 """
-
-
 @login_required(login_url='/login')
 def createResponse(request, pk):
     challenge = Challenges.objects.get(id=pk)
     categories = Category.objects.all()
     form = ResponseForm()
+
+    # This prevents from a user uploading multiple responses to challenges
+    existing_responses = Responses.objects.filter(
+            Q(challenge=challenge),
+            Q(user=request.user)).order_by('-created')
+    
+    # If it's been completed by said user, throw an error
+    if len(existing_responses) != 0:
+        messages.warning(request, 'ERROR: Can only respond to a challenge once!')
+        return redirect('home')
+    # If it's expired, throw an error
+    elif challenge.expires_on < timezone.now():
+        print("ruh oh")
+        messages.warning(request, 'ERROR: The challenge you selected has expired!')
+        return redirect('home')
+
+
     if request.method == 'POST':
         form = ResponseForm(request.POST, request.FILES)
+
         # If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
@@ -52,6 +75,7 @@ def createResponse(request, pk):
             profile.save()
 
             return redirect('home')
+
     context = {'form': form, 'categories': categories}
     return render(request, 'base/createResponse.html', context)
 
@@ -63,9 +87,10 @@ def createResponse(request, pk):
 """
 def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
+    comments = Comments.objects.all().order_by('-date_added')
     responses = Responses.objects.filter(challenge=challenge).order_by('-created')
     categories = Category.objects.all()
-    context = {'responses': responses, 'challenge': challenge, 'categories': categories}
+    context = {'responses': responses, 'challenge': challenge, 'categories': categories, 'comments':comments}
     return render(request, 'base/challengeResponses.html', context)
 
 

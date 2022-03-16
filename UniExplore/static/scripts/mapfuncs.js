@@ -123,15 +123,7 @@ function startLocator(map, marker = null) {
         // if there isn't already a user marker
         if (marker == null) {
             // Creating user marker to move it around with location
-            var userIcon = L.icon({
-                iconUrl: "static/images/userMarker.png",
-                iconSize: [25, 41], // size of the icon
-                iconAnchor: [12.5, 41], // point of the icon which will correspond to marker's location
-                popupAnchor: [0, -41], // point from which the popup should open relative to the iconAnchor
-                shadowUrl: "static/images/userMarkerShadow.png",
-                shadowAnchor: [7, 25],
-                shadowSize: [25, 25]
-            });
+            var userIcon = generateUserIcon();
 
             var usermarker = L.marker([0, 0], { icon: userIcon });
             usermarker.bindPopup("<b>You are here!</b>");
@@ -144,6 +136,19 @@ function startLocator(map, marker = null) {
     } else {
         console.log("User has declined geolocation access");
     }
+}
+
+function generateUserIcon() {
+    var userIcon = L.icon({
+        iconUrl: "static/images/userMarker.png",
+        iconSize: [25, 41], // size of the icon
+        iconAnchor: [12.5, 41], // point of the icon which will correspond to marker's location
+        popupAnchor: [0, -41], // point from which the popup should open relative to the iconAnchor
+        shadowUrl: "static/images/userMarkerShadow.png",
+        shadowAnchor: [7, 25],
+        shadowSize: [25, 25]
+    });
+    return userIcon
 }
 
 function addChallengeMarker(e, map, maxSouth, maxNorth, maxWest, maxEast, clickLocation,
@@ -186,4 +191,17 @@ function addChallengeMarker(e, map, maxSouth, maxNorth, maxWest, maxEast, clickL
     id_long.value = lon;
 
     return clickLocation;
+}
+
+function generateWeeklyIcon() {
+    var weeklyIcon = L.icon({
+        iconUrl: "static/images/weeklyChallengeMarker.png",
+        iconSize: [25, 41], // size of the icon
+        iconAnchor: [12.5, 41], // point of the icon which will correspond to marker's location
+        popupAnchor: [0, -41], // point from which the popup should open relative to the iconAnchor
+        shadowUrl: "static/images/userMarkerShadow.png",
+        shadowAnchor: [7, 25],
+        shadowSize: [25, 25]
+    });
+    return weeklyIcon
 }

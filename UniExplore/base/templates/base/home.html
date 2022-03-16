@@ -32,14 +32,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
-<template id = "template">
-    <div class="challenge">
-            <p><a href= '{link1}' id="chalname"> {chalname} </a><small> {timesince} </small></p>
-            <small><a href= '{link2}' id="completeChal">{completeChal}</a></small><br>
-            <small>Points: {chalpoint}</small><br>
-            <small>{chaldes}</small><br>
-    </div>
-</template>
+
 {% include 'sidebar.html' %}
 
 {% endblock %}
@@ -93,6 +86,7 @@
             <small><a href= '{link2}'>{completeChal}</a></small><br>
             <small>Points: {chalpoint}</small><br>
             <small>{chaldes}</small><br>
+            
     </div>
 </template>
 
@@ -132,7 +126,7 @@
 
             // This is essentially filling in the html template from before with the challenge info
             challenge = document.getElementById('template').innerHTML.replace('{chalname}', "{{challenge.name}}")
-                .replace('{timesince}',"{{challenge.created | timesince}}")
+                .replace('{timesince}',"{{challenge.created | timesince}} ago")
                 .replace('{link1}',"{% url 'challengeResponses' challenge.id%}")
                 .replace('{chalpoint}',"{{challenge.points}}")
                 .replace('{chaldes}',"{{challenge.description}}");
@@ -167,11 +161,14 @@
         var boxColor = "{{ settings.BOUNDING_BOX_COLOR }}";
         map = mapgen('map', maxSouth, maxNorth, maxWest, maxEast, minZoom, maxZoom, drawBox, boxColor);
 
+        weeklyIcon = generateWeeklyIcon();
+        
         // This loop writes the markers for the challenges in JavaScript which are then rendered by the map
         // Can be extended to go to challenge page on click
         {% for challenge in challenges %}
             L.marker([ {{challenge.lat}}, {{challenge.long}} ],
-                {title:     "{{challenge.name}}", bubblingMouseEvents: true })
+                {title:     "{{challenge.name}}", bubblingMouseEvents: true
+                {% if challenge.is_weekly_challenge %}, icon: weeklyIcon {% endif %}}) // Custom marker for weekly challenges
                 .bindPopup( "<b>{{challenge.name}}</b>" +
                             "<br>{{challenge.description}}" ).addTo(map);
         {% endfor %}

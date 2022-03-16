@@ -1,0 +1,163 @@
+<!--
+    Authors:
+        - Michael Hills
+-->
+
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Challenge Response</title>
+  </head>
+
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous"
+  />
+
+  {% block filter %} {% include 'sidebar.html' %} {% endblock %} {% block content %}
+
+  <!--Written by Kate Belson-->
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Quicksand");
+
+    *,
+    body {
+      font-family: "Quicksand", sans-serif;
+      font-weight: 400;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background-color: #177442;
+      overflow: visible;
+      text-align: left;
+      color: #fff;
+    }
+
+    h1 {
+      color: #fff;
+      text-align: left;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .response-form {
+      border: 3px solid #fff;
+      padding: 40px;
+      display: inline-block;
+      width: 100%;
+      min-width: 50px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      text-align: left;
+      -webkit-transition: all 0.4s ease;
+      transition: all 0.4s ease;
+      align-content: left;
+    }
+
+    .response-form tr {
+      color: #fff;
+      text-align: left;
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 20px;
+      margin-top: 9px;
+      margin-bottom: 9px;
+    }
+
+    .response-form input {
+      width: 100%;
+      padding: 9px 9px;
+      text-align: left;
+      border: 0;
+      outline: 0;
+      border-radius: 6px;
+      background-color: #fff;
+      font-size: 15px;
+      font-weight: 300;
+      color: #000;
+      -webkit-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      margin-top: 9px;
+      margin-bottom: 9px;
+    }
+
+    .response-form textarea {
+      width: 100%;
+      padding: 9px 9px;
+      text-align: left;
+      border: 0;
+      outline: 0;
+      border-radius: 6px;
+      background-color: #fff;
+      font-size: 15px;
+      font-weight: 300;
+      color: #000;
+      -webkit-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      margin-top: 9px;
+      margin-bottom: 9px;
+    }
+
+    .response-form input[type="submit"] {
+      background-color: #bbeba6;
+      color: #000;
+      width: 25%;
+      outline: none;
+      border: 0px;
+      box-shadow: none;
+      text-align: center;
+    }
+  </style>
+
+    <div class="challenge">
+        <div id="profile-pic"  style="float:left">
+            <img class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
+        </div>
+        <h5>{{response.challenge.name}} | <small>{{response.challenge.points}}</small></h5>
+        <h5></h5>{{response.user.username}}</h5><br>
+
+        <img src="{{ response.photograph.url }}" alt="image" />
+        <br>
+        <small>{{response.description}} </small> <br>
+    </div>
+    
+
+  <h1>Add Comment</h1>
+
+  <div class="form">
+    <form class="response-form" method="POST" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4"></legend>
+        {{ form.as_p }}
+      </fieldset>
+      <input type="submit" , value="Complete" />
+    </form>
+  </div>
+
+  {% endblock %}
+
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"
+  ></script>
+</html>

@@ -8,6 +8,9 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
+
+Authors: Conor Bernard Rogers, Tomas Premoli
+
 """
 
 import os
@@ -51,6 +54,13 @@ CHALLENGE_VALIDITY_DISTANCE = 0.001
 BOUNDING_BOX_COLOR = '#ff2600'
 DRAW_BOUNDING_BOX = 'true'
 
+# Photo settings
+RESPONSE_PHOTO_SIZE = (750,500)
+RESPONSE_PHOTO_QUALITY = 95
+
+PROFILE_PIC_SIZE = (150, 150)
+PROFILE_PIC_QUALITY = 90
+
 # These settings are available within templates
 SETTINGS_EXPORT = [
     'EMAIL_EXTENSION',
@@ -63,6 +73,10 @@ SETTINGS_EXPORT = [
     'DRAW_BOUNDING_BOX',
     'BOUNDING_BOX_COLOR',
     'CHALLENGE_VALIDITY_DISTANCE',
+    'RESPONSE_PHOTO_SIZE',
+    'RESPONSE_PHOTO_QUALITY',
+    'PROFILE_PIC_SIZE',
+    'PROFILE_PIC_QUALITY',
 ]
 
 
