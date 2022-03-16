@@ -9,19 +9,27 @@ from django.contrib.auth.models import User
 from axes.models import AccessAttempt
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from PIL import Image
+from io import BytesIO
 import os
-
+import sys
 
 # File name setting for profile pics (Tomas Premoli)
 def content_file_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = str(instance.user.id) + "." + ext
-    existing = [filename for filename in os.listdir('media/profile_pictures/') if filename.startswith(str(instance.user.id) + ".")]
+    type = filename.split('.')[-1]
+    filename = str(instance.user.id) + "." + type
+
+    # This checks if the user already has a profile picture
+    existing = [filename for filename in os.listdir('media/profile_pictures/') 
+                            if filename.startswith(str(instance.user.id) + ".")]
+    
+    # if they do, remove it and put this one
     if len(existing) > 0:
         os.remove(os.path.join('media/profile_pictures/', existing[0]))
     return os.path.join('profile_pictures/', filename)
 
-# Model for a user profile (Michael Hills, Lucas Smith)
+# Model for a user profile (Michael Hills, Lucas Smith, Tomas Premoli)
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
@@ -32,6 +40,23 @@ class Profile(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    # overrides image data to be compressed (Tomas Premoli)
+    def save(self, *args, **kwargs):
+        # Opening the uploaded image
+        img = Image.open(self.picture)
+        output = BytesIO()
+        # Resize/modify the image
+        img = img.resize((150, 150))
+        # after modifications, save it to the output
+        img.save(output, format='JPEG', quality=90)
+        output.seek(0)
+
+        # change the imagefield value to be the newley modifed image value
+        self.picture = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.picture.name.split('.')[0], 'image/jpeg',
+                                        sys.getsizeof(output), None)
+
+        super(Profile, self).save()
 
 # Model for a category of challenges (Michael Hills)
 
