@@ -55,7 +55,7 @@ def createResponse(request, pk):
     # If it's expired, throw an error
     elif challenge.expires_on < timezone.now():
         print("ruh oh")
-        messages.warning(request, 'ERROR: The challenge you selected to has expired!')
+        messages.warning(request, 'ERROR: The challenge you selected has expired!')
         return redirect('home')
 
 

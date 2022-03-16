@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='picture',
-            field=models.ImageField(default='profile_pictures/placeholder.png', upload_to=base.models.content_file_name),
+            field=models.ImageField(default='profile_pictures/placeholder.png', upload_to=base.models.pfp_location),
         ),
         migrations.DeleteModel(
             name='WeeklyChallenge',

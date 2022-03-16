@@ -16,7 +16,7 @@ import os
 import sys
 
 # File name setting for profile pics (Tomas Premoli)
-def content_file_name(instance, filename):
+def pfp_location(instance, filename):
     type = filename.split('.')[-1]
     filename = str(instance.user.id) + "." + type
 
@@ -36,7 +36,7 @@ class Profile(models.Model):
     points = models.IntegerField(default=0, null=True)
     bio = models.CharField(default="No bio set.", max_length=200)
     university = models.CharField(default="No university set.", max_length=200)  # TODO: Dropdown for available unis?
-    picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to=content_file_name)
+    picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to=pfp_location)
 
     def __str__(self) -> str:
         return self.name
@@ -52,9 +52,10 @@ class Profile(models.Model):
         img.save(output, format='JPEG', quality=90)
         output.seek(0)
 
-        # change the imagefield value to be the newley modifed image value
-        self.picture = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.picture.name.split('.')[0], 'image/jpeg',
-                                        sys.getsizeof(output), None)
+        # Set field to modified picture
+        self.picture = InMemoryUploadedFile(output, 'ImageField', 
+                                        "%s.jpg" % self.picture.name.split('.')[0], 
+                                        'image/jpeg', sys.getsizeof(output), None)
 
         super(Profile, self).save()
 
@@ -84,13 +85,20 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
+# File name setting for profile pics (Tomas Premoli)
+def response_pic_location(instance, filename):
+    type = filename.split('.')[-1]
+    filename = str(instance.user.id) + "-" + str(instance.challenge.id) + "." + type
+
+    return os.path.join('image_uploads/', filename)
+
 # Model for the responses to challenges (Michael Hills)
 
 
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
-    photograph = models.ImageField(upload_to='image_uploads', default = 'image_uploads/challenge-completed.png')
+    photograph = models.ImageField(upload_to=response_pic_location, default = 'image_uploads/challenge-completed.png')
     challenge = models.ForeignKey(Challenges, related_name='challenge_response', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
