@@ -4,6 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+import requests
+import json
+from decouple import config
 
 """
     Authors: Lucas Smith
@@ -36,15 +39,26 @@ def editProfile(request):
 
         if user_form.is_valid() and profile_form.is_valid():
             username = user_form.cleaned_data.get('username').lower().capitalize()
-            try:
-                User.objects.get(username=username)
-            except BaseException:
-                user_form.save()
-                profile_form.save()
-                messages.success(request, f'Your account has been updated successfully.')
-                return redirect('profile')
-            messages.warning(request, "This username already exists")
-            return redirect('profile')
+            
+            # Analyse image uploaded
+            invalid = False
+            if len(request.FILES) > 0:
+                img = request.FILES["picture"].file.getvalue()
+                invalid = analyse_image({'media': img})
+        
+            if invalid:
+                messages.warning(request, 'ERROR: The photo you tried to upload goes against our terms of service!')
+                return redirect('editProfile')
+            else:
+                try:
+                    User.objects.get(username=username)
+                except BaseException:
+                    user_form.save()
+                    profile_form.save()
+                    messages.success(request, f'Your account has been updated successfully.')
+                    return redirect('profile')
+                messages.warning(request, "This username already exists")
+                return redirect('editProfile')
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
@@ -55,6 +69,13 @@ def editProfile(request):
     }
     return render(request, 'base/profile_edit.html', context)
 
+def analyse_image(img):
+    params = { 'workflow': 'wfl_brNwJk9abjFRDu54kAc6y', 'api_user': config('image_analysis_api_user'),
+                'api_secret': config('image_analysis_api_key')}
+
+    request = requests.post('https://api.sightengine.com/1.0/check-workflow.json', files=img, data=params)
+    output = json.loads(request.text)
+    return output['summary']['action'] == 'reject'
 
 # See another user's profile
 # def profile(request, username):
