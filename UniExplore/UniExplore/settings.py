@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 
-Authors: Conor Bernard Rogers, Tomas Premoli
+Authors: Conor Behard Roberts, Tomas Premoli
 
 """
 
