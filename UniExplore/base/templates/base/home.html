@@ -66,13 +66,25 @@
         {% endif %}
     {% endfor %}
 
-    <h3>In Range:</h3>
+    {% if dailyRiddle %}
+
+    <h2>Daily Riddle</h2>
+    <div class="challenge" id="riddle">
+        <p><small> {{dailyRiddle.name}}</small></p>
+        <small>Points: {{dailyRiddle.points}}</small><br>
+        
+        
+    </div>
+
+    {% endif %}
+
+    <h2>In Range:</h2>
     <div id = "available">
         
    
     </div>
 
-    <h3>Not in Range:</h3>
+    <h2>Not in Range:</h2>
     <div id = "unavailable"> 
         
 
@@ -143,6 +155,52 @@
 
        {% endfor %}
 
+    }
+
+    function dailyRiddle(lat,lon){
+
+        {% if dailyRiddle %}
+       
+
+        if(document.getElementById('riddle')){
+
+            riddle = document.getElementById('riddle')
+
+            var x1 = lat;
+            var y1 = lon;
+
+            var x2 = {{dailyRiddle.lat}};
+            var y2 = {{dailyRiddle.long}};
+
+            if (Math.hypot(x2 - x1, y2 - y1) <= {{ settings.CHALLENGE_VALIDITY_DISTANCE }}){
+
+                if(document.getElementById('rid')){
+
+                }else{
+                
+                    riddle.innerHTML += '<h6 id = "rid"><a href = {% url "viewRiddle" dailyRiddle.id %} >Complete Riddle</a></h6>'
+                    
+
+                }
+
+            }
+            
+            else{
+
+                if(document.getElementById('rid')){
+
+                    document.getElementById('rid').remove()
+                }
+
+
+            }
+         
+        }
+
+
+        {% endif %}
+
+        
     }
 
 

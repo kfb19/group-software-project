@@ -1,6 +1,6 @@
 from ..decorators import allowed_users
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, Responses, Comments
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -118,3 +118,33 @@ def userResponses(request, pk):
     categories = Category.objects.all()
     context = {'responses': responses, 'user': user, 'categories': categories}
     return render(request, 'base/userResponses.html', context)
+
+
+@login_required(login_url='/login')
+def viewRiddle(request,pk):
+    dailyRiddle = DailyRiddle.objects.get(id=pk)
+    categories = Category.objects.all()
+    
+
+    completed = CompleteRiddle.objects.filter(riddle=dailyRiddle)
+    allowed = True
+    
+    if len(completed) > 0:
+        allowed = False
+
+    else:
+
+        complete = CompleteRiddle(riddle=dailyRiddle,user=request.user)
+        complete.save()
+        profile = request.user.profile
+        profile.points += dailyRiddle.points
+
+        profile.save()
+        complete.save()
+
+    context = {'dailyRiddle':dailyRiddle, 'categories':categories,'allowed': allowed}
+
+    
+    
+    return render(request,'base/viewRiddle.html', context)
+
