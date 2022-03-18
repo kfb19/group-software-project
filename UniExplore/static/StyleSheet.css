@@ -7,9 +7,18 @@ To add to a template, ensure file is in static foler and paste this code
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
 
+default colours:
+--dark-color: #177442;
+--light-color: #BBEBA6;
+
 */
 
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
+
+:root{
+    --dark-color:#4B0082;
+    --light-color: #DDA0DD;
+}
 
 *, body {
 font-family: 'Quicksand', sans-serif;
@@ -18,7 +27,7 @@ font-weight: 400;
 
 html, body {
     height: 100%;
-    background-color: #177442;
+    background-color: var(--dark-color);
     overflow: visible;
     text-align: left;
     color: #fff;
@@ -58,7 +67,7 @@ position: relative;
 display: block;
 padding: 10px 15px;
 margin-bottom: 10px;
-background-color: #BBEBA6;
+background-color: var(--light-color);
 border: 3px solid;
 border-radius: 10px;
 }
@@ -72,7 +81,7 @@ margin-bottom: 5px;
 }
 
 .challenge a{
-color: #177442;
+color: var(--dark-color);
 text-align: left;
 font-size: 24px;
 font-weight: 600;
@@ -109,7 +118,7 @@ h4 {
   }
 
 .challenge #chalname{
-    color: #177442;
+    color: var(--dark-color);
     text-align: left;
     font-size: 24px;
     font-weight: 600;
@@ -117,7 +126,7 @@ h4 {
 }
 
 .challenge #completeChal{
-    color: #177442;
+    color: var(--dark-color);
     text-align: left;
     font-size: 18px;
     font-weight: 600;
@@ -125,8 +134,8 @@ h4 {
 }
 
 #createChal {
-    color: #177442;
-    background-color: #BBEBA6;
+    color: var(--dark-color);
+    background-color: var(--light-color);
     border: 3px solid #fff;
     border-radius: 5px;
     font-size: 24px;

@@ -3,12 +3,18 @@
         - Michael Hills
         - Jack Purkiss 
 -->
+
+
+
 <form action = "{% url 'like-post' %}" method="POST">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
 
     <style>
         button {
             color: #fff;
-            background-color: #177442;
+            background-color: var(--dark-color);
             border: 3px solid rgb(0, 0, 0);
             border-radius: 5px;
         }
