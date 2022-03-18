@@ -27,6 +27,9 @@ def pfp_location(instance, filename):
     
     # if they do, remove it and put this one
     if len(existing) > 0:
+        file_path = os.path.join('media/profile_pictures/', existing[0])
+        image = Image.open(file_path)
+        image.close()
         os.remove(os.path.join('media/profile_pictures/', existing[0]))
     return os.path.join('profile_pictures/', filename)
 
