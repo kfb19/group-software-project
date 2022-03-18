@@ -16,8 +16,8 @@ default colours:
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
 
 :root{
-    --dark-color:#4B0082;
-    --light-color: #DDA0DD;
+    --dark-color: #177442;
+    --light-color: #BBEBA6;
 }
 
 *, body {
