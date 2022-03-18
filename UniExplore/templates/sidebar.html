@@ -7,49 +7,16 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-</head>  
+</head> 
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
 
 <!--Written by Kate Belson-->
-<style>
-    @import url('https://fonts.googleapis.com/css?family=Quicksand');
-    
-    *, body {
-        font-family: 'Quicksand', sans-serif;
-        font-weight: 400;
-    }
-    
-    html, body {
-        height: 100%;
-        background-color: #177442;
-        overflow: visible;
-        text-align: left;
-        color: #fff;
-    }
-
-    h1 {
-        color: #fff;
-        text-align: left;
-        font-size: 28px;
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-    
-    a {
-        color: #fff;
-        text-align: left;
-        font-size: 15px;
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-    
-    hr {
-        border: 1px solid #fff;
-        width: 100%;
-        margin-left:0;
-    }
+<style>   
 
     .all a {
-        color: #BBEBA6;
+        color: var(--dark-color);
         text-align: left;
         font-size: 20px;
         font-weight: 600;
@@ -57,7 +24,7 @@
     }
 
     .other-pages a {
-        color: #BBEBA6;
+        color: var(--light-color);
         text-align: left;
         font-size: 20px;
         font-weight: 600;
@@ -74,11 +41,11 @@
     }
 
     h3 {
-        color: #177442;
+        color: var(--dark-color);
     }
 
     .help-button {
-        background-color: #BBEBA6; /* Green */
+        background-color: var(--light-color); /* Green */
         border: none;
         color: #000;
         padding: 10px 18px;
