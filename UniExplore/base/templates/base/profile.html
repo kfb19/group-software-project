@@ -30,6 +30,8 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
+
+
 <!-- Mist of this is for bootstrap (or whatever CSS we end up using) -->
 <div class="content-section">
     <div class="media">
@@ -55,7 +57,7 @@
     <div class="challenge">
         <p><a href="{% url 'challengeResponses' response.challenge.id %}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small>
         </p>
-        <img src="{{ response.photograph.url }}" alt="image" />
+        <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
         <br>
         <small>{{response.description}}</small> <br>
         {% include 'like.html' %}
