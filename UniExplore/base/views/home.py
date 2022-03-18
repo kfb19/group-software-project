@@ -1,8 +1,10 @@
+from email.headerregistry import Group
 from ..models import Category, Challenges, CompleteRiddle, Responses, DailyRiddle
 from django.shortcuts import render
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.models import Group as Groups
 from django.forms import ValidationError
 import json
 from random import choice
@@ -33,6 +35,9 @@ def home(request):
             ) == 0):
         print("No weekly challenges! Generating...")
         generate_weekly_challenges(request)
+
+    Groups.objects.get_or_create(name="user")
+    Groups.objects.get_or_create(name="game-master")
 
     # Get the filter from the ?q= in the URL
     q = request.GET.get('q') if request.GET.get('q') is not None else ''
