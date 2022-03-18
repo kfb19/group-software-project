@@ -9,11 +9,12 @@ from django.forms import ValidationError
 import json
 from random import choice
 """
-    Authors: Michael Hills
+    Authors: Michael Hills, Tomas Premoli
     Description: View for the main homepage
 """
 def home(request):
 
+    # Checks if there's a valid current riddle and generates it if not
     current = DailyRiddle.objects.all()
     for riddle in current:
         if riddle.created.day != timezone.now().day:
@@ -28,6 +29,7 @@ def home(request):
 
     unexpired_challenges = Challenges.objects.all()
 
+    # If no weekly challenges, generate one
     if (len(
             unexpired_challenges
             .exclude(Q(is_weekly_challenge=False))
@@ -36,6 +38,7 @@ def home(request):
         print("No weekly challenges! Generating...")
         generate_weekly_challenges(request)
 
+    # Checks if groups exists and if not create them
     Groups.objects.get_or_create(name="user")
     Groups.objects.get_or_create(name="game-master")
 
@@ -72,6 +75,7 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 def generate_weekly_challenges(request):
+    # loads locations and default challenges
     challenge_json = json.load(open('base/resources/default_challenges.json'))
     location_json = json.load(open('base/resources/sample_locations.json'))
 
@@ -79,15 +83,18 @@ def generate_weekly_challenges(request):
 
     expiry_date = timezone.now() + timezone.timedelta(days=7)
 
+    # If no weekly category, create it.
     if(weekly_category == None):
         new_challenge = Category(name="Weekly")
         new_challenge.save()
         weekly_category = Category.objects.filter(Q(name="Weekly")).first()
 
     for i in range(5):
+        # Select random challenge and location
         selected_challenge = choice(challenge_json)
         selected_location = choice(location_json)
 
+        # Generate challenge with that info and upload to challenges
         new_challenge = Challenges(
             name = selected_location['name'],
             category = weekly_category,
@@ -103,6 +110,7 @@ def generate_weekly_challenges(request):
 
 
 def generateDailyRiddle():
+    # Loads random riddle and saves into database
     riddle_json = json.load(open('base/resources/daily_riddles.json'))
     
     selected_riddle = choice(riddle_json)
