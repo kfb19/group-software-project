@@ -51,7 +51,9 @@ def registerPage(request):
                         user.is_active = False
                         user.save()
 
-                        if settings.DEBUG == False:
+                        developer_mode = False
+
+                        if developer_mode == False:
                             subject = 'Activate Your UniExplore Account'
                             message = render_to_string('email_verification/account_activation_email.html', {
                                 'user': user,
@@ -72,7 +74,7 @@ def registerPage(request):
                         group = Group.objects.get(name='user')
                         user.groups.add(group)
 
-                        if settings.DEBUG == True:
+                        if developer_mode == True:
                             login(request, user)
                             messages.success(request, f'Account created for {username}!')
                             return redirect('home')
@@ -98,7 +100,7 @@ def activate_account(request, uidb64, token):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
-        user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
+        user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authentication model
        
         user.is_active = True
         user.profile.email_confirmed = True
