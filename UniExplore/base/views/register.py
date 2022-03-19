@@ -47,6 +47,7 @@ def registerPage(request):
                         # Check to see if there is already a user with the same email registered
                         User.objects.get(email=email)
                     except BaseException:
+
                         user = form.save(commit=False)
                         user.is_active = False
                         user.save()
@@ -64,6 +65,9 @@ def registerPage(request):
                             })
                             user.email_user(subject, message)
                             messages.success(request, ('Please Confirm your email to complete registration.'))
+
+
+                        user = form.save()
 
                         user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authentication model
 
@@ -90,6 +94,7 @@ def registerPage(request):
             messages.warning(request, "This username is taken")
             return redirect('register')
     context = {'form': form}
+
     return render(request, 'base/login_register.html', context)
 
 
@@ -113,3 +118,6 @@ def activate_account(request, uidb64, token):
     else:
         messages.warning(request, ('The confirmation link was invalid, possibly because it has already been used.'))
         return redirect('home')
+
+    return render(request, 'base/login_register.html', context)
+

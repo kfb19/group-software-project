@@ -77,6 +77,7 @@ def callback(request):
     user.groups.add(group)
     login(request, user)
     if (first_time):
+        messages.info(request, 'Please change your username')
         return HttpResponseRedirect(reverse("editProfile"))
     else:
         return HttpResponseRedirect(reverse("home"))
