@@ -181,6 +181,12 @@ class Likes(models.Model):
 class AccessAttemptAddons(models.Model):
     accessattempt = models.OneToOneField(AccessAttempt, on_delete=models.CASCADE)
     expiration_date = models.DateTimeField(_("Expiration Time"), auto_now_add=False)
+
+
+class Upgrade(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
     
 
 

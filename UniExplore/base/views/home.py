@@ -40,7 +40,7 @@ def home(request):
 
     # Checks if groups exists and if not create them
     Groups.objects.get_or_create(name="user")
-    Groups.objects.get_or_create(name="game-master")
+    Groups.objects.get_or_create(name="game_master")
 
     # Get the filter from the ?q= in the URL
     q = request.GET.get('q') if request.GET.get('q') is not None else ''

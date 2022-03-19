@@ -1,6 +1,7 @@
-from ..models import Category, Responses, Comments
+from ..models import Category, Responses, Comments, Upgrade
 from ..forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
+from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -25,6 +26,30 @@ def userProfile(request):
     }
 
     return render(request, 'base/profile.html', context)
+
+def upgradeUser(request):
+    upgrades = Upgrade.objects.all()
+    categories = Category.objects.all()
+    context = {'upgrades': upgrades,'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+  
+            obj = request.POST.get('userID')
+            obj2 = request.POST.get('upgradeID')
+            toUpgrade = User.objects.get(id = obj)
+            group = Group.objects.get(name='game_master')
+            group.user_set.add(toUpgrade)
+            Upgrade.objects.filter(id=obj2).delete()
+
+        except:
+            obj2 = request.POST.get('upgradeID')
+            Upgrade.objects.filter(id=obj2).delete()
+
+
+
+    return render(request,'base/upgradeUser.html',context)
 
 @login_required(login_url='/login')
 def deleteProfile(request):

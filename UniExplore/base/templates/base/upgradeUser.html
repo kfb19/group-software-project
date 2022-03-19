@@ -1,0 +1,81 @@
+<!--
+    Authors:
+        - Michael Hills
+        
+-->
+
+{% extends 'base.html' %}
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>My Responses</title>  
+</head>  
+
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+    
+{% endblock %}
+
+
+
+{% block content %}
+
+<h1 id="title">Game Master Resuests:</h1>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
+
+
+<div>
+    {% if upgrades %}
+            
+        
+        {% for upgrade in upgrades %}
+            
+            <div class="challenge">
+                
+                    
+                <small> {{upgrade.user.username}} : {{upgrade.reason}} </small>
+                
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden", name = "userID", value="{{upgrade.user.id}}">
+                    <input type="hidden", name="upgradeID", value="{{upgrade.id}}">
+                    <input type="Submit", value="Accept">
+                </form>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden", name="upgradeID", value="{{upgrade.id}}">
+                    <input type="Submit", value="Decline">
+                </form>
+
+                
+                <br>
+            
+            </div>
+
+        {% endfor %}
+
+   
+
+        {% else %}
+
+                <p>No Users have requested to upgrade to game master...</p>
+
+
+
+    {% endif %}
+    
+   
+</div>
+
+{% endblock %}
+
+</body>
+</html>
