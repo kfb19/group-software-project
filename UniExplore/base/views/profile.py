@@ -41,22 +41,28 @@ def editProfile(request):
             username = user_form.cleaned_data.get('username').lower().capitalize()
             
             # Analyse image uploaded
+            developer_mode = True
             invalid = False
-            if len(request.FILES) > 0:
-                img = request.FILES["picture"].file.getvalue()
-                invalid = analyse_image({'media': img})
+            if developer_mode == False:
+                if len(request.FILES) > 0:
+                    img = request.FILES["picture"].file.getvalue()
+                    invalid = analyse_image({'media': img})
         
             if invalid:
                 messages.warning(request, 'ERROR: The photo you tried to upload goes against our terms of service!')
                 return redirect('editProfile')
             else:
                 try:
-                    User.objects.get(username=username)
+                    if request.user.username != username:
+                        User.objects.get(username=username)
+                    else:
+                        raise BaseException()
                 except BaseException:
                     user_form.save()
                     profile_form.save()
                     messages.success(request, f'Your account has been updated successfully.')
                     return redirect('profile')
+                    
                 messages.warning(request, "This username already exists")
                 return redirect('editProfile')
     else:
