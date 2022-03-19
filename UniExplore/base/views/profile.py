@@ -30,6 +30,7 @@ def userProfile(request):
 def deleteProfile(request):
     if request.method == 'POST':
         User.objects.filter(id=request.user.id).delete()
+        messages.success(request, 'Account Successfully Deleted')
         return redirect("login")
 
     return render(request,'base/deleteProfile.html')
