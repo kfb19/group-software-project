@@ -71,8 +71,12 @@ def createResponse(request, pk):
             obj.challenge = challenge
 
             # analyse uploaded image
-            img = request.FILES["photograph"].file.getvalue()
-            invalid = analyse_image({'media': img})
+            developer_mode = False
+            invalid = False
+            if developer_mode == False:
+                if len(request.FILES) > 0:
+                    img = request.FILES["photograph"].file.getvalue()
+                    invalid = analyse_image({'media': img})
 
             if invalid == True:
                 messages.warning(request, 'ERROR: The photo you tried to upload goes against our terms of service!')
