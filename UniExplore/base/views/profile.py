@@ -1,3 +1,4 @@
+from pytz import timezone
 from ..models import Category, Responses, Comments, Upgrade
 from ..forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
@@ -18,11 +19,16 @@ def userProfile(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
     comments = Comments.objects.all().order_by('-date_added')
 
+    game_master = False
+    if request.user.groups.filter(name='game_master').exists():
+        game_master = True
+
     categories = Category.objects.all()
     context = {
         'responses': responses,
         'categories': categories,
-        'comments' : comments
+        'comments' : comments,
+        'game_master': game_master
     }
 
     return render(request, 'base/profile.html', context)
@@ -50,6 +56,20 @@ def upgradeUser(request):
 
 
     return render(request,'base/upgradeUser.html',context)
+
+def requestMaster(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+
+    if request.method == "POST":
+
+        master = Upgrade(user=request.user,reason = request.POST.get('reason'))
+        master.save()
+        return redirect('home')
+
+
+    return render(request,'base/requestMaster.html',context)
+
 
 @login_required(login_url='/login')
 def deleteProfile(request):

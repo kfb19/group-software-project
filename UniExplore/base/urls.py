@@ -37,6 +37,7 @@ urlpatterns = [
     path('viewRiddle/<int:pk>', views.viewRiddle, name='viewRiddle'),
     path('deleteProfile/',views.deleteProfile, name='deleteProfile'),
     path('upgradeUser/', views.upgradeUser, name ='upgradeUser' ),
+    path('requestMaster/', views.requestMaster,name='requestMaster'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),
