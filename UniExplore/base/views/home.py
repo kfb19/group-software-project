@@ -74,6 +74,8 @@ def home(request):
 
     return render(request, 'base/home.html', context)
 
+
+
 def generate_weekly_challenges(request):
     # loads locations and default challenges
     challenge_json = json.load(open('base/resources/default_challenges.json'))
@@ -108,7 +110,10 @@ def generate_weekly_challenges(request):
 
         new_challenge.save()
 
-
+"""
+    Authors: Michael Hills
+    Description: function to generate the daily riddle
+"""
 def generateDailyRiddle():
     # Loads random riddle and saves into database
     riddle_json = json.load(open('base/resources/daily_riddles.json'))

@@ -33,6 +33,11 @@ def userProfile(request):
 
     return render(request, 'base/profile.html', context)
 
+
+"""
+    Authors: Michael Hills
+    Description: View for game masters to accept user requests to be a gamemaster
+"""
 def upgradeUser(request):
     upgrades = Upgrade.objects.all()
     categories = Category.objects.all()
@@ -57,6 +62,11 @@ def upgradeUser(request):
 
     return render(request,'base/upgradeUser.html',context)
 
+
+"""
+    Authors: Michael Hills
+    Description: View for users to request to be upgraded to gamemaster
+"""
 def requestMaster(request):
     categories = Category.objects.all()
     context = {'categories': categories}
@@ -71,6 +81,11 @@ def requestMaster(request):
     return render(request,'base/requestMaster.html',context)
 
 
+
+"""
+    Authors: Michael Hills
+    Description: View for users to delete their account
+"""
 @login_required(login_url='/login')
 def deleteProfile(request):
     if request.method == 'POST':
