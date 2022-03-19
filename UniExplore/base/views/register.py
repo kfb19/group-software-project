@@ -42,7 +42,7 @@ def registerPage(request):
                         User.objects.get(email=email)
                     except BaseException:
                         user = form.save()
-                        user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authenticaion model
+                        user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authentication model
 
                         Profile.objects.create(
                             user=user,
