@@ -68,6 +68,8 @@ urlpatterns = [
     path('sign-out-sso', views.sign_out_sso, name='sign-out-sso'),
     path('callback', views.callback, name='callback'),
 
+    # URL for email verification
+    path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
 ]
 
 # Need to change this before final deployment as django recommends to do this another way

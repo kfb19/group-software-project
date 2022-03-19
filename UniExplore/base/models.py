@@ -41,6 +41,7 @@ class Profile(models.Model):
     bio = models.CharField(default="No bio set.", max_length=200)
     university = models.CharField(default="No university set.", max_length=200)  # TODO: Dropdown for available unis?
     picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to=pfp_location)
+    email_confirmed = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.name
