@@ -79,6 +79,7 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
+# Model the daily riddle (Michael Hills)
 class DailyRiddle(models.Model):
     name = models.CharField(max_length=200,null=True)
     points = models.IntegerField()
@@ -90,6 +91,7 @@ class DailyRiddle(models.Model):
     def __str__(self):
         return self.name
 
+# Model for completed daily riddles (Michael Hills)
 class CompleteRiddle(models.Model):
     riddle = models.ForeignKey(DailyRiddle, related_name='complete_riddle', on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -147,7 +149,7 @@ LIKE_CHOICES = (
 )
 
 
-
+# Model for comments on a response (Michael Hills)
 class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     response = models.ForeignKey(Responses,related_name="comments", on_delete=models.CASCADE)
@@ -170,6 +172,13 @@ class Likes(models.Model):
 class AccessAttemptAddons(models.Model):
     accessattempt = models.OneToOneField(AccessAttempt, on_delete=models.CASCADE)
     expiration_date = models.DateTimeField(_("Expiration Time"), auto_now_add=False)
+
+
+# Model for requests to become a gamemaster (Michael Hills)
+class Upgrade(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
     
 
 

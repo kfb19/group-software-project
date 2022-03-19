@@ -1,6 +1,8 @@
-from ..models import Category, Responses, Comments
+from pytz import timezone
+from ..models import Category, Responses, Comments, Upgrade
 from ..forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
+from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -17,15 +19,73 @@ def userProfile(request):
     responses = Responses.objects.filter(user=request.user).order_by('-created')
     comments = Comments.objects.all().order_by('-date_added')
 
+    game_master = False
+    if request.user.groups.filter(name='game_master').exists():
+        game_master = True
+
     categories = Category.objects.all()
     context = {
         'responses': responses,
         'categories': categories,
-        'comments' : comments
+        'comments' : comments,
+        'game_master': game_master
     }
 
     return render(request, 'base/profile.html', context)
 
+
+"""
+    Authors: Michael Hills
+    Description: View for game masters to accept user requests to be a gamemaster
+"""
+def upgradeUser(request):
+    upgrades = Upgrade.objects.all()
+    categories = Category.objects.all()
+    context = {'upgrades': upgrades,'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+  
+            obj = request.POST.get('userID')
+            obj2 = request.POST.get('upgradeID')
+            toUpgrade = User.objects.get(id = obj)
+            group = Group.objects.get(name='game_master')
+            group.user_set.add(toUpgrade)
+            Upgrade.objects.filter(id=obj2).delete()
+
+        except:
+            obj2 = request.POST.get('upgradeID')
+            Upgrade.objects.filter(id=obj2).delete()
+
+
+
+    return render(request,'base/upgradeUser.html',context)
+
+
+"""
+    Authors: Michael Hills
+    Description: View for users to request to be upgraded to gamemaster
+"""
+def requestMaster(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+
+    if request.method == "POST":
+
+        master = Upgrade(user=request.user,reason = request.POST.get('reason'))
+        master.save()
+        return redirect('home')
+
+
+    return render(request,'base/requestMaster.html',context)
+
+
+
+"""
+    Authors: Michael Hills
+    Description: View for users to delete their account
+"""
 @login_required(login_url='/login')
 def deleteProfile(request):
     if request.method == 'POST':

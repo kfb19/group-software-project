@@ -40,7 +40,7 @@ def home(request):
 
     # Checks if groups exists and if not create them
     Groups.objects.get_or_create(name="user")
-    Groups.objects.get_or_create(name="game-master")
+    Groups.objects.get_or_create(name="game_master")
 
     # Get the filter from the ?q= in the URL
     q = request.GET.get('q') if request.GET.get('q') is not None else ''
@@ -73,6 +73,8 @@ def home(request):
     context = {'categories': categories, 'challenges': challenges,'dailyRiddle':daily_riddle}
 
     return render(request, 'base/home.html', context)
+
+
 
 def generate_weekly_challenges(request):
     # loads locations and default challenges
@@ -108,7 +110,10 @@ def generate_weekly_challenges(request):
 
         new_challenge.save()
 
-
+"""
+    Authors: Michael Hills
+    Description: function to generate the daily riddle
+"""
 def generateDailyRiddle():
     # Loads random riddle and saves into database
     riddle_json = json.load(open('base/resources/daily_riddles.json'))
