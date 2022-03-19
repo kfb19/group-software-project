@@ -73,6 +73,11 @@ urlpatterns = [
 
     # URL for email verification
     path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
+    
+    # URLS for GDPR
+    path('terms-of-service/', views.tos, name='ToS'),
+    path('cookie/', views.cookie, name='cookie'),
+    path('privacy-policy/', views.privacy_policy, name='ToS'),
 ]
 
 # Need to change this before final deployment as django recommends to do this another way
