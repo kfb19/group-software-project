@@ -20,14 +20,6 @@ import sys
 def pfp_location(instance, filename):
     type = filename.split('.')[-1]
     filename = str(hash(instance.user.id)) + "." + type
-
-    # This checks if the user already has a profile picture
-    existing = [filename for filename in os.listdir('media/profile_pictures/') 
-                            if filename.startswith(str(hash(instance.user.id)) + ".")]
-    
-    # if they do, remove it and put this one
-    if len(existing) > 0:
-        os.remove(os.path.join('media/profile_pictures/', existing[0]))
     return os.path.join('profile_pictures/', filename)
 
 # Model for a user profile (Michael Hills, Lucas Smith, Tomas Premoli)
