@@ -19,18 +19,7 @@ import sys
 # File name setting for profile pics (Tomas Premoli)
 def pfp_location(instance, filename):
     type = filename.split('.')[-1]
-    filename = str(instance.user.id) + "." + type
-
-    # This checks if the user already has a profile picture
-    existing = [filename for filename in os.listdir('media/profile_pictures/') 
-                            if filename.startswith(str(instance.user.id) + ".")]
-    
-    # if they do, remove it and put this one
-    if len(existing) > 0:
-        file_path = os.path.join('media/profile_pictures/', existing[0])
-        image = Image.open(file_path)
-        image.close()
-        os.remove(os.path.join('media/profile_pictures/', existing[0]))
+    filename = str(hash(instance.user.id)) + "." + type
     return os.path.join('profile_pictures/', filename)
 
 # Model for a user profile (Michael Hills, Lucas Smith, Tomas Premoli)
@@ -60,7 +49,7 @@ class Profile(models.Model):
 
         # Set field to modified picture
         self.picture = InMemoryUploadedFile(output, 'ImageField', 
-                                        "%s.jpg" % self.picture.name.split('.')[0], 
+                                        "%s.jpg" % str(hash(self.picture.name.split('.')[0])), 
                                         'image/jpeg', sys.getsizeof(output), None)
 
         super(Profile, self).save()
@@ -109,7 +98,7 @@ class CompleteRiddle(models.Model):
 # File name setting for profile pics (Tomas Premoli)
 def response_pic_location(instance, filename):
     type = filename.split('.')[-1]
-    filename = str(instance.user.id) + "-" + str(instance.challenge.id) + "." + type
+    filename = str(hash(str(instance.user.id) + "-" + str(instance.challenge.id))) + "." + type
 
     return os.path.join('image_uploads/', filename)
 
@@ -139,7 +128,7 @@ class Responses(models.Model):
 
         # Set field to modified picture
         self.photograph = InMemoryUploadedFile(output, 'ImageField', 
-                                        "%s.jpg" % self.photograph.name.split('.')[0], 
+                                        "%s.jpg" % str(hash(self.photograph.name.split('.')[0])), 
                                         'image/jpeg', sys.getsizeof(output), None)
 
         super(Responses, self).save()
