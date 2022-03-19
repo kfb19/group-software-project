@@ -9,7 +9,7 @@ import json
 from decouple import config
 
 """
-    Authors: Lucas Smith
+    Authors: Lucas Smith, Michael Hills
     Description: Profile page with completed tasks
 """
 @login_required(login_url='/login')
@@ -25,6 +25,15 @@ def userProfile(request):
     }
 
     return render(request, 'base/profile.html', context)
+
+@login_required(login_url='/login')
+def deleteProfile(request):
+    if request.method == 'POST':
+        User.objects.filter(id=request.user.id).delete()
+        messages.success(request, 'Account Successfully Deleted')
+        return redirect("login")
+
+    return render(request,'base/deleteProfile.html')
 
 
 """
