@@ -36,6 +36,10 @@ urlpatterns = [
     path('my-responses/', views.myResponses, name='myResponses'),
     path('createComment/<int:pk>', views.createComment, name='createComments'),
     path('viewComments/<int:pk>', views.viewComments, name='viewComments'),
+    path('viewRiddle/<int:pk>', views.viewRiddle, name='viewRiddle'),
+    path('deleteProfile/',views.deleteProfile, name='deleteProfile'),
+    path('upgradeUser/', views.upgradeUser, name ='upgradeUser' ),
+    path('requestMaster/', views.requestMaster,name='requestMaster'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),
@@ -69,6 +73,8 @@ urlpatterns = [
     path('sign-out-sso', views.sign_out_sso, name='sign-out-sso'),
     path('callback', views.callback, name='callback'),
 
+    # URL for email verification
+    path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
 ]
 
 # Need to change this before final deployment as django recommends to do this another way

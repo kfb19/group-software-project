@@ -30,7 +30,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
-<!-- Mist of this is for bootstrap (or whatever CSS we end up using) -->
+
 <div class="content-section">
     <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profile.picture.url }}" width="100" height="100"></img>
@@ -40,7 +40,13 @@
             <h4>{{user.profile.bio}}</h4>
 
             {% if request.user.is_authenticated %}
-            <a href="/profile_edit" class="button">Edit profile</a>
+            <div style="width:500px">
+                <a href="/profile_edit" class="button">Edit profile</a>
+                <a href="{% url 'deleteProfile' %}" class="button">Delete profile</a><br>
+                {% if game_master == False %}
+                    <a href="{% url 'requestMaster' %}" class="button">Become a Game Master</a>
+                {% endif %}
+            </div>
             {% endif %}
 
         </div>

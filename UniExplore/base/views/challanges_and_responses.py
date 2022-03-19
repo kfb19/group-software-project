@@ -1,6 +1,7 @@
 from ..decorators import allowed_users
+from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, Responses, Comments
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -8,6 +9,8 @@ from django.db.models import Q
 from django.forms import ModelChoiceField
 from django.contrib import messages
 from django.utils import timezone
+import requests
+import json
 
 """
     Authors: Michael Hills, Jack Purkiss
@@ -54,31 +57,44 @@ def createResponse(request, pk):
         return redirect('home')
     # If it's expired, throw an error
     elif challenge.expires_on < timezone.now():
-        print("ruh oh")
         messages.warning(request, 'ERROR: The challenge you selected has expired!')
         return redirect('home')
-
+    
+    
 
     if request.method == 'POST':
         form = ResponseForm(request.POST, request.FILES)
-
         # If valid response, add to database
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
             obj.challenge = challenge
 
-            obj.save()
+            # analyse uploaded image
+            img = request.FILES["photograph"].file.getvalue()
+            invalid = analyse_image({'media': img})
 
-            profile = request.user.profile
-            profile.points += challenge.points
-            profile.save()
-
-            return redirect('home')
+            if invalid == True:
+                messages.warning(request, 'ERROR: The photo you tried to upload goes against our terms of service!')
+                context = {'form': form, 'categories': categories}
+                return render(request, 'base/createResponse.html', context)
+            else:
+                obj.save()
+                profile = request.user.profile
+                profile.points += challenge.points
+                profile.save()
+                return redirect('home')
 
     context = {'form': form, 'categories': categories}
     return render(request, 'base/createResponse.html', context)
 
+def analyse_image(img):
+    params = { 'workflow': 'wfl_brNwJk9abjFRDu54kAc6y', 'api_user': config('image_analysis_api_user'),
+                'api_secret': config('image_analysis_api_key')}
+
+    request = requests.post('https://api.sightengine.com/1.0/check-workflow.json', files=img, data=params)
+    output = json.loads(request.text)
+    return output['summary']['action'] == 'reject'
 
 
 """
@@ -118,3 +134,38 @@ def userResponses(request, pk):
     categories = Category.objects.all()
     context = {'responses': responses, 'user': user, 'categories': categories}
     return render(request, 'base/userResponses.html', context)
+
+
+
+"""
+    Authors: Michael Hills
+    Description: view to see daily riddle
+"""
+@login_required(login_url='/login')
+def viewRiddle(request,pk):
+    dailyRiddle = DailyRiddle.objects.get(id=pk)
+    categories = Category.objects.all()
+    
+
+    completed = CompleteRiddle.objects.filter(riddle=dailyRiddle)
+    allowed = True
+    
+    if len(completed) > 0:
+        allowed = False
+
+    else:
+
+        complete = CompleteRiddle(riddle=dailyRiddle,user=request.user)
+        complete.save()
+        profile = request.user.profile
+        profile.points += dailyRiddle.points
+
+        profile.save()
+        complete.save()
+
+    context = {'dailyRiddle':dailyRiddle, 'categories':categories,'allowed': allowed}
+
+    
+    
+    return render(request,'base/viewRiddle.html', context)
+

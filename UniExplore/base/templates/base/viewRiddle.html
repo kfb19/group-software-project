@@ -1,0 +1,50 @@
+<!--
+    Authors:
+        - Michael Hills
+-->
+
+{% extends 'base.html' %}
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>My Responses</title>  
+</head>  
+
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+    
+{% endblock %}
+
+
+
+{% block content %}
+
+<h1 id="title">Riddle Complete!</h1>
+
+{% if allowed == False %}
+
+<h2>You have already completed this riddle!!</h2>
+
+{% else %}
+
+
+
+<h2>Riddle: {{dailyRiddle.name}}</h2>
+<h2>Answer: {{dailyRiddle.answer}}</h2>
+<h2>+{{dailyRiddle.points}} points</h2>
+
+{% endif %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
+
+
+
+{% endblock %}
+
+</body>
+</html>

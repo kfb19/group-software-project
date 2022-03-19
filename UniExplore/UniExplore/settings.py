@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 
-Authors: Conor Bernard Rogers, Tomas Premoli, Lucas Smith
+Authors: Conor Behard Roberts, Tomas Premoli
+
 
 """
 
@@ -92,7 +93,8 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'axes',
     'crispy_forms',
-    'mod_wsgi.server'
+    'mod_wsgi.server',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

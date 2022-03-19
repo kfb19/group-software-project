@@ -102,13 +102,13 @@
   <h1>Complete Challenge</h1>
 
   <div class="form">
+    <p>Please write a short description of why you should be a game master</p>
+    
     <form class="response-form" method="POST" action="" enctype="multipart/form-data">
-      {% csrf_token %}
-      <fieldset class="form-group">
-        <legend class="border-bottom mb-4"></legend>
-        {{ form.as_p }}
-      </fieldset>
-      <input type="submit" , value="Complete" />
+        {% csrf_token %}
+        <input type ="text" name = "reason">
+        <input type="submit">
+        
     </form>
   </div>
 

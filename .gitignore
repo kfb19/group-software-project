@@ -129,4 +129,8 @@ dmypy.json
 .pyre/
 *.xml
 *.iml
+
 oauth_settings.yml
+*.png
+*.jpeg
+*.jpg

@@ -19,7 +19,6 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <style></style>
   </head>
   <body>
     {% block filter %}
@@ -27,32 +26,21 @@
     {% endblock %} 
     {% block content %}
 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
+
+
     <style>
-      @import url("https://fonts.googleapis.com/css?family=Quicksand");
-
-      *,
-      body {
-        font-family: "Quicksand", sans-serif;
-        font-weight: 400;
-      }
-
-      #title {
-        color: #fff;
-        text-align: center;
-        font-size: 40px;
-        font-weight: 600;
-        margin-bottom: 20px;
-      }
 
       th {
-        background-color: #177442;
+        background-color: var(--dark-color);
         color: #fff;
         font-size: 18px;
         font-weight: 600;
       }
 
       tr {
-        background-color: #bbeba6;
+        background-color: var(--light-color);
         color: rgb(0, 0, 0);
         font-size: 16px;
         font-family: "Quicksand", sans-serif;
@@ -60,7 +48,7 @@
 
       tr:hover {
         color: #fff;
-        background-color: #177442;
+        background-color: var(--dark-color);
       }
     </style>
 
