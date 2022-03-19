@@ -40,7 +40,8 @@
             <h4>{{user.profile.bio}}</h4>
 
             {% if request.user.is_authenticated %}
-            <a href="/profile_edit" class="button">Edit profile</a>
+            <a href="/profile_edit" class="button">Edit profile</a><br>
+            <a href="{% url 'deleteProfile' %}" class="button">Delete profile</a>
             {% endif %}
 
         </div>

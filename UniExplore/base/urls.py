@@ -35,6 +35,7 @@ urlpatterns = [
     path('createComment/<int:pk>', views.createComment, name='createComments'),
     path('viewComments/<int:pk>', views.viewComments, name='viewComments'),
     path('viewRiddle/<int:pk>', views.viewRiddle, name='viewRiddle'),
+    path('deleteProfile/',views.deleteProfile, name='deleteProfile'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),
