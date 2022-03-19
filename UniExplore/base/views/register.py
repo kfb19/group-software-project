@@ -51,6 +51,7 @@ def registerPage(request):
                         user.is_active = False
                         user.save()
 
+                        # If you want to make users without needing to authenticate set to True
                         developer_mode = False
 
                         if developer_mode == False:
