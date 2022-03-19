@@ -10,3 +10,4 @@ pillow
 django-crispy-forms
 django-settings-export
 django-cleanup
+django-utils-six
