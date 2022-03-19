@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth.models import Group
-from ..tokens import account_activation_token
+from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
@@ -51,22 +51,7 @@ def registerPage(request):
                         user = form.save(commit=False)
                         user.is_active = False
                         user.save()
-
-                        # If you want to make users without needing to authenticate set to True
-                        developer_mode = False
-
-                        if developer_mode == False:
-                            subject = 'Activate Your UniExplore Account'
-                            message = render_to_string('email_verification/account_activation_email.html', {
-                                'user': user,
-                                'domain': 'localhost:8000',
-                                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                                'token': account_activation_token.make_token(user),
-                            })
-                            user.email_user(subject, message)
-                            messages.success(request, ('Please Confirm your email to complete registration.'))
-
-
+                        
                         user = form.save()
 
                         user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authentication model
@@ -78,6 +63,20 @@ def registerPage(request):
                         # Adds the user to the user group
                         group = Group.objects.get(name='user')
                         user.groups.add(group)
+                        
+                         # If you want to make users without needing to authenticate set to True
+                        developer_mode = False
+
+                        if developer_mode == False:
+                            subject = 'Activate Your UniExplore Account'
+                            message = render_to_string('email_verification/account_activation_email.html', {
+                                'user': user,
+                                'domain': 'localhost:8000',
+                                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                                'token': default_token_generator.make_token(user),
+                            })
+                            user.email_user(subject, message)
+                            messages.success(request, ('Please Confirm your email to complete registration.'))
 
                         if developer_mode == True:
                             login(request, user)
@@ -100,12 +99,15 @@ def registerPage(request):
 
 def activate_account(request, uidb64, token):
     try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
+        uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and account_activation_token.check_token(user, token):
+    print(user)
+    print(token)
+    print(default_token_generator.check_token(user, token))
+    if user is not None and default_token_generator.check_token(user, token):
         user.backend = 'django.contrib.auth.backends.ModelBackend'  # Sets the backend authentication model
        
         user.is_active = True
@@ -118,6 +120,3 @@ def activate_account(request, uidb64, token):
     else:
         messages.warning(request, ('The confirmation link was invalid, possibly because it has already been used.'))
         return redirect('home')
-
-    return render(request, 'base/login_register.html', context)
-
