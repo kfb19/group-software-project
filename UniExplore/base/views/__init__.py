@@ -10,3 +10,4 @@ from .profile import *
 from .recent_activity import *
 from .register import *
 from .comments import *
+from .gdpr import *
