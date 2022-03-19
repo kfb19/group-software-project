@@ -70,23 +70,25 @@
         {% block content %}
         {% endblock %}
     </div>
-    <div class="gdpr">
-        <div>
-            <a href="https://app.termly.io/notify/14438a37-0e5a-4239-be9c-356a7b99ac73">Do not sell my info</a>
-        </div>
+    
+</div>
+</body>
+
+<footer>
+<div class="gdpr">
         <div>
             <button
             class="termly-cookie-preference-button"
             type="button"
             style="background: white; width: 165px; height: 30px; border-radius: 3px; border: 1px solid #5f7d9c; font-family: Roboto, Arial; font-size: 10px; color: #5f7d9c; font-weight: 600; box-sizing: border-box; cursor: pointer; padding: 0; outline: none;"
             onclick="displayPreferenceModal()">Manage Cookie Preferences</button>
-        </div>
-        <div>
-            
+        
+            <a href = "{% url 'ToS' %}" target=”_blank”>Terms of Service</a>
+            <a href = "{% url 'privacy_policy' %}" target=”_blank”>Privacy Policy</a>
+            <a href = "{% url 'cookie' %}" target=”_blank”>Cookie Policy</a>
         </div>
     </div>
-</div>
-</body>
+</footer>
 
   
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
