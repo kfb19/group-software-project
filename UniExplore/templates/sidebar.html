@@ -78,6 +78,17 @@
     <hr>
     <br>
     <a href = "{% url 'leaderboard' %}">Leaderboard</a>
+    {%for group in request.user.groups.all %}
+        {%if group.name == 'game_master' %}
+        <hr>
+        <br>
+        <a href = "{% url 'upgradeUser' %}">Upgrade Users</a>
+        {% endif %}
+    {% endfor %}
+
+    <hr>
+    <br>
+    
     </div>
     <button type="button" class="help-button" data-toggle="modal" data-target="#helpModal">
         Help

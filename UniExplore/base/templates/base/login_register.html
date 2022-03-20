@@ -28,14 +28,7 @@ html, body {
     text-align: center;
 }
 
-.login-form {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      min-height: 100vh;
-}
+
 
 .register-form {
     order: 3px solid #fff;
@@ -207,7 +200,7 @@ h1 {
 }
 
 </style>
-{%if page == 'login'%}
+
 
 {% if messages %}
 {% for message in messages %}
@@ -220,11 +213,13 @@ h1 {
 
 {% endif %}
 
-<div></div>
+
     <div class="app-title">
         <h1>UniExplore</h1>
     </div>
 
+
+{%if page == 'login'%}
 
     <div class="login-form">
         <form method="POST" action="">
@@ -257,26 +252,10 @@ h1 {
 
 
 
-
-
 {% else %}
-
-{% if messages %}
-{% for message in messages %}
-
-<div class="alert alert-{{message.tags}}">
-    {{message}}
-</div>
-
-{% endfor %}
-
-{% endif %}
 
 <div>
     <div class="form">
-        <div class="app-title">
-            <h1>UniExplore</h1>
-        </div>
         <form class="register-form" method="POST" action="">
           {% csrf_token %}
           <fieldset class = "form-group">
@@ -300,9 +279,9 @@ h1 {
     
 </div>
 
-
-
 {% endif %}
+
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
