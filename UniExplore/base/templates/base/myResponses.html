@@ -30,7 +30,7 @@
           >{{response.challenge.name}}</a>
         | <small>{{response.challenge.points}}</small>
       </p>
-      <img src="{{ response.photograph.url }}" alt="image" />
+      <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
         <br>
         <small>{{response.description}}</small> <br> 
       {% include 'like.html' %}

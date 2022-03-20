@@ -35,7 +35,7 @@
                 </div>
                 <p> <a href = "{% url 'userResponses' response.user.id %}">{{response.user.username}}</a></p>
 
-                <img src="{{ response.photograph.url }}" alt="image" />
+                <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
                 <br>
                 <small>{{response.description}} </small> <br>
                 {% include 'like.html' %}
