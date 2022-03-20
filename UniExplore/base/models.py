@@ -19,15 +19,7 @@ import sys
 # File name setting for profile pics (Tomas Premoli)
 def pfp_location(instance, filename):
     type = filename.split('.')[-1]
-    filename = str(instance.user.id) + "." + type
-
-    # This checks if the user already has a profile picture
-    existing = [filename for filename in os.listdir('media/profile_pictures/') 
-                            if filename.startswith(str(instance.user.id) + ".")]
-    
-    # if they do, remove it and put this one
-    if len(existing) > 0:
-        os.remove(os.path.join('media/profile_pictures/', existing[0]))
+    filename = str(hash(instance.user.id)) + "." + type
     return os.path.join('profile_pictures/', filename)
 
 # Model for a user profile (Michael Hills, Lucas Smith, Tomas Premoli)
@@ -38,6 +30,7 @@ class Profile(models.Model):
     bio = models.CharField(default="No bio set.", max_length=200)
     university = models.CharField(default="No university set.", max_length=200)  # TODO: Dropdown for available unis?
     picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to=pfp_location)
+    email_confirmed = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.name
@@ -56,7 +49,7 @@ class Profile(models.Model):
 
         # Set field to modified picture
         self.picture = InMemoryUploadedFile(output, 'ImageField', 
-                                        "%s.jpg" % self.picture.name.split('.')[0], 
+                                        "%s.jpg" % str(hash(self.picture.name.split('.')[0])), 
                                         'image/jpeg', sys.getsizeof(output), None)
 
         super(Profile, self).save()
@@ -86,6 +79,7 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
+# Model the daily riddle (Michael Hills)
 class DailyRiddle(models.Model):
     name = models.CharField(max_length=200,null=True)
     points = models.IntegerField()
@@ -97,6 +91,7 @@ class DailyRiddle(models.Model):
     def __str__(self):
         return self.name
 
+# Model for completed daily riddles (Michael Hills)
 class CompleteRiddle(models.Model):
     riddle = models.ForeignKey(DailyRiddle, related_name='complete_riddle', on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -105,7 +100,7 @@ class CompleteRiddle(models.Model):
 # File name setting for profile pics (Tomas Premoli)
 def response_pic_location(instance, filename):
     type = filename.split('.')[-1]
-    filename = str(instance.user.id) + "-" + str(instance.challenge.id) + "." + type
+    filename = str(hash(str(instance.user.id) + "-" + str(instance.challenge.id))) + "." + type
 
     return os.path.join('image_uploads/', filename)
 
@@ -135,7 +130,7 @@ class Responses(models.Model):
 
         # Set field to modified picture
         self.photograph = InMemoryUploadedFile(output, 'ImageField', 
-                                        "%s.jpg" % self.photograph.name.split('.')[0], 
+                                        "%s.jpg" % str(hash(self.photograph.name.split('.')[0])), 
                                         'image/jpeg', sys.getsizeof(output), None)
 
         super(Responses, self).save()
@@ -154,7 +149,7 @@ LIKE_CHOICES = (
 )
 
 
-
+# Model for comments on a response (Michael Hills)
 class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     response = models.ForeignKey(Responses,related_name="comments", on_delete=models.CASCADE)
@@ -177,6 +172,13 @@ class Likes(models.Model):
 class AccessAttemptAddons(models.Model):
     accessattempt = models.OneToOneField(AccessAttempt, on_delete=models.CASCADE)
     expiration_date = models.DateTimeField(_("Expiration Time"), auto_now_add=False)
+
+
+# Model for requests to become a gamemaster (Michael Hills)
+class Upgrade(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
     
 
 

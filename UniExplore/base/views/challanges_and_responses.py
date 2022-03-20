@@ -136,6 +136,11 @@ def userResponses(request, pk):
     return render(request, 'base/userResponses.html', context)
 
 
+
+"""
+    Authors: Michael Hills
+    Description: view to see daily riddle
+"""
 @login_required(login_url='/login')
 def viewRiddle(request,pk):
     dailyRiddle = DailyRiddle.objects.get(id=pk)
