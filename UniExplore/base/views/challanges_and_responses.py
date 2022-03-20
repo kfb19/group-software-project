@@ -80,6 +80,7 @@ def createResponse(request, pk):
                         invalid = analyse_image({'media': img})
                     except Exception:
                         messages.warning(request, 'ERROR: The photo you tried to upload is not in the correct format')
+                        context = {'form': form, 'categories': categories}
                         return render(request, 'base/createResponse.html', context)
 
             if invalid == True:
