@@ -110,7 +110,7 @@ def editProfile(request):
             username = user_form.cleaned_data.get('username').lower().capitalize()
             
             # Analyse image uploaded
-            developer_mode = True
+            developer_mode = False
             invalid = False
             if developer_mode == False:
                 if len(request.FILES) > 0:
