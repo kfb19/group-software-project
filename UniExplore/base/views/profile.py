@@ -114,8 +114,12 @@ def editProfile(request):
             invalid = False
             if developer_mode == False:
                 if len(request.FILES) > 0:
-                    img = request.FILES["picture"].file.getvalue()
-                    invalid = analyse_image({'media': img})
+                    try:
+                        img = request.FILES["photograph"].file.getvalue()
+                        invalid = analyse_image({'media': img})
+                    except Exception:
+                        messages.warning(request, 'ERROR: The photo you tried to upload is not in the correct format')
+                        return render(request, 'base/profile_edit.html', context)
         
             if invalid:
                 messages.warning(request, 'ERROR: The photo you tried to upload goes against our terms of service!')
