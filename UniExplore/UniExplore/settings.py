@@ -52,7 +52,7 @@ CHALLENGE_VALIDITY_DISTANCE = 0.001
 
 # Should be in hex format
 BOUNDING_BOX_COLOR = '#ff2600'
-DRAW_BOUNDING_BOX = 'true'
+DRAW_BOUNDING_BOX = 'false'
 
 # Photo settings
 RESPONSE_PHOTO_SIZE = (750,500)
