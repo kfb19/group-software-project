@@ -76,7 +76,7 @@ urlpatterns = [
     
     # URLS for GDPR
     path('terms-of-service/', views.tos, name='ToS'),
-    path('cookie/', views.cookie, name='cookie'),
+    path('cookies/', views.cookie, name='cookie'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
 ]
 
