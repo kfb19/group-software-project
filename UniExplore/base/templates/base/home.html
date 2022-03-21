@@ -46,7 +46,11 @@
             <style>
                 #map { height: 500px; width: 1000px }
             </style>
+            {%for group in request.user.groups.all %}
+                {%if group.name == 'game_master' %}    
             <button id="devModeSwitch">Enable spoof mode</button>
+                {% endif %}
+            {% endfor %}
         </div>
 
 
