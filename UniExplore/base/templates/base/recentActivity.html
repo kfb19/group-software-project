@@ -80,18 +80,15 @@
     {% endfor %}
 </div>
 
-{% endblock %}
-
-
 </body>
 
 <script>
-   
+
     const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
     
     function postData(id){
 
-        
         
         var req = new XMLHttpRequest();
         var url = "{% url 'like-post' %}";
@@ -110,4 +107,6 @@
         req.send();
     }
 </script>
+
+{% endblock %}
 </html>

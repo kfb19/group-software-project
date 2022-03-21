@@ -33,6 +33,7 @@
         }
     </style>
 
+
     <input type="hidden"  name = 'response_id' value = "{{response.id}}"> 
     {% if request.user not in response.liked.all %}
         <button type="submit" id="button-{{response.id}}">Like</button>
@@ -44,5 +45,4 @@
 
 
 </body>
-
 </html>
