@@ -134,12 +134,29 @@ class Responses(models.Model):
 
     # overrides image data to be compressed (Tomas Premoli)
     def save(self, *args, **kwargs):
+        maxwidth = settings.RESPONSE_PHOTO_SIZE[0]
+        maxheight = settings.RESPONSE_PHOTO_SIZE[1]
+
         # Opening the uploaded image
         img = Image.open(self.photograph)
         output = BytesIO()
         # Resize/modify the image
-        img = img.resize(settings.RESPONSE_PHOTO_SIZE)
-        img = img.convert('RGB')
+        width, height = img.size
+
+        if width>height:
+            width_percent = (maxwidth/float(img.size[0]))
+            h_size = int((float(height)*float(width_percent)))
+
+            img = img.resize((maxwidth,h_size))
+            img = img.convert('RGB')
+        else:
+            height_percent = (maxheight/float(img.size[1]))
+            w_size = int((float(width)*float(height_percent)))
+
+            img = img.resize((w_size,maxheight))
+            img = img.convert('RGB')
+
+            
         # after modifications, save it to the output
         img.save(output, format='JPEG', quality=settings.RESPONSE_PHOTO_QUALITY)
         output.seek(0)
