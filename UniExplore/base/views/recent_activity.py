@@ -13,6 +13,9 @@ def recentActivity(request):
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
     comments = Comments.objects.all().order_by('-date_added')
+
+    if request.method == 'POST':
+        print("hello")
     
     context = {'responses': responses, 'categories': categories, 'comments':comments}
 
