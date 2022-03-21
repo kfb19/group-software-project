@@ -42,7 +42,21 @@ class Profile(models.Model):
             img = Image.open(self.picture)
             output = BytesIO()
             # Resize/modify the image
+            width, height = img.size
+
+            offset  = int(abs(height-width)/2)
+
+            if width==height:
+                pass
+            elif width>height:
+                img = img.crop([offset,0,width-offset,height])
+            else:
+                img = img.crop([0,offset,width,height-offset])
+
+            
             img = img.resize(settings.PROFILE_PIC_SIZE)
+
+
             img = img.convert('RGB')
             # after modifications, save it to the output
             img.save(output, format='JPEG', quality=settings.PROFILE_PIC_QUALITY)

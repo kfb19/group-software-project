@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import requests
 import json
-import traceback
 from decouple import config
 
 """
@@ -119,7 +118,6 @@ def editProfile(request):
                         img = request.FILES["picture"].file.getvalue()
                         invalid = analyse_image({'media': img})
                     except Exception as e:
-                        print(traceback.format_exc())
                         messages.warning(request, 'ERROR: The photo you tried to upload is not in the correct format')
                         context = { 'user_form': user_form,'profile_form': profile_form}
                         return render(request, 'base/profile_edit.html', context)
