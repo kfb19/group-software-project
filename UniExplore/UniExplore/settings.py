@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 Authors: Conor Behard Roberts, Tomas Premoli
 
+
 """
 
 import os
@@ -32,7 +33,7 @@ SECRET_KEY = 'django-insecure-vwg%snc#1k1rt2pi_6=k2%xvi(w2bbbmd3uwez-$#&dscpxl#)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["uniexplore.co.uk", "localhost", "127.0.0.1"]
 
 # These variables are settings variables for modifying aspects of the application
 # Email extension:
@@ -92,7 +93,8 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'axes',
     'crispy_forms',
-    'django_cleanup.apps.CleanupConfig'
+    'mod_wsgi.server',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -189,7 +191,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static')
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
