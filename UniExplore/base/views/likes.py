@@ -7,12 +7,10 @@ from django.shortcuts import redirect
     Authors: Michael Hills
     Description: View to like a response to a challenge
 """
-@login_required(login_url='/login')
 def likeResponse(request):
 
 
     # Get the response that has been liked
-
     if request.method == 'POST':
 
         response_id = request.body.decode('utf-8')
@@ -20,6 +18,7 @@ def likeResponse(request):
         response = Responses.objects.get(id=response_id)
 
         profile = response.user.profile
+
 
         # If user has already liked the response
         if request.user in response.liked.all():

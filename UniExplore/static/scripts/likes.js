@@ -20,7 +20,7 @@ function postData(id) {
             }
             count = document.getElementById("num-" + id).innerHTML;
         } else if (this.readyState == 4 && this.status != 200) {
-            alert("!200");
+            window.location = "/login/";
         }
     };
 
