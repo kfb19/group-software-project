@@ -93,7 +93,6 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'axes',
     'crispy_forms',
-    'mod_wsgi.server',
     'django_cleanup.apps.CleanupConfig',
 ]
 
@@ -127,7 +126,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'UniExplore.wsgi.application'
+# WSGI_APPLICATION = 'UniExplore.wsgi.application'
 
 # SMTP Settings:
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

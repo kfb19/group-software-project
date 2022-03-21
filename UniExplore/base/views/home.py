@@ -7,11 +7,13 @@ from django.contrib import messages
 from django.contrib.auth.models import Group as Groups
 from django.forms import ValidationError
 import json
+from django.contrib.auth.decorators import login_required
 from random import choice
 """
     Authors: Michael Hills, Tomas Premoli
     Description: View for the main homepage
 """
+@login_required(login_url='/login')
 def home(request):
 
     # Checks if there's a valid current riddle and generates it if not
