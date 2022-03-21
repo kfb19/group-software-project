@@ -14,8 +14,9 @@ def likeResponse(request):
     # Get the response that has been liked
 
     if request.method == 'POST':
-        print('success')
-        """response_id = request.POST.get('response_id')
+
+        response_id = request.body.decode('utf-8')
+       
         response = Responses.objects.get(id=response_id)
 
         profile = response.user.profile
@@ -41,6 +42,12 @@ def likeResponse(request):
             else:
                 like.value = 'Like'
 
-        like.save()"""
+
+        like.save()
 
     return JsonResponse({})
+        
+       
+        
+
+   
