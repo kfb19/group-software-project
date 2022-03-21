@@ -46,6 +46,7 @@ class Profile(models.Model):
 
             offset  = int(abs(height-width)/2)
 
+            # This crops the image into a square depending if portrait or landscape
             if width==height:
                 pass
             elif width>height:
@@ -120,7 +121,7 @@ def response_pic_location(instance, filename):
 
     return os.path.join('image_uploads/', filename)
 
-# Model for the responses to challenges (Michael Hills)
+# Model for the responses to challenges (Michael Hills, Tomas Premoli)
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
@@ -143,6 +144,7 @@ class Responses(models.Model):
         # Resize/modify the image
         width, height = img.size
 
+        # This resizes image retaining aspect ratio
         if width>height:
             width_percent = (maxwidth/float(img.size[0]))
             h_size = int((float(height)*float(width_percent)))
