@@ -9,6 +9,7 @@ from .. forms import commentForm
     Authors: Michael Hills
     Description: View to create a comment
 """
+@login_required(login_url='/login')
 def createComment(request, pk):
 
     
@@ -35,6 +36,7 @@ def createComment(request, pk):
     Authors: Michael Hills
     Description: View to see all comments on a response
 """
+@login_required(login_url='/login')
 def viewComments(request, pk):
 
     

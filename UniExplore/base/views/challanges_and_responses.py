@@ -110,6 +110,7 @@ def analyse_image(img):
     Authors: Michael Hills
     Description: View to show the responses of a challenge
 """
+@login_required(login_url='/login')
 def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
     comments = Comments.objects.all().order_by('-date_added')
@@ -137,6 +138,7 @@ def myResponses(request):
     Authors: Michael Hills
     Description: View to show the responses of a user
 """
+@login_required(login_url='/login')
 def userResponses(request, pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
