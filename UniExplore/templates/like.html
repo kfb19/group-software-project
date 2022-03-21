@@ -6,7 +6,17 @@
 
 
 
-<form action = "{% url 'like-post' %}" method="POST">
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+     
+</head>  
+
+<body>
+
+
+<form onclick="postData('{{response.id}}')">
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
@@ -23,12 +33,16 @@
         }
     </style>
 
-    {% csrf_token %}
     <input type="hidden"  name = 'response_id' value = "{{response.id}}"> 
     {% if request.user not in response.liked.all %}
-        <button type="submit">Like</button>
+        <button type="submit" id="button-{{response.id}}">Like</button>
     {% else %}
-        <button type="submit">Unlike</button>
+        <button type="submit" id="button-{{response.id}}">Unlike</button>
     {% endif %}
-    <strong>{{response.liked.all.count}} Likes</strong>
+    <strong id="num-{{response.id}}">{{response.liked.all.count}} Likes</strong>
 </form>
+
+
+</body>
+
+</html>

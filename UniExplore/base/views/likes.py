@@ -1,3 +1,5 @@
+import json
+from django.http import HttpResponse
 from ..models import Likes, Responses
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -10,6 +12,9 @@ from django.shortcuts import redirect
 def likeResponse(request):
 
     # Get the response that has been liked
+
+    print("Test")
+
 
     if request.method == 'POST':
         response_id = request.POST.get('response_id')
@@ -39,4 +44,5 @@ def likeResponse(request):
                 like.value = 'Like'
 
         like.save()
-    return redirect(request.META.get('HTTP_REFERER'))
+        
+    return HttpResponse(json.dumps({}))

@@ -25,6 +25,8 @@
 
 {% block content %}
 
+
+
 <h1 id="title">Recent Activity</h1>
 
 {% load static %}
@@ -32,6 +34,8 @@
 
 
 <div>
+    {% csrf_token %}
+    
     {% for response in responses %}
         <div class="challenge">
             <div id="profile-pic"  style="float:left">
@@ -78,5 +82,32 @@
 
 {% endblock %}
 
+
 </body>
+
+<script>
+   
+    const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    function postData(id){
+
+        
+        
+        var req = new XMLHttpRequest();
+        var url = "{% url 'like-post' %}";
+        req.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert("200");
+            } else if (this.readyState == 4 && this.status != 200) {
+                alert("!200");
+            }
+        };
+        
+        // Probably add user identification here
+        req.open("POST", url);
+        req.setRequestHeader('X-CSRFToken', csrf)
+        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        req.send();
+    }
+</script>
 </html>

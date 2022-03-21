@@ -9,6 +9,7 @@ from django.shortcuts import render
     Description: View to show all the responses to challenges
 """
 def recentActivity(request):
+    
     responses = Responses.objects.all().order_by('-created')
     categories = Category.objects.all()
     comments = Comments.objects.all().order_by('-date_added')

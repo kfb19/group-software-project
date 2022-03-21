@@ -93,7 +93,7 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'axes',
     'crispy_forms',
-    'mod_wsgi.server',
+    #'mod_wsgi.server',
     'django_cleanup.apps.CleanupConfig',
 ]
 
