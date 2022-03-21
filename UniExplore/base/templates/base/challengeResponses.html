@@ -28,6 +28,7 @@
 <h1 id="title">{{challenge.name}}</h1>
 
 <div>
+    {% csrf_token %}
     {% for response in responses %}
             <div class="challenge">
                 <div id="profile-pic"  style="float:left">
@@ -69,6 +70,9 @@
             </div>
         {% endfor %}
 </div>
+
+{% load static %}
+    <script src="{% static '/scripts/likes.js' %}"></script>
 
 {% endblock %}
 

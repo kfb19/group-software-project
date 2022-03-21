@@ -99,31 +99,8 @@
 
 </body>
 
-<script>
-
-    const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-    
-    function postData(id){
-
-        var req = new XMLHttpRequest();
-        var url = "{% url 'like-post' %}";
-        req.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                count = document.getElementById("num-"+id).innerHTML += 1;
-            } else if (this.readyState == 4 && this.status != 200) {
-                alert("!200");
-            }
-        };
-
-
-        // Probably add user identification here
-        req.open("POST", url);
-        req.setRequestHeader('X-CSRFToken', csrf)
-        req.setRequestHeader("Content-Type", "text/plain");
-        req.send(id);
-    }
-</script>
+{% load static %}
+    <script src="{% static '/scripts/likes.js' %}"></script>
 
 {% endblock %}
 
