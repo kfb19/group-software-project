@@ -148,4 +148,43 @@ h4 {
     font-size: 24px;
 }
 
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100vh;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+.container-fluid{
+    background-color: var(--dark-color);
+    border-color: var(--dark-color);
+}
+
+.container-fluid #sidebarCollapse{
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    border-color: var(--dark-color);
+}
+
+
 
