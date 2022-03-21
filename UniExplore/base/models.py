@@ -37,20 +37,22 @@ class Profile(models.Model):
 
     # overrides image data to be compressed (Tomas Premoli)
     def save(self, *args, **kwargs):
-        # Opening the uploaded image
-        img = Image.open(self.picture)
-        output = BytesIO()
-        # Resize/modify the image
-        img = img.resize(settings.PROFILE_PIC_SIZE)
-        img = img.convert('RGB')
-        # after modifications, save it to the output
-        img.save(output, format='JPEG', quality=settings.PROFILE_PIC_QUALITY)
-        output.seek(0)
+        try:
+            # Opening the uploaded image
+            img = Image.open(self.picture)
+            output = BytesIO()
+            # Resize/modify the image
+            img = img.resize(settings.PROFILE_PIC_SIZE)
+            img = img.convert('RGB')
+            # after modifications, save it to the output
+            img.save(output, format='JPEG', quality=settings.PROFILE_PIC_QUALITY)
+            output.seek(0)
 
-        # Set field to modified picture
-        self.picture = InMemoryUploadedFile(output, 'ImageField', 
-                                        "%s.jpg" % str(hash(self.picture.name.split('.')[0])), 
-                                        'image/jpeg', sys.getsizeof(output), None)
+            # Set field to modified picture
+            self.picture = InMemoryUploadedFile(output, 'ImageField', 
+                                            "%s.jpg" % str(hash(self.picture.name.split('.')[0])), 
+                                            'image/jpeg', sys.getsizeof(output), None)
+        except: pass
 
         super(Profile, self).save()
 
