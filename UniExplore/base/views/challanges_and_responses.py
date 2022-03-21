@@ -21,7 +21,16 @@ def createChallenge(request):
     categories = Category.objects.all()
     form = ChallengeForm()
 
-    form.fields['category'] = ModelChoiceField(Category.objects.all().exclude(name="Weekly"))
+    if len(categories) < 3:
+        photography = Category(name="Photography")
+        photography.save()
+        athletic = Category(name="Athletic")
+        athletic.save()
+        descriptive = Category(name="Descriptive")
+        descriptive.save()
+        categories = Category.objects.all()
+
+    form.fields['category'] = ModelChoiceField(categories.exclude(name="Weekly"))
 
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
