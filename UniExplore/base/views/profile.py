@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+import io
 import requests
 import json
 from decouple import config
@@ -115,8 +116,12 @@ def editProfile(request):
             if developer_mode == False:
                 if len(request.FILES) > 0:
                     try:
-                        img = request.FILES["picture"].file.getvalue()
-                        invalid = analyse_image({'media': img})
+                        if isinstance(request.FILES["picture"].file, io.BytesIO):
+                            img = request.FILES["picture"].file.getvalue()
+                            invalid = analyse_image({'media': img})
+                        else:
+                            img = request.FILES["picture"].file.file.read()
+                            invalid = analyse_image({'media': img})
                     except Exception as e:
                         messages.warning(request, 'ERROR: The photo you tried to upload is not in the correct format')
                         context = { 'user_form': user_form,'profile_form': profile_form}
