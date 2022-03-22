@@ -2,7 +2,7 @@ from email.headerregistry import Group
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments, Upgrade
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Report, Responses, Comments, Upgrade
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -194,25 +194,23 @@ def viewRiddle(request,pk):
     Authors: Kate Belson 
     Description: View for game masters to accept or delete reported posts 
 """
-def sortReported(request):
-    upgrades = Upgrade.objects.all()
+def reportedPosts(request):
+    reports = Report.objects.all()
     categories = Category.objects.all()
-    context = {'upgrades': upgrades,'categories': categories}
+    context = {'reports': reports,'categories': categories}
 
     if request.method == "POST":
 
         try:
   
-            obj = request.POST.get('userID')
-            obj2 = request.POST.get('upgradeID')
-            toUpgrade = User.objects.get(id = obj)
-            group = Group.objects.get(name='game_master')
-            group.user_set.add(toUpgrade)
-            Upgrade.objects.filter(id=obj2).delete()
+            obj = request.POST.get('postID')
+            obj2 = request.POST.get('reportID')
+            Responses.object.filter(id=obj).delete()
+            Report.objects.filter(id=obj2).delete()
 
         except:
-            obj2 = request.POST.get('upgradeID')
-            Upgrade.objects.filter(id=obj2).delete()
+            obj2 = request.POST.get('reportID')
+            Report.objects.filter(id=obj2).delete()
 
 
 
@@ -220,10 +218,10 @@ def sortReported(request):
 
 
 """
-    Authors: Michael Hills
-    Description: View for users to request to be upgraded to gamemaster
+    Authors: Kate Belson 
+    Description: View for users to report a post 
 """
-def requestMaster(request):
+def reportAPost(request):
     categories = Category.objects.all()
     context = {'categories': categories}
 

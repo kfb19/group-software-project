@@ -220,6 +220,7 @@ class Upgrade(models.Model):
 class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reason = models.TextField()
+    post = models.ForeignKey(Responses, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
 

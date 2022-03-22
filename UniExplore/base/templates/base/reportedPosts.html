@@ -31,28 +31,28 @@
 
 
 <div>
-    {% if upgrades %}
+    {% if reports %}
             
         
-        {% for upgrade in upgrades %}
+        {% for report in reports %}
             
             <div class="challenge">
                 
                     
-                <small> {{upgrade.user.username}} : {{upgrade.reason}} </small>
+                <small> {{report.user.username}} : {{report.reason}} </small>
                 
 
                 <form method="POST">
                     {% csrf_token %}
-                    <input type="hidden", name = "userID", value="{{upgrade.user.id}}">
-                    <input type="hidden", name="upgradeID", value="{{upgrade.id}}">
+                    <input type="hidden", name = "userID", value="{{report.user.id}}">
+                    <input type="hidden", name="reportID", value="{{report.id}}">
                     <input type="Submit", value="Accept">
                 </form>
 
                 <form method="POST">
                     {% csrf_token %}
-                    <input type="hidden", name="upgradeID", value="{{upgrade.id}}">
-                    <input type="Submit", value="Decline">
+                    <input type="hidden", name="reportID", value="{{report.id}}">
+                    <input type="Submit", value="Delete">
                 </form>
 
                 
