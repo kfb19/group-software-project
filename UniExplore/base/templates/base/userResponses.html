@@ -21,6 +21,7 @@
     <h4>Total Points: {{user.profile.points}}</h4>
 
     <div>
+      {% csrf_token %}
       {% for response in responses %}
       <div class="challenge">
         <p>
@@ -63,6 +64,9 @@
       </div>
       {% endfor %}
     </div>
+
+    {% load static %}
+    <script src="{% static '/scripts/likes.js' %}"></script>
 
     {% endblock %}
   </body>

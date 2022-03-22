@@ -35,6 +35,7 @@
 <!-- Mist of this is for bootstrap (or whatever CSS we end up using) -->
 
 <div class="content-section">
+    {% csrf_token %}
     <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profile.picture.url }}" width="100" height="100"></img>
         <div class="media-body">
@@ -96,9 +97,14 @@
     {% endfor %}
 </div>
 
+</body>
+
+{% load static %}
+    <script src="{% static '/scripts/likes.js' %}"></script>
+
 {% endblock %}
 
-</body>
+
 
 
 </html>

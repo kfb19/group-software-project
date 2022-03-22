@@ -39,6 +39,7 @@ def userProfile(request):
     Authors: Michael Hills
     Description: View for game masters to accept user requests to be a gamemaster
 """
+@login_required(login_url='/login')
 def upgradeUser(request):
     upgrades = Upgrade.objects.all()
     categories = Category.objects.all()
@@ -68,6 +69,7 @@ def upgradeUser(request):
     Authors: Michael Hills
     Description: View for users to request to be upgraded to gamemaster
 """
+@login_required(login_url='/login')
 def requestMaster(request):
     categories = Category.objects.all()
     context = {'categories': categories}

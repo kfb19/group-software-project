@@ -6,29 +6,38 @@
 
 
 
-<form action = "{% url 'like-post' %}" method="POST">
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+     
+</head>  
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
+<style>
+    button {
+        color: #fff;
+        background-color: var(--dark-color);
+        border: 3px solid rgb(0, 0, 0);
+        border-radius: 5px;
+    }
+    strong{
+        color: #000;
+    }
+</style>
 
-    <style>
-        button {
-            color: #fff;
-            background-color: var(--dark-color);
-            border: 3px solid rgb(0, 0, 0);
-            border-radius: 5px;
-        }
-        strong{
-            color: #000;
-        }
-    </style>
+<body>
 
-    {% csrf_token %}
+
+
     <input type="hidden"  name = 'response_id' value = "{{response.id}}"> 
     {% if request.user not in response.liked.all %}
-        <button type="submit">Like</button>
+    <button onclick="postData('{{response.id}}')"  type="submit" id="button-{{response.id}}">Like</button>
     {% else %}
-        <button type="submit">Unlike</button>
+    <button onclick="postData('{{response.id}}')" type="submit" id="button-{{response.id}}">Unlike</button>
     {% endif %}
-    <strong>{{response.liked.all.count}} Likes</strong>
-</form>
+    <strong id="num-{{response.id}}">{{response.liked.all.count}}</strong> <strong>Likes</strong> <br>
+
+
+
+</body>
+</html>

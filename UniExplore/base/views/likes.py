@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from ..models import Likes, Responses
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -6,16 +7,18 @@ from django.shortcuts import redirect
     Authors: Michael Hills
     Description: View to like a response to a challenge
 """
-@login_required(login_url='/login')
 def likeResponse(request):
 
-    # Get the response that has been liked
 
+    # Get the response that has been liked
     if request.method == 'POST':
-        response_id = request.POST.get('response_id')
+
+        response_id = request.body.decode('utf-8')
+       
         response = Responses.objects.get(id=response_id)
 
         profile = response.user.profile
+
 
         # If user has already liked the response
         if request.user in response.liked.all():
@@ -38,5 +41,12 @@ def likeResponse(request):
             else:
                 like.value = 'Like'
 
+
         like.save()
-    return redirect(request.META.get('HTTP_REFERER'))
+
+    return JsonResponse({})
+        
+       
+        
+
+   
