@@ -224,7 +224,7 @@ def reportedPosts(request):
 """
 def reportAPost(request, pk):
     categories = Category.objects.all()
-    response = responses.objects.filter(id=pk)
+    response = Responses.objects.filter(id=pk)
     context = {'categories': categories, 'post': response}
 
     if request.method == "POST":
