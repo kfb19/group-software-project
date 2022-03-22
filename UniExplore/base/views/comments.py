@@ -4,6 +4,7 @@ from ..models import Responses,Comments
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from .. forms import commentForm
+from better_profanity import profanity
 
 """
     Authors: Michael Hills
@@ -19,9 +20,11 @@ def createComment(request, pk):
         form = commentForm(request.POST)
         # If valid response, add to database
         if form.is_valid():
+            profanity.load_censor_words()
             obj = form.save(commit=False)
             obj.user = request.user
             obj.response = response
+            obj.text = profanity.censor(obj.text)
             obj.save()
             return redirect('home')
 
