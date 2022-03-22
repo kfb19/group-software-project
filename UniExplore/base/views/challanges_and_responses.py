@@ -1,4 +1,5 @@
 from email.headerregistry import Group
+from http.client import responses
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
@@ -221,13 +222,14 @@ def reportedPosts(request):
     Authors: Kate Belson 
     Description: View for users to report a post 
 """
-def reportAPost(request):
+def reportAPost(request, pk):
     categories = Category.objects.all()
-    context = {'categories': categories}
+    response = responses.objects.filter(id=pk)
+    context = {'categories': categories, 'post': response}
 
     if request.method == "POST":
 
-        reported = Report(user=request.user,reason = request.POST.get('reason'), post=request.POST.get('post'))
+        reported = Report(user=request.user,reason = request.POST.get('reason'), post=request.POST.get('response_id'))
         reported.save()
         return redirect('home')
 

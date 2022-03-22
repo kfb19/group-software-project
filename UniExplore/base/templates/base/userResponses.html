@@ -28,8 +28,7 @@
             >{{response.challenge.name}}</a
           >
           | <small>{{response.challenge.points}}</small>
-          <a href="{% url 'reportAPost' %}" class="button">Report Post</a>
-        </p>
+          <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
         <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
         <br>
         <small>{{response.description}}</small> <br>
