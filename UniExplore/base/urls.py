@@ -42,8 +42,9 @@ urlpatterns = [
     path('requestMaster/', views.requestMaster,name='requestMaster'),
 
     # Author: Lucas Smith
-    path('profile/', views.userProfile, name='profile'),
+    #path('profile/', views.userProfile, name='profile'),
     path('profile_edit/', views.editProfile, name='editProfile'),
+    path('profile/<str:username>/', views.profile, name='profile'),
 
     # Author: Tomas Premoli
     path('profile/', views.userProfile, name='profile'),
