@@ -17,7 +17,7 @@ from . import views
 
 urlpatterns = [
 
-    # Author: Michael Hills, Lucas Smith
+    # Author: Michael Hills, Lucas Smith, Kate Belson 
     path('', views.home, name="home"),
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
@@ -40,6 +40,10 @@ urlpatterns = [
     path('deleteProfile/',views.deleteProfile, name='deleteProfile'),
     path('upgradeUser/', views.upgradeUser, name ='upgradeUser' ),
     path('requestMaster/', views.requestMaster,name='requestMaster'),
+    path('reportAPost/<int:pk>', views.reportAPost, name ='reportAPost' ),
+    path('reportedPosts/', views.reportedPosts,name='reportedPosts'),
+    path('reportAComment/<int:pk>', views.reportAComment, name ='reportAComment' ),
+    path('reportedComments/', views.reportedComments,name='reportedComments'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),

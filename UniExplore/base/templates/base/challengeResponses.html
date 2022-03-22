@@ -59,13 +59,15 @@ $(document).ready(function () {
 <h1 id="title">{{challenge.name}}</h1>
 
 <div>
+    {% csrf_token %}
     {% for response in responses %}
             <div class="challenge">
                 <div id="profile-pic"  style="float:left">
                     <img class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
                 </div>
                 <p> <a href = "{% url 'userResponses' response.user.id %}">{{response.user.username}}</a></p>
-
+                <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
+                <br>
                 <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
                 <br>
                 <small>{{response.description}} </small> <br>
@@ -100,6 +102,9 @@ $(document).ready(function () {
             </div>
         {% endfor %}
 </div>
+
+{% load static %}
+    <script src="{% static '/scripts/likes.js' %}"></script>
 
 {% endblock %}
 

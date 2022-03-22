@@ -88,6 +88,8 @@ $(document).ready(function () {
             
             <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
             <br>
+            <a  href="{% url 'reportAComment' comment.id%}">Report Comment</a>
+            <br>
     
         </div>
 

@@ -3,6 +3,7 @@
         - Michael Hills
         - Kate Belson 
         - Jack Purkiss
+        - Tomas Premoli
 -->
 
 {% extends 'base.html' %}
@@ -24,6 +25,7 @@
 
 
 {% block content %}
+
 
 <!-- Written by Jack Purkiss -->
 <div class="container-fluid">        
@@ -56,20 +58,27 @@ $(document).ready(function () {
 });
 </script>
 
+
 <h1 id="title">Recent Activity</h1>
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
 
+
 <div class="challenges">
+<div>
+    {% csrf_token %}
+    
+
     {% for response in responses %}
         <div class="challenge">
             <img id="profile-pic" class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
             
             <h5><a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small></h5>
             <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
-
+            <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
+            <br>
             <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
             <br>
             <small>{{response.description}} </small> <br>
@@ -106,7 +115,10 @@ $(document).ready(function () {
     {% endfor %}
 </div>
 
-{% endblock %}
-
 </body>
+
+{% load static %}
+<script src="{% static '/scripts/likes.js' %}"></script>
+
+{% endblock %}
 </html>

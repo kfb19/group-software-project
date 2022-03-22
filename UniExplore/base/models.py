@@ -1,8 +1,9 @@
 """
 Authors: 
     - Michael Hills
-    - Kate Belson (some edits) 
+    - Kate Belson 
     - Tomas Premoli
+    - Lucas Smith
 """
 
 from django.contrib.auth.models import User
@@ -215,6 +216,18 @@ class Upgrade(models.Model):
     reason = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     
+# Model for reported posts (Kate Belson)
+class ReportPosts(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
+# Model for reported posts (Kate Belson)
+class ReportComments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
 
