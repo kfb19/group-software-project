@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.utils import timezone
 import requests
 import json
+from better_profanity import profanity
 
 """
     Authors: Michael Hills, Jack Purkiss
@@ -51,6 +52,7 @@ def createChallenge(request):
 """
 @login_required(login_url='/login')
 def createResponse(request, pk):
+    profanity.load_censor_words()
     challenge = Challenges.objects.get(id=pk)
     categories = Category.objects.all()
     form = ResponseForm()
@@ -78,6 +80,7 @@ def createResponse(request, pk):
             obj = form.save(commit=False)
             obj.user = request.user
             obj.challenge = challenge
+            obj.description = profanity.censor(obj.description)
 
             # analyse uploaded image
             developer_mode = False
