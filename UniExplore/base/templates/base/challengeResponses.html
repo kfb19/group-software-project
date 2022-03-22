@@ -34,7 +34,7 @@
                     <img class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
                 </div>
                 <p> <a href = "{% url 'userResponses' response.user.id %}">{{response.user.username}}</a></p>
-
+                <a href="{% url 'reportAPost' %}" class="button">Report Post</a>
                 <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
                 <br>
                 <small>{{response.description}} </small> <br>

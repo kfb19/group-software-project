@@ -1,7 +1,8 @@
+from email.headerregistry import Group
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments, Upgrade
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -13,7 +14,7 @@ import requests
 import json
 
 """
-    Authors: Michael Hills, Jack Purkiss
+    Authors: Michael Hills, Jack Purkiss, Kate Belson 
     Description: Only allow game masters and developers to create challenge
 """
 @allowed_users(allowed_roles=["game_master", 'developer'])
@@ -186,4 +187,52 @@ def viewRiddle(request,pk):
     
     
     return render(request,'base/viewRiddle.html', context)
+
+
+#MY CODE IM DOING IS HERE
+"""
+    Authors: Kate Belson 
+    Description: View for game masters to accept or delete reported posts 
+"""
+def sortReported(request):
+    upgrades = Upgrade.objects.all()
+    categories = Category.objects.all()
+    context = {'upgrades': upgrades,'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+  
+            obj = request.POST.get('userID')
+            obj2 = request.POST.get('upgradeID')
+            toUpgrade = User.objects.get(id = obj)
+            group = Group.objects.get(name='game_master')
+            group.user_set.add(toUpgrade)
+            Upgrade.objects.filter(id=obj2).delete()
+
+        except:
+            obj2 = request.POST.get('upgradeID')
+            Upgrade.objects.filter(id=obj2).delete()
+
+
+
+    return render(request,'base/reportedPosts.html',context)
+
+
+"""
+    Authors: Michael Hills
+    Description: View for users to request to be upgraded to gamemaster
+"""
+def requestMaster(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+
+    if request.method == "POST":
+
+        reported = Upgrade(user=request.user,reason = request.POST.get('reason'))
+        reported.save()
+        return redirect('home')
+
+
+    return render(request,'base/reportAPost.html',context)
 
