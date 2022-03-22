@@ -37,20 +37,37 @@ class Profile(models.Model):
 
     # overrides image data to be compressed (Tomas Premoli)
     def save(self, *args, **kwargs):
-        # Opening the uploaded image
-        img = Image.open(self.picture)
-        output = BytesIO()
-        # Resize/modify the image
-        img = img.resize(settings.PROFILE_PIC_SIZE)
-        img = img.convert('RGB')
-        # after modifications, save it to the output
-        img.save(output, format='JPEG', quality=settings.PROFILE_PIC_QUALITY)
-        output.seek(0)
+        try:
+            # Opening the uploaded image
+            img = Image.open(self.picture)
+            output = BytesIO()
+            # Resize/modify the image
+            width, height = img.size
 
-        # Set field to modified picture
-        self.picture = InMemoryUploadedFile(output, 'ImageField', 
-                                        "%s.jpg" % str(hash(self.picture.name.split('.')[0])), 
-                                        'image/jpeg', sys.getsizeof(output), None)
+            offset  = int(abs(height-width)/2)
+
+            # This crops the image into a square depending if portrait or landscape
+            if width==height:
+                pass
+            elif width>height:
+                img = img.crop([offset,0,width-offset,height])
+            else:
+                img = img.crop([0,offset,width,height-offset])
+
+            
+            img = img.resize(settings.PROFILE_PIC_SIZE)
+
+
+            img = img.convert('RGB')
+            # after modifications, save it to the output
+            img.save(output, format='JPEG', quality=settings.PROFILE_PIC_QUALITY)
+            output.seek(0)
+
+            # Set field to modified picture
+            self.picture = InMemoryUploadedFile(output, 'ImageField', 
+                                            "%s.jpg" % str(hash(self.picture.name.split('.')[0])), 
+                                            'image/jpeg', sys.getsizeof(output), None)
+        except: pass
 
         super(Profile, self).save()
 
@@ -104,7 +121,7 @@ def response_pic_location(instance, filename):
 
     return os.path.join('image_uploads/', filename)
 
-# Model for the responses to challenges (Michael Hills)
+# Model for the responses to challenges (Michael Hills, Tomas Premoli)
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
@@ -118,12 +135,30 @@ class Responses(models.Model):
 
     # overrides image data to be compressed (Tomas Premoli)
     def save(self, *args, **kwargs):
+        maxwidth = settings.RESPONSE_PHOTO_SIZE[0]
+        maxheight = settings.RESPONSE_PHOTO_SIZE[1]
+
         # Opening the uploaded image
         img = Image.open(self.photograph)
         output = BytesIO()
         # Resize/modify the image
-        img = img.resize(settings.RESPONSE_PHOTO_SIZE)
-        img = img.convert('RGB')
+        width, height = img.size
+
+        # This resizes image retaining aspect ratio
+        if width>height:
+            width_percent = (maxwidth/float(img.size[0]))
+            h_size = int((float(height)*float(width_percent)))
+
+            img = img.resize((maxwidth,h_size))
+            img = img.convert('RGB')
+        else:
+            height_percent = (maxheight/float(img.size[1]))
+            w_size = int((float(width)*float(height_percent)))
+
+            img = img.resize((w_size,maxheight))
+            img = img.convert('RGB')
+
+            
         # after modifications, save it to the output
         img.save(output, format='JPEG', quality=settings.RESPONSE_PHOTO_QUALITY)
         output.seek(0)

@@ -75,7 +75,11 @@
             <style>
                 #map {height: 500px; max-width: 100%}
             </style>
+            {%for group in request.user.groups.all %}
+                {%if group.name == 'game_master' %}    
             <button id="devModeSwitch">Enable spoof mode</button>
+                {% endif %}
+            {% endfor %}
         </div>
 
 
@@ -256,7 +260,11 @@
 
         map.invalidateSize();
 
+        {%for group in request.user.groups.all %}
+            {%if group.name == 'game_master' %}
         devModeToggle(map, document.getElementById('devModeSwitch'));
+            {% endif %}
+        {% endfor %}
     };
 
 
