@@ -51,7 +51,7 @@
                     {% csrf_token %}
                     <input type="hidden", name="reportID", value="{{report.id}}">
                     <input type="hidden", name="commentID", value="{{report.comment.id}}">
-                    <input type="Submit", value="Delete Post">
+                    <input type="Submit", value="Delete Comment">
                 </form>
 
                 <form method="POST">
@@ -71,7 +71,7 @@
 
         {% else %}
 
-                <p>No Users have requested to upgrade to game master...</p>
+                <p>No Users have reported comments...</p>
 
 
 
