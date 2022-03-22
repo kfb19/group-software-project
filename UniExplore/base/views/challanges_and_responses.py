@@ -227,7 +227,7 @@ def reportAPost(request):
 
     if request.method == "POST":
 
-        reported = Upgrade(user=request.user,reason = request.POST.get('reason'))
+        reported = Report(user=request.user,reason = request.POST.get('reason'), post=request.POST.get('post'))
         reported.save()
         return redirect('home')
 
