@@ -9,7 +9,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Request Account Upgrade</title>
+    <title>Report</title>
   </head>
 
   <link
@@ -99,14 +99,14 @@
     }
   </style>
 
-  <h1>Become Game Master</h1>
+  <h1>Report Post</h1>
 
   <div class="form">
-    <p>Please write a short description of why you should be a game master</p>
+    <p>Please write a short description of why you are reporting this post:</p>
     
     <form class="response-form" method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type ="text" name = "reason">
+        <input type="text" name="reason">
         <input type="submit">
         
     </form>

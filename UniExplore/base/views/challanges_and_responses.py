@@ -1,7 +1,9 @@
+from email.headerregistry import Group
+from http.client import responses
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Report, Responses, Comments, Upgrade
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -14,7 +16,7 @@ import json
 from better_profanity import profanity
 
 """
-    Authors: Michael Hills, Jack Purkiss
+    Authors: Michael Hills, Jack Purkiss, Kate Belson 
     Description: Only allow game masters and developers to create challenge
 """
 @allowed_users(allowed_roles=["game_master", 'developer'])
@@ -191,4 +193,53 @@ def viewRiddle(request,pk):
     
     
     return render(request,'base/viewRiddle.html', context)
+
+
+#MY CODE IM DOING IS HERE
+"""
+    Authors: Kate Belson 
+    Description: View for game masters to accept or delete reported posts 
+"""
+def reportedPosts(request):
+    reports = Report.objects.all()
+    categories = Category.objects.all()
+    context = {'reports': reports,'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+  
+            obj = request.POST.get('postID')
+            obj2 = request.POST.get('reportID')
+            Responses.objects.filter(id=obj).delete()
+            Report.objects.filter(id=obj2).delete()
+
+        except:
+            obj2 = request.POST.get('reportID')
+            Report.objects.filter(id=obj2).delete()
+
+
+
+    return render(request,'base/reportedPosts.html',context)
+
+
+"""
+    Authors: Kate Belson 
+    Description: View for users to report a post 
+"""
+def reportAPost(request, pk):
+    categories = Category.objects.all()
+
+    response = Responses.objects.get(id=pk)
+
+    context = {'categories': categories, 'post': response}
+
+    if request.method == "POST":
+
+        reported = Report(user=request.user,reason = request.POST.get('reason'), post=response)
+        reported.save()
+        return redirect('home')
+
+
+    return render(request,'base/reportAPost.html',context)
 
