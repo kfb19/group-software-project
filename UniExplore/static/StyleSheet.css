@@ -105,6 +105,7 @@ margin-right: 20px;
 max-width: 25%;
 max-height: 25%;
 }
+
 #profile-pic {
     float: left;
     margin-right: 20px;
@@ -158,6 +159,10 @@ hr { display: block; height: 1px;
 }
 
 .challenges{
+    padding-left: 15%;
+}
+
+.content-section{
     padding-left: 15%;
 }
 

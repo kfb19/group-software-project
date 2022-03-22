@@ -12,7 +12,7 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>{{user.username}}'s profile</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 </head>
 
 <body>
@@ -85,7 +85,7 @@ $(document).ready(function () {
     </div>
 </div>
 
-<div>
+<div class="challenges">
     <h1>{{user.username}}'s Completed Challenges</h1>
     <h4>Total Points: {{request.user.profile.points}}</h4>
 
@@ -116,10 +116,10 @@ $(document).ready(function () {
                     {% endif %}
 
                 {% endfor %}
-
+            </div>
         {% endif %}
 
-            </div>
+            
             
     </div>
     {% endfor %}

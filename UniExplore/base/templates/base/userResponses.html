@@ -47,11 +47,11 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
+    <div class="challenges">
 
-    <h1>{{user.username}}'s Completed Challenges</h1>
-    <h4>Total Points: {{user.profile.points}}</h4>
+      <h1>{{user.username}}'s Completed Challenges</h1>
+      <h4>Total Points: {{user.profile.points}}</h4>
 
-    <div>
       {% for response in responses %}
       <div class="challenge">
         <p>
