@@ -106,17 +106,22 @@
     <br>
     <p>There is no way to get it back!</p>
     
-    <form method="POST">
-        {% csrf_token %}
-        <input type="hidden", name="postID", value="{{post.id}}">
-        <input type="Submit", value="Delete Post">
-    </form>
+    <div style="width:100px">
+      
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="hidden", name="postID", value="{{post.id}}">
-        <input type="Submit", value="Keep Post">
-    </form>
+      <span style="float:left;">
+          <form method="POST">
+              {% csrf_token %}
+              <input type="submit" value="Yes"></input>
+          </form>   
+      </span>
+      <span style="float:right;">
+          <form action="{% url 'profile' %}">
+              <input type="submit" value="No"></input>
+          </form>
+      </span>
+
+  </div>
   </div>
 
   {% endblock %}

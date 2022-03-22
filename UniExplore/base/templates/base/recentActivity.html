@@ -46,7 +46,7 @@
             <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
             <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a><br>
             {%if response.user.id == request.user.id %}
-                <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
+                <a href="{% url 'deletePost' response.id 'recentActivity' %}" class="button">Delete Post</a>
                 {% endif %}
                 
             <br>

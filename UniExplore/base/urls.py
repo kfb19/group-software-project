@@ -42,7 +42,7 @@ urlpatterns = [
     path('requestMaster/', views.requestMaster,name='requestMaster'),
     path('reportAPost/<int:pk>', views.reportAPost, name ='reportAPost' ),
     path('reportedPosts/', views.reportedPosts,name='reportedPosts'),
-    path('deletePost/<int:pk>', views.deletePost,name='deletePost'),
+    path('deletePost/<int:pk>/<str:prev>/', views.deletePost,name='deletePost'),
 
     # Author: Lucas Smith
     path('profile/', views.userProfile, name='profile'),

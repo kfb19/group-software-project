@@ -245,22 +245,16 @@ def reportAPost(request, pk):
     Authors: Kate Belson 
     Description: View for being able to delete your own posts 
 """
-def deletePost(request, pk):
+def deletePost(request,pk,prev):
     categories = Category.objects.all()
-    response = Responses.objects.get(id=pk)
-    context = {'categories': categories, 'post': response}
+    context = {'categories': categories}
     
     if request.method == "POST":
 
-        try:
-  
-            obj = request.POST.get('postID')
-            Responses.objects.filter(id=obj).delete()
+        Responses.objects.filter(id=pk).delete()
 
-        except:
-            obj = request.POST.get('postID')
-            Report.objects.filter(id=obj).delete()
+        return redirect(prev)
 
+    else:
 
-
-    return render(request,'base/deletePost.html',context)
+        return render(request,'base/deletePost.html',context)
