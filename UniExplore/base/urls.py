@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 """
 Authors: 
     - Michael Hills
@@ -15,7 +17,7 @@ from . import views
 
 urlpatterns = [
 
-    # Author: Michael Hills
+    # Author: Michael Hills, Lucas Smith
     path('', views.home, name="home"),
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
@@ -83,3 +85,4 @@ urlpatterns = [
 # Need to change this before final deployment as django recommends to do this another way
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += staticfiles_urlpatterns()

@@ -9,5 +9,6 @@ flake8
 pillow
 django-crispy-forms
 django-settings-export
+mod_wsgi
 django-cleanup
 django-utils-six
