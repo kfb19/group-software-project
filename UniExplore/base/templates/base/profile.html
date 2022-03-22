@@ -64,7 +64,9 @@
     {% for response in responses %}
     <div class="challenge">
         <p><a href="{% url 'challengeResponses' response.challenge.id %}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small>
-            <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
+            <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a><br>
+            <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
+                <br>
             <br>
         </p>
         <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />

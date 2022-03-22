@@ -257,9 +257,9 @@ def deletePost(request):
             Responses.objects.filter(id=obj).delete()
 
         except:
-            obj = request.POST.get('reportID')
+            obj = request.POST.get('postID')
             Report.objects.filter(id=obj).delete()
 
 
 
-    return render(request,'base/reportedPosts.html',context)
+    return render(request,'base/deletePost.html',context)
