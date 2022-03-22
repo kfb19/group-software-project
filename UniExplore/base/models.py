@@ -217,11 +217,17 @@ class Upgrade(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     
 # Model for reported posts (Kate Belson)
-class Report(models.Model):
+class ReportPosts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reason = models.TextField()
-    post = models.ForeignKey(Responses, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
+# Model for reported posts (Kate Belson)
+class ReportComments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
 

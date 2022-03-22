@@ -9,7 +9,7 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-    <title>Reported Posts</title>  
+    <title>Reported Comments</title>  
 </head>  
 
 
@@ -24,7 +24,7 @@
 
 {% block content %}
 
-<h1 id="title">Reported Posts:</h1>
+<h1 id="title">Reported Comments:</h1>
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
@@ -39,23 +39,19 @@
             <div class="challenge">
                 
                     
-                <h3> {{report.user.username}} reported this post because: </h3>
+                <h3> {{report.user.username}} reported this comment because: </h3>
                 <br>
                 <small>{{report.reason}}</small>
                 <br>
-                <h3>Post Image: </h3>
+                <h3>Comment: </h3>
                 <br>
-                <img id="chal-photo" src="{{ report.post.photograph.url }}" alt="image" />
-                <br>
-                <h3>Post Description: </h3>
-                <br>
-                <small>{{report.post.description}} </small> <br>
+                <small>{{report.comment.text}} </small> <br>
 
                 <form method="POST">
                     {% csrf_token %}
                     <input type="hidden", name="reportID", value="{{report.id}}">
-                    <input type="hidden", name="postID", value="{{report.post.id}}">
-                    <input type="Submit", value="Delete Post">
+                    <input type="hidden", name="commentID", value="{{report.comment.id}}">
+                    <input type="Submit", value="Delete Comment">
                 </form>
 
                 <form method="POST">
@@ -75,7 +71,7 @@
 
         {% else %}
 
-                <p>No Users have reported posts...</p>
+                <p>No Users have reported comments...</p>
 
 
 
