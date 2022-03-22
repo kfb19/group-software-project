@@ -20,12 +20,12 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
 
-<!--Author: Kate Belson-->
+<!--Authors: Kate Belson
+             Jack Purkiss-->
 <style>
 html, body {
     height: 100%;
     background-color: var(--dark-color);
-    overflow: hidden;
     text-align: center;
 }
 
@@ -36,7 +36,8 @@ html, body {
     padding: 40px;
     display: inline-block;
     width: 25%;
-    min-width: 50px;
+    min-width: 75%;
+    margin-top: 2%;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -131,7 +132,9 @@ h1 {
     padding: 40px;
     display: inline-block;
     width: 25%;
-    min-width: 50px;
+    min-width: 75%;
+    min-height: 75%;
+    margin-top: 2%;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -139,6 +142,7 @@ h1 {
     -webkit-transition: all 0.4s ease;
     transition: all 0.4s ease;
     align-content: center;
+    overflow: scroll;
 }
 
 .register-form label {
@@ -201,6 +205,10 @@ h1 {
     margin-bottom: 9px;
 }
 
+.register {
+     overflow: scroll;
+}
+
 
 </style>
 
@@ -257,7 +265,7 @@ h1 {
 
 {% else %}
 
-<div>
+<div class="register">
     <div class="form">
         <form class="register-form" method="POST" action="">
           {% csrf_token %}
