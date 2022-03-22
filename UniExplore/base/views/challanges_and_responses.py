@@ -194,8 +194,6 @@ def viewRiddle(request,pk):
     
     return render(request,'base/viewRiddle.html', context)
 
-
-#MY CODE IM DOING IS HERE
 """
     Authors: Kate Belson 
     Description: View for game masters to accept or delete reported posts 
@@ -243,3 +241,25 @@ def reportAPost(request, pk):
 
     return render(request,'base/reportAPost.html',context)
 
+"""
+    Authors: Kate Belson 
+    Description: View for being able to delete your own posts 
+"""
+def deletePost(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+  
+            obj = request.POST.get('postID')
+            Responses.objects.filter(id=obj).delete()
+
+        except:
+            obj = request.POST.get('reportID')
+            Report.objects.filter(id=obj).delete()
+
+
+
+    return render(request,'base/reportedPosts.html',context)
