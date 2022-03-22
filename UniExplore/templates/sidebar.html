@@ -70,190 +70,162 @@
 
 
 <div class="wrapper">   
-
-<div class="options">
-    <div class="all">
-        <a href = "{% url 'home' %}">All</a>
-    </div>
-    {% for category in categories %}
-    <div>
-        <a href = "{% url 'home' %}?q={{category.name}} ">{{category}}</a>
-    </div>
-    {% endfor %}
-    <div class="other-pages">
-    <hr>
-    <br>
-    <a href="{% url 'profile' %}">Profile</a>
-    <hr>
-    <br>
-    <a href = "{% url 'recentActivity'%}">Recent Activity</a>
-    <hr>
-    <br>
-    <a href = "{% url 'leaderboard' %}">Leaderboard</a>
-    {%for group in request.user.groups.all %}
-        {%if group.name == 'game_master' %}
-        <hr>
-        <br>
-        <a href = "{% url 'upgradeUser' %}">Upgrade Users</a>
-        <hr>
-        <br>
-        <a href = "{% url 'reportedPosts' %}">Reported Posts</a>
-        <hr>
-        <br>
-        <a href = "{% url 'reportedComments' %}">Reported Comments</a>
-        {% endif %}
-    {% endfor %}
-
-    <nav id="sidebar">
-        <div class="options">
-            <div class="all">
-                <a href = "{% url 'home' %}">All</a>
-            </div>
-            {% for category in categories %}
-            <div>
-                <a href = "{% url 'home' %}?q={{category.name}} ">{{category}}</a>
-            </div>
-            {% endfor %}
-            <div class="other-pages">
-            <hr>
-            <br>
-            <a href="{% url 'profile' %}">Profile</a>
-            <hr>
-            <br>
-            <a href = "{% url 'recentActivity'%}">Recent Activity</a>
-            <hr>
-            <br>
-            <a href = "{% url 'leaderboard' %}">Leaderboard</a>
-            {%for group in request.user.groups.all %}
+        <nav id="sidebar">
+            <div class="options">
+                <div class="all">
+                    <a href = "{% url 'home' %}">All</a>
+                </div>
+                {% for category in categories %}
+                <div>
+                    <a href = "{% url 'home' %}?q={{category.name}} ">{{category}}</a>
+                </div>
+                {% endfor %}
+                <div class="other-pages">
+                <hr>
+                <br>
+                <a href="{% url 'profile' %}">Profile</a>
+                <hr>
+                <br>
+                <a href = "{% url 'recentActivity'%}">Recent Activity</a>
+                <hr>
+                <br>
+                <a href = "{% url 'leaderboard' %}">Leaderboard</a>
+                {%for group in request.user.groups.all %}
                 {%if group.name == 'game_master' %}
                 <hr>
                 <br>
                 <a href = "{% url 'upgradeUser' %}">Upgrade Users</a>
+                <hr>
+                <br>
+                <a href = "{% url 'reportedPosts' %}">Reported Posts</a>
+                <hr>
+                <br>
+                <a href = "{% url 'reportedComments' %}">Reported Comments</a>
                 {% endif %}
             {% endfor %}
-        
-            <hr>
-            <br>
-            </div>
-
-            <button type="button" class="help-button" data-toggle="modal" data-target="#helpModal">
-                Help
-            </button>
-        
-            <!-- Written by Kate Belson -->
-            <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="helpModalTitle"><strong>Help</strong></h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h5>
-                            <strong>Understanding the map</strong>
-                            <br> <br>
-                            The map contains several different markers: 
-                            <ul>
-                                <li>The red marker is your location.</li>
-                                <li>The blue markers show locations of challenges.</li>
-                            </ul>
-                            The map will display your university campus. 
-                            <br> <br>
-                            <strong>Challenges</strong> 
-                            <br> <br>
-                            Challenges are listed below the map. They contain a title, instructions, and a points total. 
-                            You can filter the challenges you see by clicking on the categories under <em>All</em> on the sidebar. 
-                            <br> <br>
-                            They are in two categories: 
-                            <ul>
-                                <li><em>In Range</em> - you are close enough to complete the challenge. You can only complete challenges in this section.</li>
-                                <li><em>Not In Range</em> - you are too far away to complete the challenge. Move closer to it in order to complete it.</li>
-                            </ul>
-                            In order to complete a challenge in the <em>In Range</em> section, click on the <em>Complete Challenge</em> text in the challenge tile. 
-                            This will take you to a form you need to submit to complete the challenge. 
-                            <br> <br>
-                            Click on the challenge title in order to see the responses of others who have completed that challenge. You can click the <em>Like</em> button
-                            on these responses, which will give those users points! 
-                            <br> <br>
-                            <strong>Recent Activity</strong>
-                            <br> <br>
-                            Click on the <em>Recent Activity</em> tab on the sidebar in order to view the recent activity of other users. 
-                            You can <em>Like</em> their responses to give them points! 
-                            <br> <br>
-                            <strong>Profile</strong>
-                            <br> <br>
-                            Click on the <em>Profile</em> tab on the sidebar in order to see your profile information and your recent activity. 
-                            Click the <em>Edit Profile</em> button in order to edit your profile. 
-                            <br> <br>
-                            <strong>Leaderboard</strong>
-                            <br> <br>
-                            Click on the <em>Leaderboard</em> tab on the sidebar in order to see the current leaderboard. This will show the points total 
-                            of each user, and you can see who has the most points! 
-                            <br> <br>
-                        </h5>
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+            
+                <hr>
+                <br>
                 </div>
-                </div>
-              
-            <div class="modal-body">
-                <h5>
-                    <strong>Understanding the map</strong>
-                    <br> <br>
-                    The map contains several different markers: 
-                    <ul>
-                        <li>The red marker is your location.</li>
-                        <li>The blue markers show locations of challenges.</li>
-                    </ul>
-                    The map will display your university campus. 
-                    <br> <br>
-                    <strong>Challenges</strong> 
-                    <br> <br>
-                    Challenges are listed below the map. They contain a title, instructions, and a points total. 
-                    You can filter the challenges you see by clicking on the categories under <em>All</em> on the sidebar. 
-                    <br> <br>
-                    They are in two categories: 
-                    <ul>
-                        <li><em>In Range</em> - you are close enough to complete the challenge. You can only complete challenges in this section.</li>
-                        <li><em>Not In Range</em> - you are too far away to complete the challenge. Move closer to it in order to complete it.</li>
-                    </ul>
-                    In order to complete a challenge in the <em>In Range</em> section, click on the <em>Complete Challenge</em> text in the challenge tile. 
-                    This will take you to a form you need to submit to complete the challenge. 
-                    <br> <br>
-                    Click on the challenge title in order to see the responses of others who have completed that challenge. You can click the <em>Like</em> button
-                    on these responses, which will give those users points! 
-                    <br> <br>
-                    <strong>Recent Activity</strong>
-                    <br> <br>
-                    Click on the <em>Recent Activity</em> tab on the sidebar in order to view the recent activity of other users. 
-                    You can <em>Like</em> their responses to give them points! 
-                    <br> <br>
-                    <strong>Profile</strong>
-                    <br> <br>
-                    Click on the <em>Profile</em> tab on the sidebar in order to see your profile information and your recent activity. 
-                    Click the <em>Edit Profile</em> button in order to edit your profile. 
-                    <br> <br>
-                    <strong>Leaderboard</strong>
-                    <br> <br>
-                    Click on the <em>Leaderboard</em> tab on the sidebar in order to see the current leaderboard. This will show the points total 
-                    of each user, and you can see who has the most points! 
-                    <br> <br>
-                    <strong>Reporting</strong>
-                    <br> <br>
-                    Click on the <em>Report Post</em> button if you would like to report a post. You must provide a valid reason. If you want to report 
-                    a comment, click on the <em>See All Comments</em> button, then on <em>Report Comment</em> to report the comment. 
-                    <br> <br>
-                </h5>
 
-            </div>
-            <div class="logo">
-                {% load static %}
-                <img src="../static/images/UniExploreLogo.png" alt="Logo">
-            </div>
-        </div >
-    </nav>
+                <button type="button" class="help-button" data-toggle="modal" data-target="#helpModal">
+                    Help
+                </button>
+            
+                <!-- Written by Kate Belson -->
+                <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="helpModalTitle"><strong>Help</strong></h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>
+                                <strong>Understanding the map</strong>
+                                <br> <br>
+                                The map contains several different markers: 
+                                <ul>
+                                    <li>The red marker is your location.</li>
+                                    <li>The blue markers show locations of challenges.</li>
+                                </ul>
+                                The map will display your university campus. 
+                                <br> <br>
+                                <strong>Challenges</strong> 
+                                <br> <br>
+                                Challenges are listed below the map. They contain a title, instructions, and a points total. 
+                                You can filter the challenges you see by clicking on the categories under <em>All</em> on the sidebar. 
+                                <br> <br>
+                                They are in two categories: 
+                                <ul>
+                                    <li><em>In Range</em> - you are close enough to complete the challenge. You can only complete challenges in this section.</li>
+                                    <li><em>Not In Range</em> - you are too far away to complete the challenge. Move closer to it in order to complete it.</li>
+                                </ul>
+                                In order to complete a challenge in the <em>In Range</em> section, click on the <em>Complete Challenge</em> text in the challenge tile. 
+                                This will take you to a form you need to submit to complete the challenge. 
+                                <br> <br>
+                                Click on the challenge title in order to see the responses of others who have completed that challenge. You can click the <em>Like</em> button
+                                on these responses, which will give those users points! 
+                                <br> <br>
+                                <strong>Recent Activity</strong>
+                                <br> <br>
+                                Click on the <em>Recent Activity</em> tab on the sidebar in order to view the recent activity of other users. 
+                                You can <em>Like</em> their responses to give them points! 
+                                <br> <br>
+                                <strong>Profile</strong>
+                                <br> <br>
+                                Click on the <em>Profile</em> tab on the sidebar in order to see your profile information and your recent activity. 
+                                Click the <em>Edit Profile</em> button in order to edit your profile. 
+                                <br> <br>
+                                <strong>Leaderboard</strong>
+                                <br> <br>
+                                Click on the <em>Leaderboard</em> tab on the sidebar in order to see the current leaderboard. This will show the points total 
+                                of each user, and you can see who has the most points! 
+                                <br> <br>
+                            </h5>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    </div>
+                
+                <div class="modal-body">
+                    <h5>
+                        <strong>Understanding the map</strong>
+                        <br> <br>
+                        The map contains several different markers: 
+                        <ul>
+                            <li>The red marker is your location.</li>
+                            <li>The blue markers show locations of challenges.</li>
+                        </ul>
+                        The map will display your university campus. 
+                        <br> <br>
+                        <strong>Challenges</strong> 
+                        <br> <br>
+                        Challenges are listed below the map. They contain a title, instructions, and a points total. 
+                        You can filter the challenges you see by clicking on the categories under <em>All</em> on the sidebar. 
+                        <br> <br>
+                        They are in two categories: 
+                        <ul>
+                            <li><em>In Range</em> - you are close enough to complete the challenge. You can only complete challenges in this section.</li>
+                            <li><em>Not In Range</em> - you are too far away to complete the challenge. Move closer to it in order to complete it.</li>
+                        </ul>
+                        In order to complete a challenge in the <em>In Range</em> section, click on the <em>Complete Challenge</em> text in the challenge tile. 
+                        This will take you to a form you need to submit to complete the challenge. 
+                        <br> <br>
+                        Click on the challenge title in order to see the responses of others who have completed that challenge. You can click the <em>Like</em> button
+                        on these responses, which will give those users points! 
+                        <br> <br>
+                        <strong>Recent Activity</strong>
+                        <br> <br>
+                        Click on the <em>Recent Activity</em> tab on the sidebar in order to view the recent activity of other users. 
+                        You can <em>Like</em> their responses to give them points! 
+                        <br> <br>
+                        <strong>Profile</strong>
+                        <br> <br>
+                        Click on the <em>Profile</em> tab on the sidebar in order to see your profile information and your recent activity. 
+                        Click the <em>Edit Profile</em> button in order to edit your profile. 
+                        <br> <br>
+                        <strong>Leaderboard</strong>
+                        <br> <br>
+                        Click on the <em>Leaderboard</em> tab on the sidebar in order to see the current leaderboard. This will show the points total 
+                        of each user, and you can see who has the most points! 
+                        <br> <br>
+                        <strong>Reporting</strong>
+                        <br> <br>
+                        Click on the <em>Report Post</em> button if you would like to report a post. You must provide a valid reason. If you want to report 
+                        a comment, click on the <em>See All Comments</em> button, then on <em>Report Comment</em> to report the comment. 
+                        <br> <br>
+                    </h5>
+
+                </div>
+                <div class="logo">
+                    {% load static %}
+                    <img src="../static/images/UniExploreLogo.png" alt="Logo">
+                </div>
+            </div >
+        </nav>
 </div>
