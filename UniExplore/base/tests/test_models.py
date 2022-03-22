@@ -5,6 +5,7 @@ class TestModels(TestCase):
     
     def setUP(self):
         self.user = User.objects.create(
-            username=""
+            username="test"
+            
 
         )

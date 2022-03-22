@@ -37,7 +37,6 @@ def home(request):
             .exclude(Q(is_weekly_challenge=False))
             .filter(Q(expires_on__gt=timezone.now()))
             ) == 0):
-        print("No weekly challenges! Generating...")
         generate_weekly_challenges(request)
 
     # Checks if groups exists and if not create them
@@ -51,7 +50,6 @@ def home(request):
     if request.user.is_authenticated:
         Completed_Riddles = CompleteRiddle.objects.filter(user=request.user).values_list('riddle_id')
         daily_riddle = DailyRiddle.objects.exclude(id__in=Completed_Riddles).first()
-        print(daily_riddle)
         responses = Responses.objects.filter(user=request.user).values_list('challenge_id')
 
         challenges = Challenges.objects.exclude(id__in=responses).filter(
