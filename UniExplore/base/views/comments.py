@@ -94,4 +94,4 @@ def reportedComments(request):
 
 
 
-    return render(request,'base/reportedPosts.html',context)
+    return render(request,'base/reportedComments.html',context)
