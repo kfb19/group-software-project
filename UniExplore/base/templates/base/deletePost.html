@@ -113,10 +113,13 @@
           <form method="POST">
               {% csrf_token %}
               <input type="submit" value="Yes"></input>
+              <input type="hidden" name="delete" value="True"></input>
           </form>   
       </span>
       <span style="float:right;">
-          <form action="{% url 'profile' %}">
+        
+          <form method = "POST">
+            {% csrf_token %}
               <input type="submit" value="No"></input>
           </form>
       </span>
@@ -141,4 +144,8 @@
     integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"
   ></script>
+
+
 </html>
+
+

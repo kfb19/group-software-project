@@ -247,13 +247,25 @@ def reportAPost(request, pk):
 """
 def deletePost(request,pk,prev):
     categories = Category.objects.all()
-    context = {'categories': categories}
+
+    context = {'categories': categories,'prev':prev}
     
     if request.method == "POST":
 
-        Responses.objects.filter(id=pk).delete()
+        try:
 
-        return redirect(prev)
+            delete = request.POST.get('delete')
+            if delete == "True":
+                print(delete)
+                Responses.objects.filter(id=pk).delete()
+
+            return redirect(prev)
+
+        except:
+
+            return redirect(prev)
+
+
 
     else:
 
