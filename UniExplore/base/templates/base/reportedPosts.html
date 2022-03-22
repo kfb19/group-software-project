@@ -46,15 +46,15 @@
 
                 <form method="POST">
                     {% csrf_token %}
-                    <input type="hidden", name = "userID", value="{{report.user.id}}">
                     <input type="hidden", name="reportID", value="{{report.id}}">
-                    <input type="Submit", value="Accept">
+                    <input type="hidden", name="postID", value="{{report.post.id}}">
+                    <input type="Submit", value="Delete Post">
                 </form>
 
                 <form method="POST">
                     {% csrf_token %}
                     <input type="hidden", name="reportID", value="{{report.id}}">
-                    <input type="Submit", value="Delete">
+                    <input type="Submit", value="Ignore">
                 </form>
 
                 
