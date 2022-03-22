@@ -3,7 +3,7 @@ from http.client import responses
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Report, ReportPosts, Responses, Comments, Upgrade
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, ReportPosts, Responses, Comments, Upgrade
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
