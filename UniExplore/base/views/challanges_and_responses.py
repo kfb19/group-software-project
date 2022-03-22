@@ -224,12 +224,12 @@ def reportedPosts(request):
 """
 def reportAPost(request, pk):
     categories = Category.objects.all()
-    response = responses.objects.filter(id=pk)
+    response = Responses.objects.get(id=pk)
     context = {'categories': categories, 'post': response}
 
     if request.method == "POST":
 
-        reported = Report(user=request.user,reason = request.POST.get('reason'), post=request.POST.get('response_id'))
+        reported = Report(user=request.user,reason = request.POST.get('reason'), post=response)
         reported.save()
         return redirect('home')
 

@@ -106,8 +106,7 @@
     
     <form class="response-form" method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="text" value="response_id">
-        <input type="hidden" name="postID" value="{{post.id}}">
+        <input type="text" name="reason">
         <input type="submit">
         
     </form>
