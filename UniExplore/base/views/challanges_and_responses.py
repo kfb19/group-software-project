@@ -205,7 +205,7 @@ def reportedPosts(request):
   
             obj = request.POST.get('postID')
             obj2 = request.POST.get('reportID')
-            Responses.object.filter(id=obj).delete()
+            Responses.objects.filter(id=obj).delete()
             Report.objects.filter(id=obj2).delete()
 
         except:

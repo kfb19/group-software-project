@@ -40,7 +40,9 @@
                 
                     
                 <small> {{report.user.username}} : {{report.reason}} </small>
-                
+                <img id="chal-photo" src="{{ report.post.photograph.url }}" alt="image" />
+                <br>
+                <small>{{report.post.description}} </small> <br>
 
                 <form method="POST">
                     {% csrf_token %}
