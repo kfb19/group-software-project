@@ -62,7 +62,7 @@ $(document).ready(function () {
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
 
-<div>
+<div class="challenges">
     {% for response in responses %}
         <div class="challenge">
             <img id="profile-pic" class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
