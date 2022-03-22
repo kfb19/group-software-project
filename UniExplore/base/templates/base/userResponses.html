@@ -29,11 +29,11 @@
             >{{response.challenge.name}}</a
           >
           | <small>{{response.challenge.points}}</small>
-          {%if response.user.id = request.user.id %}
+          <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
+          <br>
+          {%if response.user.id == request.user.id %}
                 <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
                 {% endif %}
-          <br>
-          <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
                 <br>
         <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
         <br>
