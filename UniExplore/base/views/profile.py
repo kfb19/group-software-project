@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from pytz import timezone
 from ..models import Category, Responses, Comments, Upgrade
 from ..forms import UserUpdateForm, ProfileUpdateForm
@@ -12,14 +12,34 @@ import json
 from decouple import config
 
 """
-    Authors: Lucas Smith, Michael Hills
-    Description: Profile page with completed tasks
+    Authors: Lucas Smith,
+    Description: Redirects to the currently authenticated user's profile
 """
 
 
 @login_required(login_url='/login')
 def userProfile(request):
-    responses = Responses.objects.filter(user=request.user).order_by('-created')
+    return HttpResponseRedirect("/profile/" + request.user.username)
+
+"""
+    Authors: Lucas Smith, Michael Hills
+    Description: View another user's (or your own) profile from parameter in URl specified
+"""
+
+
+def profile(request, username):
+    # If username doesn't exist, 404 error
+    try:
+        usertofetch = User.objects.get(username=username)
+    except:
+        raise Http404
+
+    # Handling whether edit profile options should show
+    editable = False
+    if request.user == usertofetch:
+        editable = True
+
+    responses = Responses.objects.filter(user=usertofetch).order_by('-created')
     comments = Comments.objects.all().order_by('-date_added')
 
     game_master = False
@@ -31,7 +51,10 @@ def userProfile(request):
         'responses': responses,
         'categories': categories,
         'comments': comments,
-        'game_master': game_master
+        'game_master': game_master,
+        'editable': editable,
+        'user': usertofetch
+
     }
 
     return render(request, 'base/profile.html', context)
@@ -163,27 +186,3 @@ def analyse_image(img):
     request = requests.post('https://api.sightengine.com/1.0/check-workflow.json', files=img, data=params)
     output = json.loads(request.text)
     return output['summary']['action'] == 'reject'
-
-
-"""
-    Authors: Lucas Smith
-    Description: View another user's profile
-"""
-def profile(request, username):
-    # If username doesn't exist, 404 error
-    try:
-        usertofetch = User.objects.get(username=username)
-    except:
-        raise Http404
-
-    # Handling whether edit profile options should show
-    editable = False
-    if request.user == usertofetch:
-        editable = True
-
-    print(editable)
-    context = {
-        'editable': editable,
-        'user': usertofetch
-    }
-    return render(request, 'base/profile.html', context)
