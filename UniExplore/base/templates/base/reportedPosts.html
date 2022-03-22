@@ -39,8 +39,15 @@
             <div class="challenge">
                 
                     
-                <small> {{report.user.username}} : {{report.reason}} </small>
+                <h3> {{report.user.username}} reported this post because: </h3>
+                <br>
+                <small>{{report.reason}}</small>
+                <br>
+                <h3>Post Image: </h3>
+                <br>
                 <img id="chal-photo" src="{{ report.post.photograph.url }}" alt="image" />
+                <br>
+                <h3>Post Description: </h3>
                 <br>
                 <small>{{report.post.description}} </small> <br>
 
