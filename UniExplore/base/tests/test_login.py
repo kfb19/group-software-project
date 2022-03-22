@@ -41,28 +41,4 @@ class ModelTesting(TestCase):
         
 
 
-        # self.profile = Profile.objects.create(user=self.user, name="test_name")
-
-        # self.category = Category.objects.create(name="test_name")
-
-        # self.challenge = Challenges.objects.create(user=self.user,
-        #                                            category=self.category,
-        #                                            name="test_name",
-        #                                            points=0,
-        #                                            description="test_description",
-        #                                            created=datetime.now(),
-        #                                            lat=0.25,
-        #                                            long=20.23)
-
-        # # self.response = Responses.objects.create(user=self.user,
-        # #                                          description="test_description",
-        # #                                          challenge=self.challenge,
-        # #                                          created=datetime.now(),
-        # #                                          )
-
-        # self.response = DailyRiddle.objects.create(name='test',
-        #                                             points = 0,
-        #                                             created=datetime.now(),
-        #                                             lat = 0.23,
-        #                                             long=20,
-        #                                             answer='test answer')
+        

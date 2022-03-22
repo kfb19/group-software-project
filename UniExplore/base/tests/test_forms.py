@@ -56,8 +56,6 @@ class TestForms(SimpleTestCase):
         })
         self.assertTrue(form.is_valid)
 
-
-
     def test_challenge_form_no_data(self):
         form = ChallengeForm(data = {})
         self.assertEquals(len(form.errors), 7)
