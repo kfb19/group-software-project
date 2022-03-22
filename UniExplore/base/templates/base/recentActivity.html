@@ -45,7 +45,9 @@
             <h5><a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small></h5>
             <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
             <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a><br>
-            <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
+            {%if response.user.id = request.user.id %}
+                <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
+                {% endif %}
                 
             <br>
             <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
