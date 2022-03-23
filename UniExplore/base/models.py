@@ -118,6 +118,9 @@ class CompleteRiddle(models.Model):
     riddle = models.ForeignKey(DailyRiddle, related_name='complete_riddle', on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.id)
+
 
 # File name setting for profile pics (Tomas Premoli)
 def response_pic_location(instance, filename):
