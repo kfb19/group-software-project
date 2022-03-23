@@ -44,6 +44,8 @@ urlpatterns = [
     # Author: Lucas Smith
     path('profile_edit/', views.editProfile, name='editProfile'),
     path('profile/<str:username>/', views.profile, name='profile'),
+    path('follow/<str:username>/', views.followUser, name='followUser'),
+    path('recentFollowerActivity/', views.recentFollowerActivity, name='recentFollowerActivity'),
 
     # Author: Tomas Premoli
     path('profile/', views.userProfile, name='profile'),

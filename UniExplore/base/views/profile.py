@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponseRedirect
 from pytz import timezone
-from ..models import Category, Responses, Comments, Upgrade
+from ..models import Category, Responses, Comments, Upgrade, Profile
 from ..forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.contrib.auth.models import Group
@@ -32,7 +32,8 @@ def profile(request, username):
     try:
         usertofetch = User.objects.get(username=username)
     except:
-        raise Http404
+        messages.error("User not found")
+        return HttpResponseRedirect("/")
 
     # Handling whether edit profile options should show
     editable = False
@@ -46,6 +47,16 @@ def profile(request, username):
     if request.user.groups.filter(name='game_master').exists():
         game_master = True
 
+    following = False
+
+    user_profile = Profile.objects.get(user=request.user)
+    follow_profile = Profile.objects.get(user=usertofetch)
+
+    if user_profile.following.filter(user_id=follow_profile.user_id).exists():
+        following = True
+
+    print(following)
+
     categories = Category.objects.all()
     context = {
         'responses': responses,
@@ -53,11 +64,31 @@ def profile(request, username):
         'comments': comments,
         'game_master': game_master,
         'editable': editable,
-        'user': usertofetch
-
+        'user': usertofetch,
+        'following': following
     }
 
     return render(request, 'base/profile.html', context)
+
+
+"""
+    Authors: Lucas Smith
+    Description: Added functionality to follow/unfollow users
+"""
+
+def followUser(request, username):
+    user_profile = Profile.objects.get(user=request.user)
+    follow_user = User.objects.get(username=username)
+    follow_profile = Profile.objects.get(user=follow_user)
+
+    if user_profile.following.filter(user_id=follow_profile.user_id).exists():
+        user_profile.following.remove(follow_profile)
+    else:
+        user_profile.following.add(follow_profile)
+
+    user_profile.save()
+
+    return HttpResponseRedirect("/profile/"+username)
 
 
 """
