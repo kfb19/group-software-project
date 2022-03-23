@@ -27,6 +27,37 @@
 {% block content %}
 
 
+<!-- Written by Jack Purkiss -->
+<div class="container-fluid">        
+    <button type="button" id="sidebarCollapse" class="btn btn-info">
+        <i class="fas fa-align-left"></i>
+        <script>
+            $(document).ready(function () {
+
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').toggleClass('active');
+                });
+            
+            });
+        </script>
+    </button>
+</div>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- Popper.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+});
+</script>
+
 
 <h1 id="title">Recent Activity</h1>
 
@@ -34,16 +65,18 @@
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
 
+
+<div class="challenges">
 <div>
     {% csrf_token %}
     
+
     {% for response in responses %}
         <div class="challenge">
-            <div id="profile-pic"  style="float:left">
-                <img class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
-            </div>
+            <img id="profile-pic" class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
+            
             <h5><a href="{% url 'challengeResponses' response.challenge.id%}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small></h5>
-            <h5></h5><a href="{% url 'userResponses' response.user.id%}">{{response.user.username}}</a></h5><br>
+            <h5></h5><a href="{% url 'profile' response.user.username%}">{{response.user.username}}</a></h5><br>
             <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a><br>
             {%if response.user.id == request.user.id %}
                 <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>

@@ -12,3 +12,5 @@ django-settings-export
 django-cleanup
 django-utils-six
 better_profanity
+selenium
+model_bakery

@@ -43,10 +43,14 @@ urlpatterns = [
     path('reportAPost/<int:pk>', views.reportAPost, name ='reportAPost' ),
     path('reportedPosts/', views.reportedPosts,name='reportedPosts'),
     path('deletePost/<int:pk>/', views.deletePost,name='deletePost'),
+    path('reportAComment/<int:pk>', views.reportAComment, name ='reportAComment' ),
+    path('reportedComments/', views.reportedComments,name='reportedComments'),
 
     # Author: Lucas Smith
-    path('profile/', views.userProfile, name='profile'),
     path('profile_edit/', views.editProfile, name='editProfile'),
+    path('profile/<str:username>/', views.profile, name='profile'),
+    path('follow/<str:username>/', views.followUser, name='followUser'),
+    path('recentFollowerActivity/', views.recentFollowerActivity, name='recentFollowerActivity'),
 
     # Author: Tomas Premoli
     path('profile/', views.userProfile, name='profile'),

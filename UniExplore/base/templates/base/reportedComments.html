@@ -1,0 +1,121 @@
+<!--
+    Authors:
+        - Kate Belson 
+        
+-->
+
+{% extends 'base.html' %}
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Reported Comments</title>  
+</head>  
+
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+    
+{% endblock %}
+
+
+
+{% block content %}
+
+<!-- Written by Jack Purkiss -->
+<div class="container-fluid">        
+    <button type="button" id="sidebarCollapse" class="btn btn-info">
+        <i class="fas fa-align-left"></i>
+        <script>
+            $(document).ready(function () {
+
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').toggleClass('active');
+                });
+            
+            });
+        </script>
+    </button>
+</div>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- Popper.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+});
+</script>
+
+<div class="content-section">
+
+
+<h1 id="title">Reported Comments:</h1>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
+
+
+<div>
+    {% if reports %}
+            
+        
+        {% for report in reports %}
+            
+            <div class="challenge">
+                
+                    
+                <h3> {{report.user.username}} reported this comment because: </h3>
+                <br>
+                <small>{{report.reason}}</small>
+                <br>
+                <h3>Comment: </h3>
+                <br>
+                <small>{{report.comment.text}} </small> <br>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden", name="reportID", value="{{report.id}}">
+                    <input type="hidden", name="commentID", value="{{report.comment.id}}">
+                    <input type="Submit", value="Delete Comment">
+                </form>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden", name="reportID", value="{{report.id}}">
+                    <input type="Submit", value="Ignore">
+                </form>
+
+                
+                <br>
+            
+            </div>
+
+        {% endfor %}
+
+   
+
+        {% else %}
+
+                <p>No Users have reported comments...</p>
+
+
+
+    {% endif %}
+    
+   
+</div>
+</div>
+
+{% endblock %}
+
+</body>
+</html>

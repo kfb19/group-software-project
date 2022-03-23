@@ -3,7 +3,7 @@ from http.client import responses
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments, Upgrade, Report
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments, Upgrade, Report, ReportPosts
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -201,7 +201,7 @@ def viewRiddle(request,pk):
     Description: View for game masters to accept or delete reported posts 
 """
 def reportedPosts(request):
-    reports = Report.objects.all()
+    reports = ReportPosts.objects.all()
     categories = Category.objects.all()
     context = {'reports': reports,'categories': categories}
 
@@ -212,11 +212,11 @@ def reportedPosts(request):
             obj = request.POST.get('postID')
             obj2 = request.POST.get('reportID')
             Responses.objects.filter(id=obj).delete()
-            Report.objects.filter(id=obj2).delete()
+            ReportPosts.objects.filter(id=obj2).delete()
 
         except:
             obj2 = request.POST.get('reportID')
-            Report.objects.filter(id=obj2).delete()
+            ReportPosts.objects.filter(id=obj2).delete()
 
 
 
@@ -236,7 +236,7 @@ def reportAPost(request, pk):
 
     if request.method == "POST":
 
-        reported = Report(user=request.user,reason = request.POST.get('reason'), post=response)
+        reported = ReportPosts(user=request.user,reason = request.POST.get('reason'), post=response)
         reported.save()
         return redirect('home')
 

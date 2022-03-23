@@ -12,7 +12,7 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>{{user.username}}'s profile</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 </head>
 
 <body>
@@ -25,12 +25,41 @@
 {% endblock %}
 
 {% block content %}
-<!--Written by Kate Belson and Jack Purkiss-->
+<!--Written by Kate Belson, Lucas Smith Jack Purkiss-->
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
+<!-- Written by Jack Purkiss -->
+<div class="container-fluid">        
+    <button type="button" id="sidebarCollapse" class="btn btn-info">
+        <i class="fas fa-align-left"></i>
+        <script>
+            $(document).ready(function () {
 
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').toggleClass('active');
+                });
+            
+            });
+        </script>
+    </button>
+</div>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- Popper.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+});
+</script>
 
 <!-- Mist of this is for bootstrap (or whatever CSS we end up using) -->
 
@@ -40,24 +69,36 @@
         <img class="rounded-circle account-img" src="{{ user.profile.picture.url }}" width="100" height="100"></img>
         <div class="media-body">
             <h1>{{user.username}}'s profile</h1>
-            <h4>{{ user.profile.university }}</h4>
+            <h4>{{user.profile.university }}</h4>
             <h4>{{user.profile.bio}}</h4>
+            <br>
+            {% if editable %}
+                <div style="width:500px">
+                    <a href="/profile_edit" class="profile_button">Edit profile</a>
+                    <a href="{% url 'deleteProfile' %}" class="profile_button">Delete profile</a><br>
+                    {% if game_master == False %}
+                        <a href="{% url 'requestMaster' %}" class="profile_button">Become a Game Master</a>
+                    {% endif %}
+                </div>
 
-            {% if request.user.is_authenticated %}
-            <div style="width:500px">
-                <a href="/profile_edit" class="button">Edit profile</a>
-                <a href="{% url 'deleteProfile' %}" class="button">Delete profile</a><br>
-                {% if game_master == False %}
-                    <a href="{% url 'requestMaster' %}" class="button">Become a Game Master</a>
+            {% else %}
+                {% if following %}
+                    <div style="width:500px">
+                        <a href=/follow/{{user.username}} class="profile_button" >Unfollow</a><br>
+                    </div>
+                {% else %}
+                    <div style="width:500px">
+                        <a href=/follow/{{user.username}} class="profile_button" >Follow</a><br>
+                    </div>
                 {% endif %}
-            </div>
             {% endif %}
+
 
         </div>
     </div>
 </div>
 
-<div>
+<div class="challenges">
     <h1>{{user.username}}'s Completed Challenges</h1>
     <h4>Total Points: {{request.user.profile.points}}</h4>
 
@@ -83,22 +124,14 @@
         {%else%}
         <small><a href="{% url 'viewComments' response.id %}">See All Comments</a></small>
             <div  style= "height: 100px; overflow-y: scroll;" >
-            
                 {% for comment in comments %}
-                    
                     {% if comment.response == response %}
-                    
                     <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
                     <br>
-
                     {% endif %}
-
                 {% endfor %}
-
-        {% endif %}
-
             </div>
-            
+        {% endif %}    
     </div>
     {% endfor %}
 </div>

@@ -17,11 +17,13 @@ from io import BytesIO
 import os
 import sys
 
+
 # File name setting for profile pics (Tomas Premoli)
 def pfp_location(instance, filename):
     type = filename.split('.')[-1]
     filename = str(hash(instance.user.id)) + "." + type
     return os.path.join('profile_pictures/', filename)
+
 
 # Model for a user profile (Michael Hills, Lucas Smith, Tomas Premoli)
 class Profile(models.Model):
@@ -32,6 +34,7 @@ class Profile(models.Model):
     university = models.CharField(default="No university set.", max_length=200)  # TODO: Dropdown for available unis?
     picture = models.ImageField(default='profile_pictures/placeholder.png', upload_to=pfp_location)
     email_confirmed = models.BooleanField(default=False)
+    following = models.ManyToManyField('Profile', related_name="following_profile", blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -69,11 +72,10 @@ class Profile(models.Model):
                                             "%s.jpg" % str(hash(self.picture.name.split('.')[0])), 
                                             'image/jpeg', sys.getsizeof(output), None)
         except: pass
-
         super(Profile, self).save()
 
-# Model for a category of challenges (Michael Hills)
 
+# Model for a category of challenges (Michael Hills)
 class Category(models.Model):
     name = models.CharField(max_length=200)
 
@@ -97,24 +99,26 @@ class Challenges(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 # Model the daily riddle (Michael Hills)
 class DailyRiddle(models.Model):
-    name = models.CharField(max_length=200,null=True)
+    name = models.CharField(max_length=200, null=True)
     points = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
-    answer = models.CharField(max_length=200,null=True)
+    answer = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.name
+
 
 # Model for completed daily riddles (Michael Hills)
 class CompleteRiddle(models.Model):
     riddle = models.ForeignKey(DailyRiddle, related_name='complete_riddle', on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    
+
 # File name setting for profile pics (Tomas Premoli)
 def response_pic_location(instance, filename):
     type = filename.split('.')[-1]
@@ -126,7 +130,7 @@ def response_pic_location(instance, filename):
 class Responses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
-    photograph = models.ImageField(upload_to=response_pic_location, default = 'image_uploads/challenge-completed.png')
+    photograph = models.ImageField(upload_to=response_pic_location, default='image_uploads/challenge-completed.png')
     challenge = models.ForeignKey(Challenges, related_name='challenge_response', on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
@@ -165,9 +169,9 @@ class Responses(models.Model):
         output.seek(0)
 
         # Set field to modified picture
-        self.photograph = InMemoryUploadedFile(output, 'ImageField', 
-                                        "%s.jpg" % str(hash(self.photograph.name.split('.')[0])), 
-                                        'image/jpeg', sys.getsizeof(output), None)
+        self.photograph = InMemoryUploadedFile(output, 'ImageField',
+                                               "%s.jpg" % str(hash(self.photograph.name.split('.')[0])),
+                                               'image/jpeg', sys.getsizeof(output), None)
 
         super(Responses, self).save()
 
@@ -175,10 +179,10 @@ class Responses(models.Model):
     @property
     def num_likes(self):
         return self.liked.all().count()
-    
-    
 
     # The options for the like button (Michael Hills)
+
+
 LIKE_CHOICES = (
     ('Like', 'Like'),
     ('Unlike', 'Unlike'),
@@ -188,12 +192,13 @@ LIKE_CHOICES = (
 # Model for comments on a response (Michael Hills)
 class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    response = models.ForeignKey(Responses,related_name="comments", on_delete=models.CASCADE)
+    response = models.ForeignKey(Responses, related_name="comments", on_delete=models.CASCADE)
     text = models.CharField(max_length=200)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.id)
+
 
 # Model for the likes of a post (Michael Hills)
 class Likes(models.Model):
@@ -217,11 +222,17 @@ class Upgrade(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     
 # Model for reported posts (Kate Belson)
-class Report(models.Model):
+class ReportPosts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reason = models.TextField()
-    post = models.ForeignKey(Responses, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
+# Model for reported posts (Kate Belson)
+class ReportComments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
 

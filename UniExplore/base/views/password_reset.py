@@ -26,7 +26,7 @@ def password_reset_request(request):
                     email_template = "password/password_reset_email.txt"
                     body = {
                         "email": user.email,
-                        "domain": "localhost:8000",
+                        "domain": "uniexplore.co.uk",
                         "site_name": "exeter",
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,

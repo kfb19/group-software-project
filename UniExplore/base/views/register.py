@@ -71,7 +71,7 @@ def registerPage(request):
                             subject = 'Activate Your UniExplore Account'
                             message = render_to_string('email_verification/account_activation_email.html', {
                                 'user': user,
-                                'domain': 'localhost:8000',
+                                'domain': 'uniexplore.co.uk',
                                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                                 'token': default_token_generator.make_token(user),
                             })
