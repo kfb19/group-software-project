@@ -1,5 +1,8 @@
 from email.headerregistry import Group
 from http.client import responses
+
+from django.http import HttpResponseRedirect
+
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
@@ -155,10 +158,9 @@ def myResponses(request):
 @login_required(login_url='/login')
 def userResponses(request, pk):
     user = User.objects.get(id=pk)
-    responses = Responses.objects.filter(user=user).order_by('-created')
-    categories = Category.objects.all()
-    context = {'responses': responses, 'user': user, 'categories': categories}
-    return render(request, 'base/userResponses.html', context)
+    username = user.username
+
+    return HttpResponseRedirect("/profile/"+username)
 
 
 
