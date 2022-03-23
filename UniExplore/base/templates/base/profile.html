@@ -100,7 +100,7 @@ $(document).ready(function () {
 
 <div class="challenges">
     <h1>{{user.username}}'s Completed Challenges</h1>
-    <h4>Total Points: {{request.user.profile.points}}</h4>
+    <h4>Total Points: {{user.profile.points}}</h4>
 
     {% for response in responses %}
     <div class="challenge">
