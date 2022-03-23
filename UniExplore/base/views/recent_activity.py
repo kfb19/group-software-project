@@ -18,3 +18,21 @@ def recentActivity(request):
     return render(request, 'base/recentActivity.html', context)
 
 
+"""
+    Authors: Lucas Smith
+    Description: View to show responses to challenges from people the user follows
+"""
+def recentFollowerActivity(request):
+    users_followed = request.user.profile.following.all()
+
+    responses = Responses.objects.filter(user__profile__in=users_followed).order_by('-created')
+
+    categories = Category.objects.all()
+    comments = Comments.objects.all().order_by('-date_added')
+
+    context = {'responses': responses, 'categories': categories, 'comments': comments}
+
+    return render(request, 'base/recentActivity.html', context)
+
+
+
