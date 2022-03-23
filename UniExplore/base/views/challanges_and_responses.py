@@ -172,7 +172,7 @@ def viewRiddle(request,pk):
     categories = Category.objects.all()
     
 
-    completed = CompleteRiddle.objects.filter(riddle=dailyRiddle)
+    completed = CompleteRiddle.objects.filter(riddle=dailyRiddle).filter(user=request.user)
     allowed = True
     
     if len(completed) > 0:
