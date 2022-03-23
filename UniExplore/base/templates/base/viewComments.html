@@ -96,7 +96,7 @@ $(document).ready(function () {
             {%if response.user.id == request.user.id %}
             <a  href="{% url 'deleteComment' comment.id%}">Delete Comment</a>
             <br>
-           {} % endif %}
+           {% endif %}
     
         </div>
 
