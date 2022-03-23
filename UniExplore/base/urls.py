@@ -45,6 +45,7 @@ urlpatterns = [
     path('deletePost/<int:pk>/', views.deletePost,name='deletePost'),
     path('reportAComment/<int:pk>', views.reportAComment, name ='reportAComment' ),
     path('reportedComments/', views.reportedComments,name='reportedComments'),
+    path('deleteComment/<int:pk>/', views.deleteComment,name='deleteComment'),
 
     # Author: Lucas Smith
     path('profile_edit/', views.editProfile, name='editProfile'),

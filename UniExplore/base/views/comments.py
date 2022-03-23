@@ -95,3 +95,29 @@ def reportedComments(request):
 
 
     return render(request,'base/reportedComments.html',context)
+
+"""
+    Authors: Kate Belson 
+    Description: View for being able to delete your own comments
+"""
+def deleteComment(request,pk):
+    categories = Category.objects.all()
+
+    context = {'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+
+            delete = request.POST.get('delete')
+            if delete == "True":
+                
+                Comments.objects.filter(id=pk).delete()
+
+            return redirect('home')
+
+                
+        except:
+            return redirect('home')
+
+    return render(request,'base/deleteComment.html',context) 
