@@ -119,22 +119,25 @@ $(document).ready(function () {
     .response-form input[type="submit"] {
       background-color: var(--light-color);
       color: #000;
-      width: 25%;
       outline: none;
       border: 0px;
       box-shadow: none;
       text-align: center;
     }
+
+    .chal-title {
+      display: block
+    }
   </style>
-
+  <div class="content-section">
     <div class="challenge">
-        <div id="profile-pic"  style="float:left">
-            <img class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
-        </div>
-        <h5>{{response.challenge.name}} | <small>{{response.challenge.points}}</small></h5>
-        <h5></h5>{{response.user.username}}</h5><br>
-
-        <img src="{{ response.photograph.url }}" alt="image" />
+          <img id="profile-pic" class="rounded-circle account-img" src="{{ response.user.profile.picture.url }}" width="100" height="100"></img>
+        
+        <div class="chal-title">
+          <h5>{{response.challenge.name}} | <small>{{response.challenge.points}}</small></h5>
+          <h5></h5>{{response.user.username}}</h5><br>
+      </div>
+        <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
         <br>
         <small>{{response.description}} </small> <br>
     </div>
@@ -152,7 +155,7 @@ $(document).ready(function () {
       <input type="submit" , value="Complete" />
     </form>
   </div>
-
+</div> 
   {% endblock %}
 
   <script

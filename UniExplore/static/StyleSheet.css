@@ -150,13 +150,11 @@ hr { display: block; height: 1px;
 
 .challenge #chal-photo{
     max-width: 100%;
+    min-height: 100%;
     display: block;
 }
 
-.challenge #chal-photo {
-    height: 75%;
 
-}
 
 .challenges{
     padding-left: 15%;
