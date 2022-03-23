@@ -209,3 +209,28 @@ hr { display: block; height: 1px;
     color: var(--dark-color);
     border-color: var(--light-color);
 }
+.account-img
+{
+    padding: 10px 10px 10px 10px;
+}
+
+.center {
+display: flex;
+justify-content: center;
+}
+
+.account_page{
+        padding: 20px 20px 20px 20px;
+}
+
+.profile_button{
+            background-color: var(--light-color); /* Green */
+        border: none;
+        color: #000;
+        padding: 10px 18px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+}
+
