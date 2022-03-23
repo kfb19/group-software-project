@@ -112,7 +112,7 @@ def deleteComment(request,pk):
             delete = request.POST.get('delete')
             if delete == "True":
                 
-                Responses.objects.filter(id=pk).delete()
+                Comments.objects.filter(id=pk).delete()
 
             return redirect('home')
 
