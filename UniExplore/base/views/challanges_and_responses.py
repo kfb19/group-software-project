@@ -224,7 +224,7 @@ def reportedPosts(request):
 
 
 """
-    Authors: Kate Belson 
+    Authors: Kate Belson  
     Description: View for users to report a post 
 """
 def reportAPost(request, pk):
