@@ -6,15 +6,69 @@
     "answer": "Physics Building"
 },
 {
-
-
-    "description": "Clickily clackity cluck, get the fuck in my truck",
+    "description": "The most important bee",
     "points": 10,
-    "lat": 50.7356697,
-    "long": -3.5308967,
-    "answer": "Streatham Court"
+    "lat": 50.7340442,
+    "long": -3.535082,
+    "answer": "Queens"
 
+    
+
+
+},
+{
+    "description": "Home of land's end",
+    "points": 10,
+    "lat": 50.7344095,
+    "long": -3.5291117,
+    "answer": "Cornwall House"
+
+
+
+},
+{
+    "description": "It has a million stories but cannot tell them",
+    "points": 10,
+    "lat": 50.7354294,
+    "long": -3.5335708,
+    "answer": "Library"
+
+
+},
+
+{
+    "description": "One back from YGJ",
+    "points": 10,
+    "lat": 50.7358967,
+    "long": -3.5299574,
+    "answer": "XFI"
+
+},
+{
+    "description": "Faith, Charity and ...",
+    "points": 10,
+    "lat": 50.7338546,
+    "long": -3.5265898,
+    "answer": "Hope Hall"
+
+},
+{
+    "description": "The biggest queue on campus",
+    "points": 10,
+    "lat": 50.7354294,
+    "long": -3.5335708,
+    "answer": "Pret"
+
+},
+
+{
+    "description": "The land of orange",
+    "points": 10,
+    "lat": 50.73739091365493,
+    "long": -3.539016460999847,
+    "answer": "Holland Hall"
 
 }
+
 
 ]
