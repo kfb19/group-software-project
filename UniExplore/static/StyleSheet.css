@@ -238,9 +238,10 @@ justify-content: center;
 }
 
 .logo{
-    position: fixed;
+    position: absolute;
+    vertical-align: text-top;
      top: 20px;
-     right: 1px;
+     right: 0px;
      width: 300pt;
      height: 300pt;
 }
