@@ -33,7 +33,7 @@
         <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
         <br>
         {%if response.user.id == request.user.id %}
-                <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
+                <a href="{% url 'deletePost' response.id  %}" class="button">Delete Post</a>
                 {% endif %}
                 <br>
       </p>

@@ -66,7 +66,7 @@
         <p><a href="{% url 'challengeResponses' response.challenge.id %}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small>
             <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a><br>
             {%if response.user.id == request.user.id %}
-                <a href="{% url 'deletePost' response.id 'profile' %}" class="button">Delete Post</a>
+                <a href="{% url 'deletePost' response.id  %}" class="button">Delete Post</a>
                 {% endif %}
                 <br>
             <br>

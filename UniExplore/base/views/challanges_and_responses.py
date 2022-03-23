@@ -3,7 +3,7 @@ from http.client import responses
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments, Upgrade
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments, Upgrade, Report
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -201,7 +201,7 @@ def viewRiddle(request,pk):
     Description: View for game masters to accept or delete reported posts 
 """
 def reportedPosts(request):
-    reports = ReportPosts.objects.all()
+    reports = Report.objects.all()
     categories = Category.objects.all()
     context = {'reports': reports,'categories': categories}
 
@@ -212,11 +212,11 @@ def reportedPosts(request):
             obj = request.POST.get('postID')
             obj2 = request.POST.get('reportID')
             Responses.objects.filter(id=obj).delete()
-            ReportPosts.objects.filter(id=obj2).delete()
+            Report.objects.filter(id=obj2).delete()
 
         except:
             obj2 = request.POST.get('reportID')
-            ReportPosts.objects.filter(id=obj2).delete()
+            Report.objects.filter(id=obj2).delete()
 
 
 
@@ -236,7 +236,7 @@ def reportAPost(request, pk):
 
     if request.method == "POST":
 
-        reported = ReportPosts(user=request.user,reason = request.POST.get('reason'), post=response)
+        reported = Report(user=request.user,reason = request.POST.get('reason'), post=response)
         reported.save()
         return redirect('home')
 
@@ -247,10 +247,10 @@ def reportAPost(request, pk):
     Authors: Kate Belson 
     Description: View for being able to delete your own posts 
 """
-def deletePost(request,pk,prev):
+def deletePost(request,pk):
     categories = Category.objects.all()
 
-    context = {'categories': categories,'prev':prev}
+    context = {'categories': categories}
 
     if request.method == "POST":
 
@@ -258,17 +258,14 @@ def deletePost(request,pk,prev):
 
             delete = request.POST.get('delete')
             if delete == "True":
-                print(delete)
+                
                 Responses.objects.filter(id=pk).delete()
 
-            return redirect(prev)
+            return redirect('home')
 
+                
         except:
+            return redirect('home')
 
-            return redirect(prev)
+    return render(request,'base/deletePost.html',context) 
 
-
-
-    else:
-
-        return render(request,'base/deletePost.html',context) 
