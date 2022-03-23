@@ -129,17 +129,20 @@ $(document).ready(function () {
     }
   </style>
 
-  <h1>Report Post</h1>
+  <div class="content-section">
 
-  <div class="form">
-    <p>Please write a short description of why you are reporting this post:</p>
-    
-    <form class="response-form" method="POST" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="text" name="reason">
-        <input type="submit">
-        
-    </form>
+    <h1>Report Post</h1>
+
+    <div class="form">
+      <p>Please write a short description of why you are reporting this post:</p>
+      
+      <form class="response-form" method="POST" action="" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="text" name="reason">
+          <input type="submit">
+          
+      </form>
+    </div>
   </div>
 
   {% endblock %}

@@ -205,7 +205,7 @@ hr { display: block; height: 1px;
 }
 
 .container-fluid #sidebarCollapse{
-    background-color: var(--dark-color);
-    color: var(--light-color);
-    border-color: var(--dark-color);
+    background-color: white;
+    color: var(--dark-color);
+    border-color: var(--light-color);
 }

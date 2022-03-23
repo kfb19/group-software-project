@@ -108,9 +108,27 @@
                 <br>
                 </div>
 
-                <button type="button" class="help-button" data-toggle="modal" data-target="#helpModal">
+                <button type="button" class="help-button" data-toggle="modal" data-target="#helpModal" style="margin-bottom: 50px">
                     Help
                 </button>
+
+                <br>
+                <button
+                class="termly-cookie-preference-button"
+                type="button"
+                style="background: white; width: 165px; height: 30px; border-radius: 3px; border: 1px solid #5f7d9c; font-family: Roboto, Arial; font-size: 10px; color: #5f7d9c; font-weight: 600; box-sizing: border-box; cursor: pointer; padding: 0; outline: none;"
+                onclick="displayPreferenceModal()">Manage Cookie Preferences</button>
+                
+                <div class="gdpr">
+                    <style>
+                        .gdpr a {
+                            font-size: 8pt;
+                        }
+                    </style>
+                    <a href = "{% url 'ToS' %}" target=”_blank”>Terms of Service</a>
+                    <a href = "{% url 'privacy_policy' %}" target=”_blank”>Privacy Policy</a>
+                    <a href = "{% url 'cookie' %}" target=”_blank”>Cookie Policy</a>
+                </div>
             
                 <!-- Written by Kate Belson -->
                 <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalTitle" aria-hidden="true">
@@ -222,6 +240,7 @@
                     </h5>
 
                 </div>
+                
                 <div class="logo">
                     {% load static %}
                     <img src="../static/images/UniExploreLogo.png" alt="Logo">
