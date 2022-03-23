@@ -44,7 +44,7 @@ def strfdelta_round(tdelta, round_period='second'):
 """
 def lockout(request, credentials, *args, **kwargs):
     try:
-        username = request.POST.get("username")
+        username = request.POST.get("username").lower()
         ip_address = request.axes_ip_address
         account = AccessAttempt.objects.filter(username=username).filter(ip_address=ip_address)
         current_time = datetime.datetime.now()
