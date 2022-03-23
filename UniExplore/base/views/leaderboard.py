@@ -8,6 +8,6 @@ from django.shortcuts import render
 def leaderboard(request):
 
     categories = Category.objects.all()
-    profiles = Profile.objects.all().order_by('-points')
+    profiles = Profile.objects.all().order_by('-points')[0:25]
     context = {'profiles': profiles, 'categories': categories}
     return render(request, 'base/leaderboard.html', context)
