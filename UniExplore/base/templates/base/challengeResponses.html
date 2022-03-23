@@ -58,7 +58,7 @@ $(document).ready(function () {
 
 <h1 id="title">{{challenge.name}}</h1>
 
-<div>
+<div id="crsponse">
     {% csrf_token %}
     {% for response in responses %}
             <div class="challenge">
