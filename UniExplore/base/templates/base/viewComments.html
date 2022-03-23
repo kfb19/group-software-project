@@ -93,8 +93,10 @@ $(document).ready(function () {
             <br>
             <a  href="{% url 'reportAComment' comment.id%}">Report Comment</a>
             <br>
+            {%if response.user.id == request.user.id %}
             <a  href="{% url 'deleteComment' comment.id%}">Delete Comment</a>
             <br>
+           {} % endif %}
     
         </div>
 
