@@ -1,7 +1,9 @@
+from email.headerregistry import Group
+from http.client import responses
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, ReportPosts, Responses, Comments, Upgrade
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -11,9 +13,10 @@ from django.contrib import messages
 from django.utils import timezone
 import requests
 import json
+from better_profanity import profanity
 
 """
-    Authors: Michael Hills, Jack Purkiss
+    Authors: Michael Hills, Jack Purkiss, Kate Belson 
     Description: Only allow game masters and developers to create challenge
 """
 @allowed_users(allowed_roles=["game_master", 'developer'])
@@ -21,7 +24,16 @@ def createChallenge(request):
     categories = Category.objects.all()
     form = ChallengeForm()
 
-    form.fields['category'] = ModelChoiceField(Category.objects.all().exclude(name="Weekly"))
+    if len(categories) < 3:
+        photography = Category(name="Photography")
+        photography.save()
+        athletic = Category(name="Athletic")
+        athletic.save()
+        descriptive = Category(name="Descriptive")
+        descriptive.save()
+        categories = Category.objects.all()
+
+    form.fields['category'] = ModelChoiceField(categories.exclude(name="Weekly"))
 
     if request.method == 'POST':
         form = ChallengeForm(request.POST)
@@ -42,6 +54,7 @@ def createChallenge(request):
 """
 @login_required(login_url='/login')
 def createResponse(request, pk):
+    profanity.load_censor_words()
     challenge = Challenges.objects.get(id=pk)
     categories = Category.objects.all()
     form = ResponseForm()
@@ -69,6 +82,7 @@ def createResponse(request, pk):
             obj = form.save(commit=False)
             obj.user = request.user
             obj.challenge = challenge
+            obj.description = profanity.censor(obj.description)
 
             # analyse uploaded image
             developer_mode = False
@@ -110,6 +124,7 @@ def analyse_image(img):
     Authors: Michael Hills
     Description: View to show the responses of a challenge
 """
+@login_required(login_url='/login')
 def challengeResponses(request, pk):
     challenge = Challenges.objects.get(id=pk)
     comments = Comments.objects.all().order_by('-date_added')
@@ -137,6 +152,7 @@ def myResponses(request):
     Authors: Michael Hills
     Description: View to show the responses of a user
 """
+@login_required(login_url='/login')
 def userResponses(request, pk):
     user = User.objects.get(id=pk)
     responses = Responses.objects.filter(user=user).order_by('-created')
@@ -177,4 +193,53 @@ def viewRiddle(request,pk):
     
     
     return render(request,'base/viewRiddle.html', context)
+
+
+#MY CODE IM DOING IS HERE
+"""
+    Authors: Kate Belson 
+    Description: View for game masters to accept or delete reported posts 
+"""
+def reportedPosts(request):
+    reports = ReportPosts.objects.all()
+    categories = Category.objects.all()
+    context = {'reports': reports,'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+  
+            obj = request.POST.get('postID')
+            obj2 = request.POST.get('reportID')
+            Responses.objects.filter(id=obj).delete()
+            ReportPosts.objects.filter(id=obj2).delete()
+
+        except:
+            obj2 = request.POST.get('reportID')
+            ReportPosts.objects.filter(id=obj2).delete()
+
+
+
+    return render(request,'base/reportedPosts.html',context)
+
+
+"""
+    Authors: Kate Belson 
+    Description: View for users to report a post 
+"""
+def reportAPost(request, pk):
+    categories = Category.objects.all()
+
+    response = Responses.objects.get(id=pk)
+
+    context = {'categories': categories, 'post': response}
+
+    if request.method == "POST":
+
+        reported = ReportPosts(user=request.user,reason = request.POST.get('reason'), post=response)
+        reported.save()
+        return redirect('home')
+
+
+    return render(request,'base/reportAPost.html',context)
 

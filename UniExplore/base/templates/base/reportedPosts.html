@@ -1,0 +1,90 @@
+<!--
+    Authors:
+        - Kate Belson 
+        
+-->
+
+{% extends 'base.html' %}
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Reported Posts</title>  
+</head>  
+
+
+
+{% block filter %}
+
+{% include 'sidebar.html' %}
+    
+{% endblock %}
+
+
+
+{% block content %}
+
+<h1 id="title">Reported Posts:</h1>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
+
+
+<div>
+    {% if reports %}
+            
+        
+        {% for report in reports %}
+            
+            <div class="challenge">
+                
+                    
+                <h3> {{report.user.username}} reported this post because: </h3>
+                <br>
+                <small>{{report.reason}}</small>
+                <br>
+                <h3>Post Image: </h3>
+                <br>
+                <img id="chal-photo" src="{{ report.post.photograph.url }}" alt="image" />
+                <br>
+                <h3>Post Description: </h3>
+                <br>
+                <small>{{report.post.description}} </small> <br>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden", name="reportID", value="{{report.id}}">
+                    <input type="hidden", name="postID", value="{{report.post.id}}">
+                    <input type="Submit", value="Delete Post">
+                </form>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden", name="reportID", value="{{report.id}}">
+                    <input type="Submit", value="Ignore">
+                </form>
+
+                
+                <br>
+            
+            </div>
+
+        {% endfor %}
+
+   
+
+        {% else %}
+
+                <p>No Users have reported posts...</p>
+
+
+
+    {% endif %}
+    
+   
+</div>
+
+{% endblock %}
+
+</body>
+</html>

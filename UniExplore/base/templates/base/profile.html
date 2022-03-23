@@ -30,7 +30,12 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
 
-<div class="account_page">
+
+
+<!-- Mist of this is for bootstrap (or whatever CSS we end up using) -->
+
+<div class="content-section">
+    {% csrf_token %}
     <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profile.picture.url }}" width="100" height="100"></img>
         <div class="media-body">
@@ -71,6 +76,8 @@
     {% for response in responses %}
     <div class="challenge">
         <p><a href="{% url 'challengeResponses' response.challenge.id %}">{{response.challenge.name}}</a> | <small>{{response.challenge.points}}</small>
+            <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
+            <br>
         </p>
         <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
         <br>
@@ -98,9 +105,14 @@
     {% endfor %}
 </div>
 
+</body>
+
+{% load static %}
+    <script src="{% static '/scripts/likes.js' %}"></script>
+
 {% endblock %}
 
-</body>
+
 
 
 </html>

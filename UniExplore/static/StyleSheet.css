@@ -14,18 +14,19 @@ default colours:
 */
 
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
-
-:root{
+:root {
     --dark-color: #177442;
     --light-color: #BBEBA6;
 }
 
-*, body {
-font-family: 'Quicksand', sans-serif;
-font-weight: 400;
+*,
+body {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     background-color: var(--dark-color);
     overflow: visible;
@@ -52,53 +53,54 @@ a {
 hr {
     border: 1px solid #fff;
     width: 100%;
-    margin-left:0;
-}      
+    margin-left: 0;
+}
 
 #title {
-color: #fff;
-text-align: center;
-font-size: 40px;
-font-weight: 600;
-margin-bottom: 20px;
+    color: #fff(0, 0, 0);
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
+
 .challenge {
-position: relative;
-display: block;
-padding: 10px 15px;
-margin-bottom: 10px;
-background-color: var(--light-color);
-border: 3px solid;
-border-radius: 10px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: var(--light-color);
+    border: 3px solid;
+    border-radius: 10px;
 }
 
-.challenge h5{
-color: rgb(0, 0, 0);
-text-align: left;
-font-size: 24px;
-font-weight: 600;
-margin-bottom: 5px;
+.challenge h5 {
+    color: rgb(0, 0, 0);
+    text-align: left;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
-.challenge a{
-color: var(--dark-color);
-text-align: left;
-font-size: 24px;
-font-weight: 600;
-margin-bottom: 5px;
+.challenge a {
+    color: var(--dark-color);
+    text-align: left;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
-small{
-color: #000000;
-text-align: left;
-font-size: 16px;
-font-weight: 600;
-margin-bottom: 5px;
+small {
+    color: #000000;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
 #profile-pic {
-float: left;
-margin-right: 20px;
+    float: left;
+    margin-right: 20px;
 }
 
 h4 {
@@ -115,9 +117,9 @@ h4 {
     font-size: 30px;
     font-weight: 600;
     margin-bottom: 20px;
-  }
+}
 
-.challenge #chalname{
+.challenge #chalname {
     color: var(--dark-color);
     text-align: left;
     font-size: 24px;
@@ -125,7 +127,7 @@ h4 {
     margin-bottom: 5px;
 }
 
-.challenge #completeChal{
+.challenge #completeChal {
     color: var(--dark-color);
     text-align: left;
     font-size: 18px;
@@ -133,8 +135,8 @@ h4 {
     margin-bottom: 5px;
 }
 
-.challenge #chal-photo{
-    width: 75%;
+.challenge #chal-photo {
+    height: 75%;
 }
 
 #createChal {

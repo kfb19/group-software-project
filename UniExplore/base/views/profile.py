@@ -7,6 +7,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+import io
 import requests
 import json
 from decouple import config
@@ -95,8 +96,7 @@ def followUser(request, username):
     Authors: Michael Hills
     Description: View for game masters to accept user requests to be a gamemaster
 """
-
-
+@login_required(login_url='/login')
 def upgradeUser(request):
     upgrades = Upgrade.objects.all()
     categories = Category.objects.all()
@@ -124,8 +124,7 @@ def upgradeUser(request):
     Authors: Michael Hills
     Description: View for users to request to be upgraded to gamemaster
 """
-
-
+@login_required(login_url='/login')
 def requestMaster(request):
     categories = Category.objects.all()
     context = {'categories': categories}
@@ -175,9 +174,13 @@ def editProfile(request):
             if developer_mode == False:
                 if len(request.FILES) > 0:
                     try:
-                        img = request.FILES["photograph"].file.getvalue()
-                        invalid = analyse_image({'media': img})
-                    except Exception:
+                        if isinstance(request.FILES["picture"].file, io.BytesIO):
+                            img = request.FILES["picture"].file.getvalue()
+                            invalid = analyse_image({'media': img})
+                        else:
+                            img = request.FILES["picture"].file.file.read()
+                            invalid = analyse_image({'media': img})
+                    except Exception as e:
                         messages.warning(request, 'ERROR: The photo you tried to upload is not in the correct format')
                         context = {'user_form': user_form, 'profile_form': profile_form}
                         return render(request, 'base/profile_edit.html', context)
