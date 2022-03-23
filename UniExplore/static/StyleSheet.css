@@ -237,3 +237,12 @@ justify-content: center;
         font-size: 16px;
 }
 
+.logo{
+    position: absolute;
+    vertical-align: text-top;
+     top: 20px;
+     right: 0px;
+     width: 300pt;
+     height: 300pt;
+}
+
