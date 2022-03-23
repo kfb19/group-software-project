@@ -25,11 +25,13 @@
             width: 80%;
         }
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 </head>  
 {% load static %}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="{% static 'UniExplore/style.css' %}">
 <link rel="icon" href="/static/images/UniExploreLogo.png">
+<link rel="stylesheet" href="{% static 'StyleSheet.css'%}"> 
 <body>
 <div class="app-title">
     <h1>UniExplore</h1>
@@ -75,21 +77,29 @@
 </div>
 </body>
 
+<!--
 <footer>
 <div class="gdpr">
-        <div>
-            <button
-            class="termly-cookie-preference-button"
-            type="button"
-            style="background: white; width: 165px; height: 30px; border-radius: 3px; border: 1px solid #5f7d9c; font-family: Roboto, Arial; font-size: 10px; color: #5f7d9c; font-weight: 600; box-sizing: border-box; cursor: pointer; padding: 0; outline: none;"
-            onclick="displayPreferenceModal()">Manage Cookie Preferences</button>
-        
-            <a href = "{% url 'ToS' %}" target=”_blank”>Terms of Service</a>
-            <a href = "{% url 'privacy_policy' %}" target=”_blank”>Privacy Policy</a>
-            <a href = "{% url 'cookie' %}" target=”_blank”>Cookie Policy</a>
-        </div>
+    <style>
+        a {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+    </style>
+    <div>
+        <button
+        class="termly-cookie-preference-button"
+        type="button"
+        style="background: white; width: 165px; height: 30px; border-radius: 3px; border: 1px solid #5f7d9c; font-family: Roboto, Arial; font-size: 10px; color: #5f7d9c; font-weight: 600; box-sizing: border-box; cursor: pointer; padding: 0; outline: none;"
+        onclick="displayPreferenceModal()">Manage Cookie Preferences</button>
+        <br>
+        <a href = "{% url 'ToS' %}" target=”_blank”>Terms of Service</a>
+        <a href = "{% url 'privacy_policy' %}" target=”_blank”>Privacy Policy</a>
+        <a href = "{% url 'cookie' %}" target=”_blank”>Cookie Policy</a>
     </div>
+</div>
 </footer>
+-->
 
   
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
