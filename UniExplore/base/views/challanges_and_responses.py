@@ -3,7 +3,7 @@ from http.client import responses
 from ..decorators import allowed_users
 from decouple import config
 from ..forms import ChallengeForm, ResponseForm
-from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, ReportPosts, Responses, Comments, Upgrade
+from ..models import Category, Challenges, CompleteRiddle, DailyRiddle, Responses, Comments, Upgrade, ReportPosts
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -242,4 +242,30 @@ def reportAPost(request, pk):
 
 
     return render(request,'base/reportAPost.html',context)
+
+"""
+    Authors: Kate Belson 
+    Description: View for being able to delete your own posts 
+"""
+def deletePost(request,pk):
+    categories = Category.objects.all()
+
+    context = {'categories': categories}
+
+    if request.method == "POST":
+
+        try:
+
+            delete = request.POST.get('delete')
+            if delete == "True":
+                
+                Responses.objects.filter(id=pk).delete()
+
+            return redirect('home')
+
+                
+        except:
+            return redirect('home')
+
+    return render(request,'base/deletePost.html',context) 
 

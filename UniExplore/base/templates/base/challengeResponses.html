@@ -68,6 +68,10 @@ $(document).ready(function () {
                 <p> <a  href="{% url 'profile' response.user.username%}">{{response.user.username}}</a></p>
                 <a href="{% url 'reportAPost' response.id %}" class="button">Report Post</a>
                 <br>
+                {%if response.user.id == request.user.id %}
+                <a href="{% url 'deletePost' response.id %}" class="button">Delete Post</a>
+                {% endif %}
+                <br>
                 <img id="chal-photo" src="{{ response.photograph.url }}" alt="image" />
                 <br>
                 <small>{{response.description}} </small> <br>
