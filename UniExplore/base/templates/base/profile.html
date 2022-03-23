@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block content %}
-<!--Written by Kate Belson and Jack Purkiss-->
+<!--Written by Kate Belson, Lucas Smith Jack Purkiss-->
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'StyleSheet.css'%}">
@@ -40,24 +40,36 @@
         <img class="rounded-circle account-img" src="{{ user.profile.picture.url }}" width="100" height="100"></img>
         <div class="media-body">
             <h1>{{user.username}}'s profile</h1>
-            <h4>{{ user.profile.university }}</h4>
+            <h4>{{user.profile.university }}</h4>
             <h4>{{user.profile.bio}}</h4>
+            <br>
+            {% if editable %}
+                <div style="width:500px">
+                    <a href="/profile_edit" class="profile_button">Edit profile</a>
+                    <a href="{% url 'deleteProfile' %}" class="profile_button">Delete profile</a><br>
+                    {% if game_master == False %}
+                        <a href="{% url 'requestMaster' %}" class="profile_button">Become a Game Master</a>
+                    {% endif %}
+                </div>
 
-            {% if request.user.is_authenticated %}
-            <div style="width:500px">
-                <a href="/profile_edit" class="button">Edit profile</a>
-                <a href="{% url 'deleteProfile' %}" class="button">Delete profile</a><br>
-                {% if game_master == False %}
-                    <a href="{% url 'requestMaster' %}" class="button">Become a Game Master</a>
+            {% else %}
+                {% if following %}
+                    <div style="width:500px">
+                        <a href=/follow/{{user.username}} class="profile_button" >Unfollow</a><br>
+                    </div>
+                {% else %}
+                    <div style="width:500px">
+                        <a href=/follow/{{user.username}} class="profile_button" >Follow</a><br>
+                    </div>
                 {% endif %}
-            </div>
             {% endif %}
+
 
         </div>
     </div>
 </div>
 
-<div>
+<div class="account_page">
     <h1>{{user.username}}'s Completed Challenges</h1>
     <h4>Total Points: {{request.user.profile.points}}</h4>
 
@@ -79,18 +91,12 @@
         {%else%}
         <small><a href="{% url 'viewComments' response.id %}">See All Comments</a></small>
             <div  style= "height: 100px; overflow-y: scroll;" >
-            
                 {% for comment in comments %}
-                    
                     {% if comment.response == response %}
-                    
                     <small> <a  href="{% url 'userResponses' comment.user.id%}">{{comment.user}}</a> {{comment.text}} </small>
                     <br>
-
                     {% endif %}
-
                 {% endfor %}
-
         {% endif %}
 
             </div>
